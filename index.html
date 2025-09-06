@@ -27,13 +27,20 @@
 
   <main class="container">
     <section class="hero">
-      <div>
-        <h1>Domine os cortes e a brasa</h1>
-        <p>Guias práticos, receitas testadas, tempos e temperaturas. Conteúdo original e útil para seu próximo churrasco.</p>
-        <p><a class="btn" href="#posts">Ver receitas</a></p>
-      </div>
-      <img src="/assets/carnes-1200.jpg" alt="Cortes de carne sobre tábua" loading="lazy" width="600" height="360" />
-    </section>
+  <div>
+    <h1>Domine os cortes e a brasa</h1>
+    <p>Guias práticos, receitas testadas, tempos e temperaturas. Conteúdo original e útil para seu próximo churrasco.</p>
+    <p><a class="btn" href="#posts">Ver receitas</a></p>
+  </div>
+
+  <picture>
+    <source srcset="/assets/images/hero-picanha-1600.jpg" media="(min-width: 900px)">
+    <source srcset="/assets/images/hero-picanha-800.jpg" media="(min-width: 600px)">
+    <img src="/assets/images/hero-picanha-400.jpg" 
+         alt="Picanha suculenta grelhada em tábua rústica, com brasa ao fundo" 
+         loading="lazy" width="600" height="360">
+  </picture>
+</section>
 
     <section aria-label="Publicidade" class="ads">
       <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-SEU-ID-ADSENSE" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins>

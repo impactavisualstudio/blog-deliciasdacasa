@@ -88,6 +88,21 @@ blockquote{margin:12px 0;padding:8px 14px;border-left:4px solid var(--accent-2);
 .read-progress{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--accent),var(--accent-2));z-index:60}
 :focus-visible{outline:3px solid color-mix(in hsl, var(--accent) 45%, transparent);outline-offset:2px;border-radius:10px}
 @media (max-width:520px){ .nav{gap:8px} .hero{padding:16px 0} .newsletter{padding:16px} }
+/* === Ajustes extras === */
+
+/* Menu visível no fundo escuro */
+.nav a { color: #ccc; }
+.nav a:hover { color: #fff; }
+
+/* Logo destacado */
+.brand { color: #fff; }
+
+/* Placeholder de publicidade mais neutro */
+.ads { border: 1px dashed rgba(255,255,255,0.2); }
+
+/* Hero: imagem ou bloco lateral */
+.hero img { border-radius: 14px; box-shadow: var(--shadow); }
+
 /* === Ajustes robustos para o tema de carnes === */
 
 /* Header escuro */

@@ -1,4 +1,4 @@
-// Não cacheia HTML; cacheia só imagens. Versão nova
+// Não cacheia HTML; cacheia só imagens. Versão v3
 const CACHE = 'blog-carnes-v3';
 
 self.addEventListener('install', (e) => {
@@ -18,7 +18,7 @@ self.addEventListener('fetch', (e) => {
   const req = e.request;
   const url = new URL(req.url);
 
-  // 1) HTML: sempre rede de preferência
+  // 1) HTML: rede primeiro (não cacheia)
   if (req.mode === 'navigate' || req.headers.get('accept')?.includes('text/html')) {
     e.respondWith(
       fetch(req).catch(() => caches.match('/index.html'))
@@ -38,6 +38,6 @@ self.addEventListener('fetch', (e) => {
     return;
   }
 
-  // 3) Demais arquivos (CSS/JS): rede primeiro (respeita ?v=2)
+  // 3) CSS/JS: rede primeiro (respeita ?v=2, ?v=3…)
   e.respondWith(fetch(req).catch(() => caches.match(req)));
 });

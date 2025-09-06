@@ -157,4 +157,36 @@ blockquote{margin:12px 0;padding:8px 14px;border-left:4px solid var(--accent-2);
 .hero-featured img{ border-radius: 18px }
 
 .hero-featured .btn{ margin-top: 18px; box-shadow: 0 14px 26px rgba(239,68,68,.30) }
+/* Painel para páginas institucionais (Sobre, Contato etc.) */
+.page-panel{
+  background: rgba(15,10,8,.88);
+  border: 1px solid #2a1a14;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 12px 40px rgba(0,0,0,.45);
+  backdrop-filter: blur(2px);
+}
+
+/* Cores/legibilidade dentro do painel */
+.page-panel h1{ color:#fff; margin-top: 0; }
+.page-panel h2{ color:#fff; }
+.page-panel p,.page-panel li, .page-panel small{ color:#ddd; }
+
+/* Espaçamento extra abaixo do header fixo */
+.page-spaced{ margin-top: 12px; }
+
+@media (min-width: 900px){
+  .page-panel{ padding: 28px; }
+}
+/* Opcional: escurece um pouco o fundo global */
+body::before{
+  content:"";
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.25);
+  pointer-events: none;
+  z-index: 0;
+}
+.site-header, main, footer{ position: relative; z-index: 1; }
+
 

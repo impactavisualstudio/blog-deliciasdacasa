@@ -1,27 +1,35 @@
 <!DOCTYPE html><html lang="pt-BR"><head>
   <title>Contato | Delícias da Casa</title>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="/assets/styles.css?v=2">
-  <link rel="manifest" href="/manifest.webmanifest">
   <meta name="description" content="Fale com o Delícias da Casa para sugestões, parcerias e feedback.">
 </head><body>
 <header class="site-header"><div class="container">
   <a class="brand" href="/">🥩 Delícias da Casa</a>
-  <nav class="nav"><a href="/">Início</a><a href="/sobre.html">Sobre</a><a href="/contato.html">Contato</a><a href="/politica-privacidade.html">Privacidade</a></nav>
+  <nav class="nav" aria-label="Navegação"><a href="/">Início</a><a href="/sobre.html">Sobre</a><a href="/contato.html">Contato</a><a href="/politica-privacidade.html">Privacidade</a></nav>
 </div></header>
-<main class="container">
-  <h1>Contato</h1>
-  <form class="form" name="contato" method="POST" data-netlify="true">
-    <input type="text" name="nome" placeholder="Seu nome" required>
-    <input type="email" name="email" placeholder="Seu e-mail" required>
-    <textarea name="mensagem" rows="6" placeholder="Sua mensagem" required></textarea>
-    <button type="submit">Enviar</button>
-  </form>
+
+<main class="container page-spaced">
+  <section class="page-panel">
+    <h1>Contato</h1>
+    <p>Tem uma sugestão, encontrou um erro ou quer conversar sobre parceria? Fale com a gente 👇</p>
+
+    <form class="form" name="contato" method="POST" data-netlify="true">
+      <input type="text"   name="nome"  placeholder="Seu nome" required>
+      <input type="email"  name="email" placeholder="Seu e-mail" required>
+      <textarea name="mensagem" rows="6" placeholder="Sua mensagem" required></textarea>
+      <button type="submit">Enviar</button>
+    </form>
+
+    <small>Ao enviar, você concorda com nossa <a href="/politica-privacidade.html">Política de Privacidade</a>.</small>
+  </section>
 </main>
-<footer class="site-footer"><div class="container"><p>© <span id="ano"></span> Delícias da Casa</p></div></footer>
-<script src="/assets/script.js?v=2" defer></script></body></html>
+
+<footer class="site-footer"><div class="container">
+  <p>© <span id="ano"></span> Delícias da Casa</p>
+  <nav class="footer-nav"><a href="/termos-uso.html">Termos</a><a href="/politica-privacidade.html">Privacidade</a></nav>
+</div></footer>
+
+<script src="/assets/script.js?v=2" defer></script>
+</body></html>
 

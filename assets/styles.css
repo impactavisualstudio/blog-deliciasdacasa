@@ -31,6 +31,9 @@ a{color:inherit;text-decoration:none}
 .hero{display:grid;grid-template-columns:1.2fr .8fr;gap:28px;align-items:center;padding:28px 0}
 .hero h1{font-size:var(--step-3);line-height:1.1;margin:0 0 10px;text-wrap:balance}
 .hero p{font-size:var(--step-0);color:var(--muted);margin:0}
+.hero .btn {
+  margin-top: 16px; /* pode testar 20px ou 24px se quiser mais espaço */
+}
 .hero img{box-shadow:var(--shadow)}
 @media (max-width:900px){.hero{grid-template-columns:1fr}}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px}

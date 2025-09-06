@@ -88,6 +88,41 @@ blockquote{margin:12px 0;padding:8px 14px;border-left:4px solid var(--accent-2);
 .read-progress{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--accent),var(--accent-2));z-index:60}
 :focus-visible{outline:3px solid color-mix(in hsl, var(--accent) 45%, transparent);outline-offset:2px;border-radius:10px}
 @media (max-width:520px){ .nav{gap:8px} .hero{padding:16px 0} .newsletter{padding:16px} }
+/* === Ajustes robustos para o tema de carnes === */
+
+/* Header escuro */
+.site-header {
+  background: rgba(15, 10, 8, 0.9);
+  border-bottom: 1px solid #2a1a14;
+  backdrop-filter: blur(6px);
+}
+
+/* Texto hero */
+.hero h1 { color: #fff; }
+.hero p { color: #ddd; }
+
+/* Botão brasa */
+.hero .btn {
+  margin-top: 18px;
+  box-shadow: 0 0 15px rgba(239, 68, 68, 0.5);
+}
+
+/* Cards */
+.card {
+  background: rgba(20, 15, 12, 0.9);
+  border: 1px solid #2d1a12;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+}
+.card h2, .card p { color: #eee; }
+
+/* Footer */
+.site-footer {
+  background: rgba(15, 10, 8, 0.95);
+  border-top: 1px solid #2a1a14;
+}
+.footer-nav a { color: #bbb; }
+.footer-nav a:hover { color: #fff; }
+
 /* === Upgrade do HERO: padding maior + gradiente suave + moldura === */
 .hero{ 
   /* reforça o espaçamento; sobrescreve o antigo */

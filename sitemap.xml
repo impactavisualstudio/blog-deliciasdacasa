@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://seu-dominio.com/</loc></url>
-  <url><loc>https://seu-dominio.com/sobre.html</loc></url>
-  <url><loc>https://seu-dominio.com/contato.html</loc></url>
-  <url><loc>https://seu-dominio.com/politica-privacidade.html</loc></url>
-  <url><loc>https://seu-dominio.com/termos-uso.html</loc></url>
-  <url><loc>https://seu-dominio.com/posts/churrasco-picanha-perfeito.html</loc></url>
-  <url><loc>https://seu-dominio.com/posts/brisket-texano-lento.html</loc></url>
-  <url><loc>https://seu-dominio.com/posts/costela-na-brasa-suculenta.html</loc></url>
-  <url><loc>https://seu-dominio.com/posts/fraldinha-marinada-rapida.html</loc></url>
-  <url><loc>https://seu-dominio.com/posts/dry-aged-o-que-e.html</loc></url>
+  <url><loc>https://blog-carnes.vercel.app/</loc></url>
+  <url><loc>https://blog-carnes.vercel.app/sobre.html</loc></url>
+  <url><loc>https://blog-carnes.vercel.app/contato.html</loc></url>
+  <url><loc>https://blog-carnes.vercel.app/politica-privacidade.html</loc></url>
+  <url><loc>https://blog-carnes.vercel.app/termos-uso.html</loc></url>
+  <url><loc>https://blog-carnes.vercel.app/posts/churrasco-picanha-perfeito.html</loc></url>
+  <url><loc>https://blog-carnes.vercel.app/posts/brisket-texano-lento.html</loc></url>
+  <url><loc>https://blog-carnes.vercel.app/posts/costela-na-brasa-suculenta.html</loc></url>
+  <url><loc>https://blog-carnes.vercel.app/posts/fraldinha-marinada-rapida.html</loc></url>
+  <url><loc>https://blog-carnes.vercel.app/posts/dry-aged-o-que-e.html</loc></url>
 </urlset>

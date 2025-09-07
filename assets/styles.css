@@ -188,5 +188,34 @@ body::before{
   z-index: 0;
 }
 .site-header, main, footer{ position: relative; z-index: 1; }
+/* ==== Força a paleta escura em todas as páginas ==== */
+:root{
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light){
+  /* mantém os valores de dark mesmo que o SO esteja no modo claro */
+  :root{
+    --bg:#0b1220; --panel:#0f172a; --elev:#111827; --text:#e5e7eb; --muted:#9aa6b2; --border:#1f2937;
+  }
+}
+
+/* ==== Garantir contraste nos títulos e textos do topo das páginas ==== */
+.container > h1,
+.container > p,
+.page-title,
+.page-intro {
+  color: #fff;                 /* texto claro */
+  text-shadow: 0 1px 2px rgba(0,0,0,.45); /* leve sombra pra legibilidade no fundo de carvão */
+}
+
+/* Caso algum card/herói esteja herdando cor escura por engano */
+.card h2,
+.card p {
+  color: var(--text);
+}
+
+/* Se tiver algum link quase invisível sobre o fundo */
+.nav a { color: var(--muted); }
+.nav a:hover { color: #fff; }
 
 

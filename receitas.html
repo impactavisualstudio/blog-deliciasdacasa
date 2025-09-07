@@ -1,0 +1,70 @@
+<!DOCTYPE html><html lang="pt-BR"><head>
+  <title>Todas as receitas | Delícias da Casa</title>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Veja todas as receitas e guias de carne do Delícias da Casa. Busque por corte, técnica e estilo de preparo.">
+  <link rel="stylesheet" href="/assets/styles.css?v=2">
+  <script defer src="/assets/posts.js"></script>
+  <style>
+    .searchbar{display:flex;gap:12px;margin:12px 0 20px}
+    .searchbar input{flex:1;padding:12px;border-radius:12px;border:1px solid var(--border);background:var(--panel);color:var(--text)}
+    .count{color:var(--muted);margin:0 0 12px}
+    .card img{width:100%;height:160px;object-fit:cover;margin-bottom:10px}
+  </style>
+</head>
+<body>
+<header class="site-header"><div class="container">
+  <a class="brand" href="/">🥩 Delícias da Casa</a>
+  <nav class="nav" aria-label="Navegação principal">
+    <a href="/">Início</a><a href="/receitas.html" aria-current="page">Receitas</a>
+    <a href="/sobre.html">Sobre</a><a href="/contato.html">Contato</a><a href="/politica-privacidade.html">Privacidade</a>
+  </nav>
+</div></header>
+
+<main class="container">
+  <section class="hero">
+    <div>
+      <h1>Todas as receitas</h1>
+      <p>Busque por cortes, técnicas e estilos de preparo.</p>
+      <div class="searchbar">
+        <input id="q" type="search" placeholder="Ex.: picanha, costela, defumação, frango…">
+      </div>
+      <p class="count" id="count"></p>
+    </div>
+  </section>
+
+  <section id="list" class="grid" aria-label="Lista completa de posts"></section>
+</main>
+
+<footer class="site-footer"><div class="container">
+  <p>© <span id="ano"></span> Delícias da Casa</p>
+  <nav class="footer-nav" aria-label="Rodapé">
+    <a href="/termos-uso.html">Termos</a><a href="/politica-privacidade.html">Privacidade</a><a href="/sitemap.xml">Sitemap</a>
+  </nav>
+</div></footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const elList = document.getElementById('list');
+  const elQ = document.getElementById('q');
+  const elCount = document.getElementById('count');
+
+  function render(items){
+    elList.innerHTML = items.map(window.renderPostCard).join('');
+    elCount.textContent = `${items.length} postagem(ns)`;
+  }
+  function search(q){
+    q = (q||'').toLowerCase().trim();
+    if(!q) return render(window.POSTS);
+    const items = window.POSTS.filter(p =>
+      (p.title||'').toLowerCase().includes(q) ||
+      (p.excerpt||'').toLowerCase().includes(q)
+    );
+    render(items);
+  }
+
+  elQ.addEventListener('input', e => search(e.target.value));
+  render(window.POSTS);
+});
+</script>
+<script src="/assets/script.js?v=2" defer></script>
+</body></html>

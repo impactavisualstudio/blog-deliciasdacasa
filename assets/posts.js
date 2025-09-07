@@ -6,19 +6,19 @@ window.POSTS = [
     title: "Picanha perfeita: do sal grosso ao corte final",
     url: "/posts/churrasco-picanha-perfeito.html",
     excerpt: "Como escolher, salar, assar e fatiar a picanha perfeita.",
-    image: "/assets/images/picanha-brasa-hero.png"
+    image: "/assets/images/hero-picanha-1600.png"
   },
   {
     title: "Brisket texano: baixa temperatura, alto sabor",
     url: "/posts/brisket-texano-lento.html",
     excerpt: "Rub, defumação lenta, stall, embrulho e ponto ideal.",
-    image: "/assets/images/brisket-texano-hero.png"
+    image: "/assets/images/brisket-1600.png"
   },
   {
     title: "Costela na brasa suculenta",
     url: "/posts/costela-na-brasa-suculenta.html",
     excerpt: "Tipos de costela, técnica 3-2-1, maciez sem erro.",
-    image: "/assets/images/costela-fogo-chao-hero.png"
+    image: "/assets/images/costela-1600.png"
   },
   {
     title: "Fraldinha marinada em 30 minutos",
@@ -30,7 +30,7 @@ window.POSTS = [
     title: "Dry-aged: o que é e quando vale a pena",
     url: "/posts/dry-aged-o-que-e.html",
     excerpt: "Maturação a seco, diferenças, custos e como servir.",
-    image: "/assets/images/dryaged-carne-hero.png"
+    image: "/assets/images/dryaged-1600.png"
   },
 
   // --- Novos: continue preenchendo… (exemplos) ---

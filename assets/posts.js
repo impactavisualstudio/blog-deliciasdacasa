@@ -24,7 +24,7 @@ window.POSTS = [
     title: "Fraldinha marinada em 30 minutos",
     url: "/posts/fraldinha-marinada-rapida.html",
     excerpt: "Marinadas rápidas, preparo na brasa, forno e frigideira.",
-    image: "/assets/images/fraldinha-marinada-hero.png"
+    image: "/assets/images/fraldinha-1600.png"
   },
   {
     title: "Dry-aged: o que é e quando vale a pena",

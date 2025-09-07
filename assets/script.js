@@ -45,3 +45,19 @@ if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').m
   style.textContent = '*{transition:none!important;animation:none!important}';
   document.head.appendChild(style);
 }
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const nav = document.querySelector('.site-header .nav');
+  if (!nav) return;
+
+  const hasReceitas = Array.from(nav.querySelectorAll('a'))
+    .some(a => a.getAttribute('href') === '/receitas.html');
+
+  if (!hasReceitas) {
+    const a = document.createElement('a');
+    a.href = '/receitas.html';
+    a.textContent = 'Receitas';
+    nav.insertBefore(a, nav.querySelector('a[href="/sobre.html"]') || null);
+  }
+});
+</script>

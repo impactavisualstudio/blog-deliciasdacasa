@@ -10,13 +10,25 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/styles.css?v=2">
 
-  <meta name="description" content="Todas as receitas do Delícias da Casa reunidas em um só lugar: cortes, técnicas e dicas para churrascos incríveis." />
+  <meta name="description" content="Todas as receitas do Delícias da Casa reunidas em um só lugar: procure por corte, técnica, categoria e descubra seu próximo churrasco." />
 
   <!-- AdSense -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-SEU-ID-ADSENSE" crossorigin="anonymous"></script>
 
   <style>
-    /* garante visual consistente das imagens dos cards (caso o CSS global mude) */
+    /* toolbar de filtros */
+    .toolbar{
+      display:flex; gap:12px; flex-wrap:wrap; align-items:center;
+      background:linear-gradient(180deg, color-mix(in hsl, var(--panel) 80%, transparent), color-mix(in hsl, var(--elev) 85%, transparent));
+      border:1px solid var(--border); border-radius:16px; padding:14px 16px; margin:16px 0 22px;
+    }
+    .toolbar input[type="search"], .toolbar select{
+      background:#0b1323; border:1px solid #22324a; color:#fff; border-radius:12px; padding:10px 12px; min-width:220px;
+    }
+    @media (prefers-color-scheme: light){
+      .toolbar input[type="search"], .toolbar select{ background:#fff; border:1px solid var(--border); color:#0b1220; }
+    }
+    .count{ color:var(--muted); font-size:var(--step--1); }
     .card img{width:100%;height:180px;object-fit:cover;border-radius:12px;margin-bottom:10px}
   </style>
 </head>
@@ -36,7 +48,7 @@
 
   <main class="container">
     <h1>Todas as receitas</h1>
-    <p>Aqui você encontra todos os posts já publicados no <strong>Delícias da Casa</strong>, com dicas, técnicas e segredos da brasa.</p>
+    <p>Busque por corte, técnica ou use os filtros de categoria. Clique em uma receita para ver o passo a passo completo.</p>
 
     <!-- Anúncio no topo -->
     <section aria-label="Publicidade" class="ads">
@@ -48,8 +60,23 @@
     </section>
     <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
 
-    <!-- Lista dinâmica de posts (usa window.POSTS do /assets/posts.js) -->
-    <section id="posts" class="grid" aria-label="Lista completa de posts"></section>
+    <!-- Filtros -->
+    <div class="toolbar" role="region" aria-label="Filtros de receitas">
+      <input type="search" id="q" placeholder="Pesquisar por nome do corte, técnica..." aria-label="Pesquisar receitas">
+      <select id="cat" aria-label="Filtrar por categoria">
+        <option value="todas">Todas as categorias</option>
+        <option value="Bovinos">Bovinos</option>
+        <option value="Suínos">Suínos</option>
+        <option value="Aves">Aves</option>
+        <option value="Cordeiro">Cordeiro</option>
+        <option value="Especiais">Especiais</option>
+      </select>
+      <button id="reset" class="btn" type="button">Limpar filtros</button>
+      <span class="count" id="count"></span>
+    </div>
+
+    <!-- Lista dinâmica -->
+    <section id="posts" class="grid" aria-label="Lista de receitas"></section>
 
     <!-- Anúncio no fim -->
     <section aria-label="Publicidade" class="ads">
@@ -73,20 +100,88 @@
     </div>
   </footer>
 
-  <!-- scripts: catálogo + render + utilidades -->
+  <!-- catálogo + utilidades -->
   <script defer src="/assets/posts.js?v=10"></script>
+  <script defer src="/assets/script.js?v=4"></script>
+
+  <!-- filtro/busca (usa window.POSTS + window.renderPostCard) -->
   <script>
-    // renderiza TODAS as receitas (sem rotação) usando o mesmo renderer do index
     document.addEventListener('DOMContentLoaded', () => {
-      const el = document.getElementById('posts');
+      const listEl = document.getElementById('posts');
+      const qEl = document.getElementById('q');
+      const catEl = document.getElementById('cat');
+      const resetEl = document.getElementById('reset');
+      const countEl = document.getElementById('count');
+
       if (!window.POSTS || !window.renderPostCard) {
-        console.error('POSTS/renderer não encontrados. Verifique /assets/posts.js');
+        console.error('POSTS/renderer não encontrados em /assets/posts.js');
         return;
       }
-      el.innerHTML = window.POSTS.map(window.renderPostCard).join('');
+
+      // classifica automaticamente pela URL/título
+      function getCategory(post){
+        const u = (post.url || '').toLowerCase();
+        const t = (post.title || '').toLowerCase();
+
+        // Suínos
+        if (u.includes('costelinha') || u.includes('pernil') || u.includes('lombo') ||
+            u.includes('pancetta') || u.includes('copalombo') || u.includes('linguica') ||
+            u.includes('torresmo')) return 'Suínos';
+
+        // Aves
+        if (u.includes('frango') || u.includes('coxa-sobrecoxa') || u.includes('peito-recheado') ||
+            u.includes('galeto') || u.includes('asinhas') ) return 'Aves';
+
+        // Cordeiro
+        if (u.includes('cordeiro') || t.includes('cordeiro')) return 'Cordeiro';
+
+        // Especiais / exóticos
+        if (u.includes('javali') || u.includes('pato') || u.includes('peixe')) return 'Especiais';
+
+        // Default: Bovinos
+        return 'Bovinos';
+      }
+
+      // cria um array enriquecido com categoria e termos para busca
+      const DATA = window.POSTS.map(p => ({
+        ...p,
+        _cat: getCategory(p),
+        _text: `${p.title || ''} ${p.excerpt || ''}`.toLowerCase()
+      }));
+
+      function render(items){
+        listEl.innerHTML = items.map(window.renderPostCard).join('');
+        countEl.textContent = `${items.length} resultado(s)`;
+      }
+
+      function applyFilters(){
+        const q = (qEl.value || '').toLowerCase().trim();
+        const cat = catEl.value;
+
+        let out = DATA;
+
+        if (cat !== 'todas'){
+          out = out.filter(p => p._cat === cat);
+        }
+        if (q){
+          out = out.filter(p => p._text.includes(q));
+        }
+        render(out);
+      }
+
+      // eventos
+      qEl.addEventListener('input', applyFilters);
+      catEl.addEventListener('change', applyFilters);
+      resetEl.addEventListener('click', () => {
+        qEl.value = '';
+        catEl.value = 'todas';
+        applyFilters();
+      });
+
+      // primeira renderização
+      applyFilters();
     });
   </script>
-  <script defer src="/assets/script.js?v=4"></script>
 </body>
 </html>
 

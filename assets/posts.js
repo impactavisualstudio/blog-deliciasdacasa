@@ -15,6 +15,10 @@ const IMG = {
   tbone:     img('tbone-porterhouse-hero.jpg'),
   maminha:   img('maminha-churrasco-hero.jpg'),
   alcatra:   img('alcatra-grelha-hero.jpg')
+
+  contrafile: img('contrafile-brasa-hero.jpg'),
+  cupim:     img('cupim-brasa-hero.jpg'),
+  chorizo:   img('chorizo-argentino-hero.jpg')
 };
 
 const DEFAULT_IMG = IMG.picanha; // fallback

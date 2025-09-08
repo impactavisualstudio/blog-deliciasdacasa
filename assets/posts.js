@@ -38,7 +38,7 @@ window.POSTS = [
     title: "Ancho: o rei do marmoreio",
     url: "/posts/ancho-marmoreio.html",
     excerpt: "Como escolher, pontos de cocção e técnicas de selagem.",
-    image: "/assets/images/ancho-marmoreio-hero.png"
+    image: "/assets/images/ancho-marmoreio-hero.jpg"
   },
   {
     title: "T-bone e Porterhouse: diferença e preparo",

@@ -7,8 +7,9 @@
   <meta name="description" content="Guia definitivo da picanha: como escolher a peça, salgar, assar na churrasqueira ou frigideira, controlar o ponto, descansar e fatiar contra a fibra. Inclui erros comuns, acompanhamentos e FAQ." />
   <meta name="robots" content="index,follow" />
 
-  <!-- Canonical -->
-  <link rel="canonical" href="https://blog-carnes.vercel.app/posts/churrasco-picanha-perfeito.html" />
+  <!-- Canonical (sem .html para padronizar com seus outros posts) -->
+  <!-- Se quiser voltar para .html, troque a linha abaixo para .../churrasco-picanha-perfeito.html -->
+  <link rel="canonical" href="https://blog-carnes.vercel.app/posts/churrasco-picanha-perfeito" />
 
   <!-- Open Graph -->
   <meta property="og:locale" content="pt_BR" />
@@ -16,7 +17,7 @@
   <meta property="og:site_name" content="Delícias da Casa" />
   <meta property="og:title" content="Picanha perfeita: do sal grosso ao corte final" />
   <meta property="og:description" content="Como escolher a peça, salgar, assar e fatiar para máxima suculência. Técnicas de brasa, temperaturas internas e erros comuns." />
-  <meta property="og:url" content="https://blog-carnes.vercel.app/posts/churrasco-picanha-perfeito.html" />
+  <meta property="og:url" content="https://blog-carnes.vercel.app/posts/churrasco-picanha-perfeito" />
   <meta property="og:image" content="https://blog-carnes.vercel.app/assets/images/picanha-1600.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
@@ -30,7 +31,7 @@
   <link rel="stylesheet" href="/assets/styles.css?v=2" />
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-SEU-ID-ADSENSE" crossorigin="anonymous"></script>
 
-  <!-- JSON-LD -->
+  <!-- JSON-LD: Article -->
   <script type="application/ld+json">
   {
     "@context":"https://schema.org",
@@ -40,7 +41,7 @@
     "image":["https://blog-carnes.vercel.app/assets/images/picanha-1600.png"],
     "author":{"@type":"Organization","name":"Delícias da Casa"},
     "publisher":{"@type":"Organization","name":"Delícias da Casa","logo":{"@type":"ImageObject","url":"https://blog-carnes.vercel.app/assets/icon-192.png"}},
-    "mainEntityOfPage":{"@type":"WebPage","@id":"https://blog-carnes.vercel.app/posts/churrasco-picanha-perfeito.html"},
+    "mainEntityOfPage":{"@type":"WebPage","@id":"https://blog-carnes.vercel.app/posts/churrasco-picanha-perfeito"},
     "datePublished":"2025-09-08T08:00:00-03:00",
     "dateModified":"2025-09-08T08:00:00-03:00"
   }
@@ -64,7 +65,7 @@
     <h1>Picanha perfeita: do sal grosso ao corte final</h1>
 
     <figure>
-      <img src="/assets/images/picanha-1600.png" alt="Picanha fatiada suculenta com capa de gordura dourada" loading="lazy" width="900" height="500">
+      <img src="/assets/images/picanha-1600.png" alt="Picanha fatiada suculenta com capa de gordura dourada" loading="eager" width="900" height="500">
       <figcaption>Picanha bem feita: crosta dourada, centro rosado e fatias contra a fibra.</figcaption>
     </figure>
 
@@ -183,22 +184,33 @@
     </section>
 
     <p>Com prática e atenção a detalhes simples — calor, sal, tempo e corte — a picanha deixa de ser sorte e vira método. A cada churrasco, você ajusta um pequeno parâmetro e colhe resultados cada vez mais consistentes. Bom fogo!</p>
-  <script src="https://giscus.app/client.js"
-        data-repo="impactavisualstudio/blog-carnes"
-        data-repo-id="R_kgDOPqrmWQ"
-        data-category="Comentários"
-        data-category-id="DIC_kwDOPqrmWc4CvKJK"
-        data-mapping="pathname"
-        data-strict="0"
-        data-reactions-enabled="1"
-        data-emit-metadata="0"
-        data-input-position="bottom"
-        data-theme="preferred_color_scheme"
-        data-lang="pt"
-        crossorigin="anonymous"
-        async>
-</script>
-</main>
+
+    <!-- 🔥 SUGESTÕES RANDOMIZADAS -->
+    <section id="related-rotator" class="related">
+      <h2>Talvez você também curta</h2>
+      <div class="related-grid" aria-live="polite" aria-busy="false"></div>
+    </section>
+
+    <!-- 🔥 GISCUS (Comentários) -->
+    <section id="comments" class="comments">
+      <h2>Comentários</h2>
+      <script src="https://giscus.app/client.js"
+              data-repo="impactavisualstudio/blog-carnes"
+              data-repo-id="R_kgDOPqrmWQ"
+              data-category="Comentários"
+              data-category-id="DIC_kwDOPqrmWc4CvKJK"
+              data-mapping="pathname"
+              data-strict="0"
+              data-reactions-enabled="1"
+              data-emit-metadata="0"
+              data-input-position="bottom"
+              data-theme="transparent_dark"
+              data-lang="pt"
+              crossorigin="anonymous"
+              async>
+      </script>
+    </section>
+  </main>
 
   <footer class="site-footer">
     <div class="container">
@@ -211,6 +223,7 @@
     </div>
   </footer>
 
-  <script defer src="/assets/script.js?v=4"></script>
+  <!-- Script principal com rotator (v7) -->
+  <script defer src="/assets/script.js?v=7"></script>
 </body>
 </html>

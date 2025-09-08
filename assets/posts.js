@@ -95,7 +95,6 @@ const IMAGE_MAP = {
   "Chorizo argentino: simplicidade e sabor": "/assets/images/chorizo-argentino-hero.jpg"
 };
 
-  const DEFAULT_IMG = "/assets/images/hero-picanha-800.png";
 
 window.renderPostCard = function (post) {
   const imgSrc = post.image || DEFAULT_IMG;

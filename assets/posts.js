@@ -1,6 +1,7 @@
 // /assets/posts.js
 // Catálogo central de posts do "Delícias da Casa"
-// --- helpers de imagem ---
+
+// helpers
 const img = (file) => `/assets/images/${file}`;
 const IMG = {
   picanha:   img('hero-picanha-1600.png'),
@@ -9,7 +10,7 @@ const IMG = {
   fraldinha: img('fraldinha-1600.png'),
   dryaged:   img('dryaged-1600.png'),
 
-  // Novas (Sora) — exatamente como você subiu
+  // Sora
   ancho:     img('ancho-marmoreio-hero.jpg'),
   tbone:     img('tbone-porterhouse-hero.jpg'),
   maminha:   img('maminha-churrasco-hero.jpg'),
@@ -73,31 +74,12 @@ window.POSTS = [
     url: "/posts/alcatra-grelha.html",
     image: IMG.alcatra
   }
-  // …continue mapeando os próximos aqui, cada um com sua image
 ];
 
-// --- MAPA DE IMAGENS ---
-// cada título bate com o "title" lá do window.POSTS
-const IMAGE_MAP = {
-  "Picanha perfeita: do sal grosso ao corte final": "/assets/images/picanha-1600.png",
-  "Brisket texano: baixa temperatura, alto sabor": "/assets/images/brisket-1600.png",
-  "Costela na brasa suculenta": "/assets/images/costela-1600.png",
-  "Fraldinha marinada em 30 minutos": "/assets/images/fraldinha-1600.png",
-  "Dry-aged: o que é e quando vale a pena": "/assets/images/dryaged-1600.png",
-
-  // Novos .jpg (Sora)
-  "Ancho: o rei do marmoreio": "/assets/images/ancho-marmoreio-hero.jpg",
-  "T-bone e Porterhouse: diferença e preparo": "/assets/images/tbone-porterhouse-hero.jpg",
-  "Maminha: maciez acessível": "/assets/images/maminha-churrasco-hero.jpg",
-  "Alcatra completa: versatilidade na grelha": "/assets/images/alcatra-grelha-hero.jpg",
-  "Contrafilé: clássico imbatível": "/assets/images/contrafile-brasa-hero.jpg",
-  "Cupim: o segredo do fogo lento": "/assets/images/cupim-brasa-hero.jpg",
-  "Chorizo argentino: simplicidade e sabor": "/assets/images/chorizo-argentino-hero.jpg"
-};
-
-
+// render
 window.renderPostCard = function (post) {
   const imgSrc = post.image || DEFAULT_IMG;
+  console.log('[CARD]', post.title, '→', imgSrc);
   return `
     <article class="card">
       <a href="${post.url}">

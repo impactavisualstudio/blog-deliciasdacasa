@@ -14,7 +14,7 @@ const IMG = {
   ancho:     img('ancho-marmoreio-hero.jpg'),
   tbone:     img('tbone-porterhouse-hero.jpg'),
   maminha:   img('maminha-churrasco-hero.jpg'),
-  alcatra:   img('alcatra-grelha-hero.jpg')
+  alcatra:   img('alcatra-grelha-hero.jpg'),
 
   contrafile: img('contrafile-brasa-hero.jpg'),
   cupim:     img('cupim-brasa-hero.jpg'),

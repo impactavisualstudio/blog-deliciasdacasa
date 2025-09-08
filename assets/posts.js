@@ -79,9 +79,11 @@ const IMAGE_MAP = {
 
   const DEFAULT_IMG = "/assets/images/hero-picanha-800.png";
 
-// --- FUNÇÃO DE RENDERIZAÇÃO ---
 window.renderPostCard = function (post) {
-  const imgSrc = IMAGE_MAP[post.title] || post.image || DEFAULT_IMG;
+  const imgSrc = post.image || DEFAULT_IMG;
+  if (!post.image) {
+    console.warn("Sem image em POSTS para:", post.title, "→ usando fallback");
+  }
   return `
     <article class="card">
       <a href="${post.url}">

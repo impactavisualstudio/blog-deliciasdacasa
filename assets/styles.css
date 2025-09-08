@@ -217,5 +217,24 @@ body::before{
 /* Se tiver algum link quase invisível sobre o fundo */
 .nav a { color: var(--muted); }
 .nav a:hover { color: #fff; }
+.related { margin-block: 2.5rem 3rem; }
+.related h2 { font-size: 1.25rem; margin-bottom: .75rem; }
+.related-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: .75rem;
+}
+.related-card {
+  display: block; text-decoration: none; color: inherit;
+  border-radius: 12px; overflow: hidden; background: #fff;
+  box-shadow: 0 4px 16px rgba(0,0,0,.06); transition: transform .18s ease, box-shadow .18s ease;
+}
+.related-card:hover { transform: translateY(-2px); box-shadow: 0 6px 22px rgba(0,0,0,.10); }
+.related-card figure { margin: 0; }
+.related-card img { width: 100%; height: auto; display: block; aspect-ratio: 16/9; object-fit: cover; }
+.related-card figcaption { padding: .75rem .9rem; font-weight: 600; line-height: 1.3; }
+
+.comments { margin-block: 2.5rem 3.5rem; }
+.comments h2 { font-size: 1.25rem; margin-bottom: .75rem; }
 
 

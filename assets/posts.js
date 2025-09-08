@@ -68,12 +68,38 @@ window.POSTS = [
   // TODO: adicione aqui os demais até completar seus 40 posts
 ];
 
-// Função utilitária para montar um card de post
+// --- MAPA DE IMAGENS ---
+// cada título bate com o "title" lá do window.POSTS
+const IMAGE_MAP = {
+  "Picanha perfeita: do sal grosso ao corte final": "/assets/images/picanha-1600.png",
+  "Brisket texano: baixa temperatura, alto sabor": "/assets/images/brisket-1600.png",
+  "Costela na brasa suculenta": "/assets/images/costela-1600.png",
+  "Fraldinha marinada em 30 minutos": "/assets/images/fraldinha-1600.png",
+  "Dry-aged: o que é e quando vale a pena": "/assets/images/dryaged-1600.png",
+
+  // Novos .jpg (Sora)
+  "Ancho: o rei do marmoreio": "/assets/images/ancho-marmoreio-hero.jpg",
+  "T-bone e Porterhouse: diferença e preparo": "/assets/images/tbone-porterhouse-hero.jpg",
+  "Maminha: maciez acessível": "/assets/images/maminha-churrasco-hero.jpg",
+  "Alcatra completa: versatilidade na grelha": "/assets/images/alcatra-grelha-hero.jpg",
+  "Contrafilé: clássico imbatível": "/assets/images/contrafile-brasa-hero.jpg",
+  "Cupim: o segredo do fogo lento": "/assets/images/cupim-brasa-hero.jpg",
+  "Chorizo argentino: simplicidade e sabor": "/assets/images/chorizo-argentino-hero.jpg"
+};
+
+const DEFAULT_IMG = "/assets/images/hero-picanha-1600.png";
+
+// --- FUNÇÃO DE RENDERIZAÇÃO ---
 window.renderPostCard = function (post) {
+  const imgSrc = IMAGE_MAP[post.title] || post.image || DEFAULT_IMG;
   return `
     <article class="card">
       <a href="${post.url}">
-        ${post.image ? `<img src="${post.image}" alt="${post.title}" loading="lazy">` : ""}
+        <img src="${imgSrc}"
+             alt="${post.title}"
+             loading="lazy"
+             onerror="this.onerror=null; this.src='${DEFAULT_IMG}'"
+             style="width:100%;height:180px;object-fit:cover;border-radius:12px;margin-bottom:10px">
         <h2>${post.title}</h2>
         <p>${post.excerpt || ""}</p>
       </a>

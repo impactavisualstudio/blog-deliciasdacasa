@@ -23,6 +23,7 @@
         <a href="/contato.html">Contato</a>
         <a href="/politica-privacidade.html">Privacidade</a>
       </nav>
+    </div>
   </header>
 
   <main class="container">
@@ -43,7 +44,7 @@
         data-full-width-responsive="true"></ins>
     </section>
 
-    <!-- Aqui só fica o contêiner do rotativo -->
+    <!-- Contêiner para os posts rotativos -->
     <section id="posts" class="grid" aria-label="Lista de posts"></section>
   </main>
 
@@ -64,7 +65,7 @@
   </div>
 
   <!-- Scripts -->
-  <script defer src="/assets/posts.js?v=9"></script>
+  <script defer src="/assets/posts.js?v=10"></script>
   <script>
   document.addEventListener('DOMContentLoaded', () => {
     const el = document.getElementById('posts');
@@ -73,7 +74,7 @@
 
     const posts = [...window.POSTS];
 
-    function renderPage(i){
+    function renderPage(i) {
       const start = (i * PAGE_SIZE) % posts.length;
       let slice = posts.slice(start, start + PAGE_SIZE);
       if (slice.length < PAGE_SIZE) {
@@ -91,7 +92,8 @@
     }, 7000);
   });
   </script>
-  <script defer src="/assets/script.js?v=3"></script>
+  <script defer src="/assets/script.js?v=4"></script>
 </body>
 </html>
+
 

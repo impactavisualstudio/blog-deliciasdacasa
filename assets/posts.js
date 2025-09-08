@@ -73,7 +73,26 @@ window.POSTS = [
     excerpt: "Cortes, preparo direto/indireto e acompanhamentos.",
     url: "/posts/alcatra-grelha.html",
     image: IMG.alcatra
+  },
+  {
+    title: "Contrafilé: clássico imbatível",
+    excerpt: "Gordura na medida, selagem e descanso para suculência.",
+    url: "/posts/contrafile-brasa.html",
+    image: IMG.contrafile
+  },
+  {
+    title: "Cupim: o segredo do fogo lento",
+    excerpt: "Corte típico do boi zebuíno, preparo lento e sabor inconfundível.",
+    url: "/posts/cupim-brasa.html",
+    image: IMG.cupim
+  },
+  {
+    title: "Chorizo argentino: simplicidade e sabor",
+    excerpt: "O clássico das parrillas argentinas com chimichurri.",
+    url: "/posts/chorizo-argentino.html",
+    image: IMG.chorizo
   }
+
 ];
 
 // render

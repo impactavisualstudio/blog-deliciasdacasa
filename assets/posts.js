@@ -54,6 +54,9 @@ window.POSTS = [
     excerpt: "Cortes, preparo direto/indireto e acompanhamentos.",
     url: "/posts/alcatra-grelha.html",
     image: "/assets/images/alcatra-grelha-hero.jpg"
+  }
+  // …continue nos demais
+];
 
 // --- MAPA DE IMAGENS ---
 // cada título bate com o "title" lá do window.POSTS

@@ -61,3 +61,56 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 </script>
+// === Sugestões de leitura rotativas (3 a cada 7s) ===
+(function () {
+  const CDN = "https://blog-carnes.vercel.app";
+  // Lista dos 12 posts (ajuste títulos/paths se quiser)
+  const POSTS = [
+    { title: "Picanha perfeita: do sal grosso ao corte final", url: "/posts/churrasco-picanha-perfeito.html", img: "/assets/images/picanha-1600.png" },
+    { title: "Brisket texano: baixa temperatura, alto sabor", url: "/posts/brisket-texano.html", img: "/assets/images/brisket-texano-hero.jpg" },
+    { title: "Costela na brasa suculenta", url: "/posts/costela-na-brasa-suculenta.html", img: "/assets/images/costela-fogo-chao-hero.jpg" },
+    { title: "Fraldinha marinada em 30 minutos", url: "/posts/fraldinha-marinada-rapida.html", img: "/assets/images/fraldinha-marinada-hero.jpg" },
+    { title: "Dry-aged: o que é e quando vale a pena", url: "/posts/dry-aged-o-que-e.html", img: "/assets/images/dryaged-carne-hero.jpg" },
+    { title: "Ancho: o rei do marmoreio", url: "/posts/ancho-marmoreio.html", img: "/assets/images/ancho-marmoreio-hero.jpg" },
+    { title: "T-bone e Porterhouse: diferença e preparo", url: "/posts/tbone-porterhouse.html", img: "/assets/images/tbone-porterhouse-hero.jpg" },
+    { title: "Maminha: maciez acessível e cheia de sabor", url: "/posts/maminha-churrasco.html", img: "/assets/images/maminha-churrasco-hero.jpg" },
+    { title: "Alcatra completa: versatilidade na grelha", url: "/posts/alcatra-grelha.html", img: "/assets/images/alcatra-grelha-hero.jpg" },
+    // Ajuste estes três para os posts 10–12 que você já tem publicados:
+    { title: "Contrafilé clássico", url: "/posts/contrafile-classico.html", img: "/assets/images/contrafile-classico-hero.jpg" },
+    { title: "Cupim no fogo lento", url: "/posts/cupim-fogo-lento.html", img: "/assets/images/cupim-fogo-lento-hero.jpg" },
+    { title: "Alcatra completa na grelha (guia)", url: "/posts/alcatra-completa.html", img: "/assets/images/alcatra-completa-hero.jpg" }
+  ];
+
+  function pickRandom(arr, n, excludeUrl) {
+    const pool = arr.filter(p => p.url !== excludeUrl);
+    const res = [];
+    while (res.length < n && pool.length) {
+      const i = Math.floor(Math.random() * pool.length);
+      res.push(pool.splice(i, 1)[0]);
+    }
+    return res;
+  }
+
+  function renderRelated() {
+    const container = document.querySelector(".related-grid");
+    if (!container) return;
+    container.setAttribute("aria-busy", "true");
+    const current = location.pathname.replace(/\/+$/, "");
+    const items = pickRandom(POSTS, 3, current);
+    container.innerHTML = items.map(p => `
+      <a class="related-card" href="${p.url}" aria-label="${p.title}">
+        <figure>
+          <img src="${p.img.startsWith('http') ? p.img : (CDN + p.img)}" alt="${p.title}" loading="lazy" width="360" height="202">
+          <figcaption>${p.title}</figcaption>
+        </figure>
+      </a>
+    `).join("");
+    container.setAttribute("aria-busy", "false");
+  }
+
+  // Inicializa e rotaciona a cada 7s
+  if (document.getElementById("related-rotator")) {
+    renderRelated();
+    setInterval(renderRelated, 7000);
+  }
+})();

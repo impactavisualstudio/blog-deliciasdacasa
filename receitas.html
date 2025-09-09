@@ -8,7 +8,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="public/assets/styles.css?v=2">
+
+  <!-- ✅ use a pasta correta -->
+  <link rel="stylesheet" href="/assets/styles.css?v=2" />
 
   <meta name="description" content="Todas as receitas do Delícias da Casa reunidas em um só lugar: procure por corte, técnica, categoria e descubra seu próximo churrasco." />
 
@@ -16,7 +18,6 @@
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-SEU-ID-ADSENSE" crossorigin="anonymous"></script>
 
   <style>
-    /* toolbar de filtros */
     .toolbar{
       display:flex; gap:12px; flex-wrap:wrap; align-items:center;
       background:linear-gradient(180deg, color-mix(in hsl, var(--panel) 80%, transparent), color-mix(in hsl, var(--elev) 85%, transparent));
@@ -50,7 +51,6 @@
     <h1>Todas as receitas</h1>
     <p>Busque por corte, técnica ou use os filtros de categoria. Clique em uma receita para ver o passo a passo completo.</p>
 
-    <!-- Anúncio no topo -->
     <section aria-label="Publicidade" class="ads">
       <ins class="adsbygoogle" style="display:block"
         data-ad-client="ca-pub-SEU-ID-ADSENSE"
@@ -60,7 +60,6 @@
     </section>
     <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
 
-    <!-- Filtros -->
     <div class="toolbar" role="region" aria-label="Filtros de receitas">
       <input type="search" id="q" placeholder="Pesquisar por nome do corte, técnica..." aria-label="Pesquisar receitas">
       <select id="cat" aria-label="Filtrar por categoria">
@@ -75,10 +74,8 @@
       <span class="count" id="count"></span>
     </div>
 
-    <!-- Lista dinâmica -->
     <section id="posts" class="grid" aria-label="Lista de receitas"></section>
 
-    <!-- Anúncio no fim -->
     <section aria-label="Publicidade" class="ads">
       <ins class="adsbygoogle" style="display:block"
         data-ad-client="ca-pub-SEU-ID-ADSENSE"
@@ -100,11 +97,10 @@
     </div>
   </footer>
 
-  <!-- catálogo + utilidades -->
-  <script defer src="public/assets/posts.js?v=10"></script>
-  <script defer src="public/assets/script.js?v=4"></script>
+  <!-- ✅ caminhos corretos -->
+  <script defer src="/assets/posts.js?v=10"></script>
+  <script defer src="/assets/script.js?v=4"></script>
 
-  <!-- filtro/busca (usa window.POSTS + window.renderPostCard) -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const listEl = document.getElementById('posts');
@@ -114,35 +110,24 @@
       const countEl = document.getElementById('count');
 
       if (!window.POSTS || !window.renderPostCard) {
-        console.error('POSTS/renderer não encontrados em public/assets/posts.js');
+        console.error('POSTS/renderer não encontrados em /assets/posts.js');
+        countEl.textContent = '0 resultado(s)';
         return;
       }
 
-      // classifica automaticamente pela URL/título
       function getCategory(post){
         const u = (post.url || '').toLowerCase();
         const t = (post.title || '').toLowerCase();
-
-        // Suínos
         if (u.includes('costelinha') || u.includes('pernil') || u.includes('lombo') ||
             u.includes('pancetta') || u.includes('copalombo') || u.includes('linguica') ||
             u.includes('torresmo')) return 'Suínos';
-
-        // Aves
         if (u.includes('frango') || u.includes('coxa-sobrecoxa') || u.includes('peito-recheado') ||
-            u.includes('galeto') || u.includes('asinhas') ) return 'Aves';
-
-        // Cordeiro
+            u.includes('galeto') || u.includes('asinhas')) return 'Aves';
         if (u.includes('cordeiro') || t.includes('cordeiro')) return 'Cordeiro';
-
-        // Especiais / exóticos
         if (u.includes('javali') || u.includes('pato') || u.includes('peixe')) return 'Especiais';
-
-        // Default: Bovinos
         return 'Bovinos';
       }
 
-      // cria um array enriquecido com categoria e termos para busca
       const DATA = window.POSTS.map(p => ({
         ...p,
         _cat: getCategory(p),
@@ -157,35 +142,17 @@
       function applyFilters(){
         const q = (qEl.value || '').toLowerCase().trim();
         const cat = catEl.value;
-
         let out = DATA;
-
-        if (cat !== 'todas'){
-          out = out.filter(p => p._cat === cat);
-        }
-        if (q){
-          out = out.filter(p => p._text.includes(q));
-        }
+        if (cat !== 'todas') out = out.filter(p => p._cat === cat);
+        if (q) out = out.filter(p => p._text.includes(q));
         render(out);
       }
 
-      // eventos
       qEl.addEventListener('input', applyFilters);
       catEl.addEventListener('change', applyFilters);
-      resetEl.addEventListener('click', () => {
-        qEl.value = '';
-        catEl.value = 'todas';
-        applyFilters();
-      });
-
-      // primeira renderização
+      resetEl.addEventListener('click', () => { qEl.value=''; catEl.value='todas'; applyFilters(); });
       applyFilters();
     });
   </script>
-</body>
-</html>
-
-  <script defer src="publi/assets/posts.js?v=9"></script>
-  <script src="public/assets/script.js?v=2" defer></script>
 </body>
 </html>

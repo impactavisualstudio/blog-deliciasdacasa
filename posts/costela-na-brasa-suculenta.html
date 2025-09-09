@@ -17,6 +17,7 @@
   <meta property="og:title" content="Costela na brasa suculenta" />
   <meta property="og:description" content="Costela preparada lentamente: maciez, sabor profundo e crosta marcante. Passo a passo com técnica 3-2-1 e dicas de fogo de chão." />
   <meta property="og:url" content="https://blog-carnes.vercel.app/posts/costela-na-brasa-suculenta.html" />
+  <!-- Mantém a principal como PNG; redes sociais usam esta -->
   <meta property="og:image" content="https://blog-carnes.vercel.app/assets/images/costela-1600.png?v=1" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
@@ -27,7 +28,7 @@
   <meta name="twitter:description" content="Guia prático: tipos de costela, calor baixo e constante, técnica 3-2-1, suculência e erros comuns. Inclui FAQ." />
   <meta name="twitter:image" content="https://blog-carnes.vercel.app/assets/images/costela-1600.png?v=1" />
 
-  <!-- Preload da hero -->
+  <!-- Preload da hero principal -->
   <link rel="preload" as="image" href="/assets/images/costela-1600.png?v=1" />
 
   <link rel="stylesheet" href="/assets/styles.css?v=2" />
@@ -82,7 +83,9 @@
     <h1>Costela na brasa suculenta</h1>
 
     <figure>
-      <img src="/assets/images/costela-1600.png?v=1"
+      <!-- Tenta PNG; se falhar, JS troca para alternativas -->
+      <img id="hero-costela"
+           src="/assets/images/costela-1600.png?v=1"
            alt="Costela assando lentamente na churrasqueira, com crosta dourada"
            loading="eager" width="900" height="500">
       <figcaption>Costela preparada lentamente: maciez, sabor profundo e crosta marcante.</figcaption>
@@ -228,7 +231,42 @@
     </div>
   </footer>
 
-  <!-- script com o rotator -->
+  <!-- Script do site (inclui o rotator dos 3 artigos) -->
   <script defer src="/assets/script.js?v=7"></script>
+
+  <!-- 🔁 Fallback automático da hero: tenta nomes alternativos se houver 404 -->
+  <script>
+  (function () {
+    const img = document.getElementById('hero-costela');
+    if (!img) return;
+
+    // Lista de alternativas caso o PNG não exista no deploy
+    const candidates = [
+      '/assets/images/costela-1600.png',
+      '/assets/images/costela-fogo-chao-hero.jpg',
+      '/assets/images/costela-fogo-chao-hero.png'
+    ];
+
+    function exists(url, cbOk, cbFail) {
+      const probe = new Image();
+      // cache-buster evita 404 "guardado"
+      probe.onload = () => cbOk(url);
+      probe.onerror = cbFail;
+      probe.src = url + '?t=' + Date.now();
+    }
+
+    // Se a atual falhar, testa as alternativas em ordem
+    img.addEventListener('error', function onError() {
+      img.removeEventListener('error', onError);
+      (function tryNext(i){
+        if (i >= candidates.length) return; // desistiu
+        exists(candidates[i],
+          (okUrl) => { img.src = okUrl + '?v=1'; },
+          () => tryNext(i+1)
+        );
+      })(0);
+    }, { once: true });
+  })();
+  </script>
 </body>
 </html>

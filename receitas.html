@@ -101,8 +101,8 @@
   </footer>
 
   <!-- catálogo + utilidades -->
-  <script defer src="/assets/posts.js?v=10"></script>
-  <script defer src="/assets/script.js?v=4"></script>
+  <script defer src="public/assets/posts.js?v=10"></script>
+  <script defer src="public/assets/script.js?v=4"></script>
 
   <!-- filtro/busca (usa window.POSTS + window.renderPostCard) -->
   <script>
@@ -114,7 +114,7 @@
       const countEl = document.getElementById('count');
 
       if (!window.POSTS || !window.renderPostCard) {
-        console.error('POSTS/renderer não encontrados em /assets/posts.js');
+        console.error('POSTS/renderer não encontrados em public/assets/posts.js');
         return;
       }
 
@@ -185,7 +185,7 @@
 </body>
 </html>
 
-  <script defer src="/assets/posts.js?v=9"></script>
-  <script src="/assets/script.js?v=2" defer></script>
+  <script defer src="publi/assets/posts.js?v=9"></script>
+  <script src="public/assets/script.js?v=2" defer></script>
 </body>
 </html>

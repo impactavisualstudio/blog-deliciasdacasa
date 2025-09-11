@@ -1,7 +1,32 @@
-// Não cacheia HTML; cacheia só imagens. Versão v3
-const CACHE = 'blog-carnes-v3';
+const CACHE = 'dc-v4';
+
+// Shell básico do app
+const CORE = [
+  '/', '/index.html',
+  '/assets/styles.css?v=2',
+  '/assets/script.js?v=4',
+  '/assets/posts.js?v=10',
+];
+
+// Imagens que você quer que funcionem OFFLINE já no 1º load
+const PRECACHE_IMAGES = [
+  '/assets/images/bg-embers.png',
+  '/assets/images/hero-picanha-1600.png',
+  '/assets/images/brisket-1600.png',
+  '/assets/images/costela-1600.png',
+  '/assets/images/fraldinha-1600.png',
+  '/assets/images/chorizo-argentino-hero.jpg',
+  '/assets/images/alcatra-grelha-hero.jpg',
+  '/assets/images/contrafile-brasa-hero.jpg',
+  '/assets/images/cupim-brasa-hero.jpg',
+  '/assets/images/tbone-porterhouse-hero.jpg',
+  '/assets/images/ancho-marmoreio-hero.jpg',
+];
 
 self.addEventListener('install', (e) => {
+  e.waitUntil(
+    caches.open(CACHE).then(c => c.addAll([...CORE, ...PRECACHE_IMAGES]))
+  );
   self.skipWaiting();
 });
 
@@ -14,30 +39,44 @@ self.addEventListener('activate', (e) => {
   self.clients.claim();
 });
 
+// domínios de anúncios: não intercepta (evita erro em dev)
+const ADS_HOSTS = new Set([
+  'pagead2.googlesyndication.com',
+  'googleads.g.doubleclick.net',
+  'tpc.googlesyndication.com',
+  'adservice.google.com',
+  'adservice.google.com.br',
+  'g.doubleclick.net',
+]);
+
 self.addEventListener('fetch', (e) => {
   const req = e.request;
   const url = new URL(req.url);
 
-  // 1) HTML: rede primeiro (não cacheia)
-  if (req.mode === 'navigate' || req.headers.get('accept')?.includes('text/html')) {
-    e.respondWith(
-      fetch(req).catch(() => caches.match('/index.html'))
-    );
+  // deixa anúncios irem direto pra rede
+  if (ADS_HOSTS.has(url.hostname)) {
+    e.respondWith(fetch(req));
     return;
   }
 
-  // 2) Imagens: cache-first
-  if (/\.(png|jpg|jpeg|webp|svg)$/i.test(url.pathname)) {
+  // navegação: network-first com fallback pro index
+  if (req.mode === 'navigate') {
+    e.respondWith(fetch(req).catch(() => caches.match('/index.html')));
+    return;
+  }
+
+  // imagens: cache-first; se não tiver no cache e estiver offline, usa fallback opcional
+  if (url.pathname.startsWith('/assets/images/')) {
     e.respondWith(
       caches.match(req).then(r => r || fetch(req).then(res => {
-        const clone = res.clone();
-        caches.open(CACHE).then(c => c.put(req, clone));
+        const copy = res.clone();
+        caches.open(CACHE).then(c => c.put(req, copy));
         return res;
-      }))
+      }).catch(() => caches.match('/assets/images/hero-picanha-1600.png')))
     );
     return;
   }
 
-  // 3) CSS/JS: rede primeiro (respeita ?v=2, ?v=3…)
+  // demais: network, e se falhar usa cache
   e.respondWith(fetch(req).catch(() => caches.match(req)));
 });

@@ -718,3 +718,61 @@ img, video { max-width: 100%; height: auto; }
 
   /* fundo “fixed” dá bug em mobile; deixa rolar */
   body { background-attachment: scroll; }
+/* Header base */
+.site-header{
+  position: sticky; top: 0; z-index: 40;
+  background: rgba(15,10,8,.9); border-bottom: 1px solid #2a1a14;
+  padding-top: env(safe-area-inset-top); /* evita notch cobrir no iOS */
+}
+.headerbar{ position: relative; }
+.site-header .container{
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+}
+
+/* Marca */
+.brand{ display:flex; align-items:center; gap:.6rem; min-width:0; }
+.brand img{ height:44px; width:auto; border-radius:50%; display:block; }
+.brand-text{ white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-weight:800; }
+
+/* Navegação (desktop) */
+.nav{ display:flex; gap:12px; }
+.nav a{ color:var(--muted); padding:10px 12px; border-radius:10px; }
+.nav a:hover{ color:#fff; background:rgba(255,255,255,.06); }
+
+/* Botão hambúrguer (esconde no desktop) */
+.nav-toggle{
+  display:none; border:0; background:transparent; width:40px; height:40px; border-radius:10px;
+  position:relative; cursor:pointer;
+}
+.nav-toggle .bar{
+  position:absolute; left:9px; right:9px; height:2px; background:#fff; border-radius:1px;
+  transition:transform .2s, opacity .2s, top .2s;
+}
+.nav-toggle .bar:nth-child(1){ top:12px; }
+.nav-toggle .bar:nth-child(2){ top:19px; }
+.nav-toggle .bar:nth-child(3){ top:26px; }
+.nav-toggle[aria-expanded="true"] .bar:nth-child(1){ top:19px; transform:rotate(45deg); }
+.nav-toggle[aria-expanded="true"] .bar:nth-child(2){ opacity:0; }
+.nav-toggle[aria-expanded="true"] .bar:nth-child(3){ top:19px; transform:rotate(-45deg); }
+
+/* Mobile: menu drop-down */
+@media (max-width: 900px){
+  .nav-toggle{ display:block; }
+  .nav{
+    position:absolute; left:16px; right:16px; top:calc(100% + 6px);
+    display:none; flex-direction:column; gap:6px;
+    background:rgba(15,10,8,.95); border:1px solid #2a1a14; border-radius:12px;
+    padding:8px; box-shadow:0 10px 30px rgba(0,0,0,.45);
+  }
+  .nav.is-open{ display:flex; }
+  .nav a{ padding:12px; background:transparent; }
+  .brand img{ height:36px; } /* logo um pouco menor no mobile */
+}
+
+/* Footer: ícones menores no mobile */
+.site-footer .social a{ padding:6px; }
+.site-footer .social svg{ width:18px; height:18px; }
+@media (max-width:520px){
+  .footerbar{ gap:12px; }
+  .footer-nav a{ padding:6px 8px; }
+}

@@ -776,3 +776,44 @@ img, video { max-width: 100%; height: auto; }
   .footerbar{ gap:12px; }
   .footer-nav a{ padding:6px 8px; }
 }
+/* ===== Header responsivo (mobile fix) ===== */
+.site-header{ position:sticky; top:0; z-index:100; }
+.headerbar{
+  display:flex; align-items:center; justify-content:space-between;
+  gap:12px; padding-block:10px; min-height:64px;
+}
+.brand{ display:inline-flex; align-items:center; gap:.6rem; min-width:0; }
+.brand img{ height:40px; width:40px; border-radius:50%; flex:0 0 auto; }
+.brand-text{ white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:60vw; }
+
+/* botão hambúrguer */
+.nav-toggle{
+  display:none; width:40px; height:40px; border:0;
+  background:rgba(255,255,255,.06); border-radius:12px;
+  align-items:center; justify-content:center;
+}
+.nav-toggle .bar{ display:block; width:18px; height:2px; margin:2px 0; border-radius:2px; background:#fff; }
+
+/* menu drop-down */
+@media (max-width:900px){
+  .nav-toggle{ display:inline-flex; order:2; }
+  #primary-nav{
+    position:absolute; top:100%; left:0; right:0; display:none;
+    background:rgba(15,10,8,.98); border-top:1px solid #2a1a14;
+    padding:10px 16px;
+  }
+  #primary-nav.is-open{ display:block; }
+  #primary-nav a{ display:block; padding:12px 2px; }
+
+  /* evita o texto da marca colidir com o botão */
+  .brand-text{ max-width:48vw; }
+}
+
+/* telas bem pequenas: mostra só o ícone para não quebrar o layout */
+@media (max-width:420px){
+  .brand-text{ display:none; }
+}
+
+/* ===== Cookie banner acima do rodapé ===== */
+.cookie-banner{ z-index:9999; }               /* garante ficar por cima do footer */
+body.has-cookie-banner{ padding-bottom:96px; } /

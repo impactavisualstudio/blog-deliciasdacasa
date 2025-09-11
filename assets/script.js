@@ -208,3 +208,40 @@ window.addEventListener('load', () => {
     initRelated();
   }
 })();
+/* === Menu mobile === */
+(function(){
+  const btn = document.querySelector('.nav-toggle');
+  const nav = document.getElementById('primary-nav');
+  if (!btn || !nav) return;
+
+  btn.addEventListener('click', () => {
+    const open = btn.getAttribute('aria-expanded') === 'true';
+    btn.setAttribute('aria-expanded', String(!open));
+    nav.classList.toggle('is-open', !open);
+  });
+
+  // Fecha ao tocar num link
+  nav.addEventListener('click', (e) => {
+    if (e.target.tagName.toLowerCase() === 'a'){
+      btn.setAttribute('aria-expanded', 'false');
+      nav.classList.remove('is-open');
+    }
+  });
+})();
+
+/* === Cookie banner: empurra conteúdo p/ cima enquanto visível === */
+(function () {
+  const banner = document.getElementById('cookie-banner');
+  const btn = document.getElementById('aceitar-cookies');
+  if (!banner || !btn) return;
+  const KEY = 'cookies_ok_v1';
+  if (!localStorage.getItem(KEY)) {
+    banner.style.display = 'flex';
+    document.body.classList.add('has-cookie-banner');
+  }
+  btn.addEventListener('click', () => {
+    localStorage.setItem(KEY, '1');
+    banner.remove();
+    document.body.classList.remove('has-cookie-banner');
+  });
+})();

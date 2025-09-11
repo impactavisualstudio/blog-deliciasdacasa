@@ -366,7 +366,7 @@ body::before{
 /* === Alinhar o header com o conteúdo (puxar um pouco para a ESQUERDA) === */
 :root{
   --gutter: 115px;        /* padding padrão do seu .container */
-  --header-shift: px; /* ajuste fino: -8, -12, -16… mais negativo = mais à esquerda */
+  --header-shift: 1px; /* ajuste fino: -8, -12, -16… mais negativo = mais à esquerda */
 }
 
 .site-header .container{

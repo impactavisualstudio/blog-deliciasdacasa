@@ -30,6 +30,26 @@ window.addEventListener('load', () => {
     navigator.serviceWorker.register('/service-worker.js').catch(() => {});
   }
 })();
+/* Menu mobile (abre/fecha) */
+(function(){
+  const btn = document.querySelector('.nav-toggle');
+  const nav = document.getElementById('primary-nav');
+  if (!btn || !nav) return;
+
+  btn.addEventListener('click', () => {
+    const open = btn.getAttribute('aria-expanded') === 'true';
+    btn.setAttribute('aria-expanded', String(!open));
+    nav.classList.toggle('is-open', !open);
+  });
+
+  // Fecha o menu ao clicar num link (experiência melhor no mobile)
+  nav.addEventListener('click', (e) => {
+    if (e.target.tagName.toLowerCase() === 'a'){
+      btn.setAttribute('aria-expanded', 'false');
+      nav.classList.remove('is-open');
+    }
+  });
+})();
 
 /* Barra de progresso de leitura */
 (function () {
@@ -84,7 +104,7 @@ window.addEventListener('load', () => {
 (function () {
   const DEBUG = false; // mude para true para ver logs no console
   const log = (...a) => DEBUG && console.log('[related]', ...a);
-  const CDN = 'https://blog-carnes.vercel.app';
+  const CDN = 'https://blog-deliciasdacasa.vercel.app';
 
   // Normaliza paths: remove domínio, 'index.html', '.html' e barra final
   const norm = (p) => (p || '/')

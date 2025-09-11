@@ -570,3 +570,151 @@ body::before{
     text-align: center;
   }
 }
+/* ===== Responsividade geral ===== */
+
+/* Evita overflow lateral por conteúdos compridos */
+html, body { overflow-x: hidden; }
+img, video { max-width: 100%; height: auto; }
+
+/* Fundo "fixed" dá bug em mobile → desliga em telas menores */
+@media (max-width: 900px){
+  body { background-attachment: scroll; }
+}
+
+/* ===== Header / Menu ===== */
+.nav-toggle{
+  display: none;
+  background: rgba(255,255,255,.08);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 10px;
+  padding: 8px 10px;
+  font: inherit;
+  cursor: pointer;
+}
+@media (max-width: 900px){
+  .site-header .container{
+    gap: 10px;
+  }
+  .nav-toggle{ display: inline-block; }
+  /* nav vira “drop-down” sob o header */
+  .nav{
+    display: none;
+    position: absolute;
+    left: 0; right: 0;
+    top: 100%;
+    margin-top: 8px;
+    background: color-mix(in hsl, var(--panel) 92%, transparent);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 16px;
+    z-index: 39;
+  }
+  .nav.is-open{ display: block; }
+  .nav a{
+    display: block;
+    padding: 12px;
+    border-radius: 10px;
+  }
+  .site-header{ position: sticky; }
+}
+
+/* Garante que o container alinhe com o conteúdo em todas as páginas */
+.container{ max-width: 1080px; margin: 0 auto; padding-inline: 16px; }
+@media (min-width: 1200px){ .container{ padding-inline: 24px; } }
+
+/* ===== HERO ===== */
+@media (max-width: 900px){
+  .hero{
+    grid-template-columns: 1fr !important;
+    gap: 16px;
+  }
+  .hero > div{ order: 1; }
+  .hero img{ order: 2; width: 100%; height: auto; }
+  .hero h1{ font-size: clamp(1.6rem, 5vw, 2.2rem); }
+}
+
+/* ===== Cards (grids) ===== */
+.grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 18px;
+}
+@media (max-width: 720px){
+  .grid{ grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+}
+@media (max-width: 480px){
+  .grid{ grid-template-columns: 1fr; }
+  .card img{ height: 160px !important; }
+}
+
+/* ===== Post page ===== */
+.post{ max-width: 820px; margin-inline: auto; }
+@media (max-width: 720px){
+  .post{ padding-inline: 4px; }
+  .post figure{ margin: 12px 0; }
+}
+
+/* ===== Related (3 cards rotativos) ===== */
+.related-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px,1fr));
+  gap: .75rem;
+}
+@media (max-width: 520px){
+  .related-grid{ grid-template-columns: 1fr; }
+}
+
+/* ===== Footer ===== */
+.footerbar{
+  display:flex; align-items:center; gap:18px;
+  justify-content:space-between; flex-wrap:wrap;
+}
+.site-footer .social{ display:flex; gap:10px; flex-wrap:nowrap; }
+@media (max-width: 720px){
+  .footerbar{ justify-content: center; text-align:center; gap:12px; }
+  .footer-nav{ width:100%; display:flex; gap:14px; justify-content:center; }
+}
+/* ====== MENU MOBILE ====== */
+.nav-toggle{
+  display: none;
+  background: rgba(255,255,255,.08);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 10px;
+  padding: 8px 10px;
+  font: inherit;
+  cursor: pointer;
+  line-height: 1;
+}
+
+@media (max-width: 900px){
+  /* botão aparece no mobile */
+  .nav-toggle{ display: inline-block; }
+
+  /* o container precisa ser referência pro dropdown absoluto */
+  .site-header .container{ position: relative; }
+
+  /* nav vira dropdown abaixo do header */
+  .nav{
+    display: none;
+    position: absolute;
+    left: 0; right: 0;
+    top: 100%;
+    margin-top: 8px;
+    background: color-mix(in hsl, var(--panel) 92%, transparent);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 16px;
+    z-index: 39;
+  }
+  .nav.is-open{ display: block; }
+
+  .nav a{
+    display: block;
+    padding: 12px;
+    border-radius: 10px;
+  }
+
+  /* fundo “fixed” dá bug em mobile; deixa rolar */
+  body { background-attachment: scroll; }

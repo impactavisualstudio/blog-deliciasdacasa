@@ -46,24 +46,30 @@
 </head>
 <body>
   <header class="site-header">
-    <div class="container">
-      <a class="brand" href="/" aria-label="Delícias da Casa — Início">
-       <img
-           src="/assets/images/logo-round-256.svg"
-           srcset="/assets/images/logo-round-256.svg 1x, /assets/images/logo-round-512.svg 2x"
-           alt="Delícias da Casa"
-           width="44" height="44" />
-          <span class="brand-text">Delícias da Casa</span>
-      </a>
-      <nav class="nav" aria-label="Navegação principal">
-        <a href="/">Início</a>
-        <a href="/receitas.html">Receitas</a>
-        <a href="/sobre.html">Sobre</a>
-        <a href="/contato.html">Contato</a>
-        <a href="/politica-privacidade.html">Privacidade</a>
-      </nav>
-    </div>
-  </header>
+  <div class="container">
+    <a class="brand" href="/" aria-label="Delícias da Casa — Início">
+      <img
+        src="/assets/images/logo-round-256.svg"
+        srcset="/assets/images/logo-round-256.svg 1x, /assets/images/logo-round-512.svg 2x"
+        alt="Delícias da Casa"
+        width="44" height="44" />
+      <span class="brand-text">Delícias da Casa</span>
+    </a>
+
+    <!-- Botão do menu (aparece no mobile) -->
+    <button class="nav-toggle" aria-expanded="false" aria-controls="primary-nav" aria-label="Abrir menu">
+      ☰
+    </button>
+
+    <nav id="primary-nav" class="nav" aria-label="Navegação principal">
+      <a href="/">Início</a>
+      <a href="/receitas.html">Receitas</a>
+      <a href="/sobre.html">Sobre</a>
+      <a href="/contato.html">Contato</a>
+      <a href="/politica-privacidade.html">Privacidade</a>
+    </nav>
+  </div>
+</header>
 
   <main class="container">
     <section class="hero">

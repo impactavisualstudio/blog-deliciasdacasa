@@ -566,7 +566,7 @@ body::before{
   }
   .site-footer .copyright,
   .site-footer .footer-nav{
-    width: 100%;
+    width: 200%;
     text-align: center;
   }
 }
@@ -817,3 +817,50 @@ img, video { max-width: 100%; height: auto; }
 /* ===== Cookie banner acima do rodapé ===== */
 .cookie-banner{ z-index:9999; }               /* garante ficar por cima do footer */
 body.has-cookie-banner{ padding-bottom:96px; } /
+
+/* ===== Rodapé central, 3 linhas (links • redes • copyright) ===== */
+.site-footer .footerbar{
+  display: flex;
+  flex-direction: column;      /* empilha tudo em coluna */
+  align-items: center;          /* centraliza na horizontal */
+  justify-content: center;
+  gap: 10px;
+  text-align: center;
+  padding-block: 16px;
+}
+
+/* 1ª linha: Termos • Privacidade • Sitemap (sempre no topo) */
+.site-footer .footerbar .footer-nav{
+  order: 1;
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* 2ª linha: redes sociais no meio */
+.site-footer .footerbar .social{
+  order: 2;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 0 !important;        /* override de regras antigas */
+}
+
+/* 3ª linha: copyright */
+.site-footer .footerbar .copyright{
+  order: 3;
+  margin: 0;
+  opacity: .9;
+}
+
+/* se existir esta regra antiga, garantimos que não empurre as redes p/ direita */
+.site-footer .social{ margin-left: 0 !important; }
+
+/* opcional: no mobile pode ser um pouco menos */
+@media (max-width: 480px){
+  .site-footer .footerbar .footer-nav{
+    transform: translateX(-6px);
+  }
+}

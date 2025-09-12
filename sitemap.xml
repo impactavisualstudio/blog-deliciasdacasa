@@ -2,59 +2,26 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
   <!-- Páginas principais -->
-  <url><loc>https://blog-carnes.vercel.app/</loc></url>
-  <url><loc>https://blog-carnes.vercel.app/receitas.html</loc></url>
-  <url><loc>https://blog-carnes.vercel.app/sobre.html</loc></url>
-  <url><loc>https://blog-carnes.vercel.app/contato.html</loc></url>
-  <url><loc>https://blog-carnes.vercel.app/politica-privacidade.html</loc></url>
-  <url><loc>https://blog-carnes.vercel.app/termos-uso.html</loc></url>
+  <url><loc>https://blog-deliciasdacasa.vercel.app/</loc></url>
+  <url><loc>https://blog-deliciasdacasa.vercel.app/receitas.html</loc></url>
+  <url><loc>https://blog-deliciasdacasa.vercel.app/sobre.html</loc></url>
+  <url><loc>https://blog-deliciasdacasa.vercel.app/contato.html</loc></url>
+  <url><loc>https://blog-deliciasdacasa.vercel.app/politica-privacidade.html</loc></url>
+  <url><loc>https://blog-deliciasdacasa.vercel.app/termos-uso.html</loc></url>
 
-  <!-- Posts (40) -->
-  <url><loc>https://blog-carnes.vercel.app/posts/churrasco-picanha-perfeito.html</loc></url>
-  <url><loc>https://blog-carnes.vercel.app/posts/brisket-texano-lento.html</loc></url>
-  <url><loc>https://blog-carnes.vercel.app/posts/costela-na-brasa-suculenta.html</loc></url>
-  <url><loc>https://blog-carnes.vercel.app/posts/fraldinha-marinada-rapida.html</loc></url>
-  <url><loc>https://blog-carnes.vercel.app/posts/dry-aged-o-que-e.html</loc></url>
+  <!-- Posts (12) -->
+  <url><loc>https://blog-deliciasdacasa.vercel.app/posts/churrasco-picanha-perfeito.html</loc></url>
+  <url><loc>https://blog-deliciasdacasa.vercel.app/posts/brisket-texano-lento.html</loc></url>
+  <url><loc>https://blog-deliciasdacasa.vercel.app/posts/costela-na-brasa-suculenta.html</loc></url>
+  <url><loc>https://blog-deliciasdacasa.vercel.app/posts/fraldinha-marinada-rapida.html</loc></url>
+  <url><loc>https://blog-deliciasdacasa.vercel.app/posts/dry-aged-o-que-e.html</loc></url>
 
-  <url><loc>https://blog-carnes.vercel.app/posts/ancho-marmoreio.html</loc></url>
-  <url><loc>https://blog-carnes.vercel.app/posts/tbone-porterhouse.html</loc></url>
-  <url><loc>https://blog-carnes.vercel.app/posts/maminha-churrasco.html</loc></url>
-  <url><loc>https://blog-carnes.vercel.app/posts/alcatra-grelha.html</loc></url>
-  <url><loc>https://blog-carnes.vercel.app/posts/contrafile-brasa.html</loc></url>
-  <url><loc>https://blog-carnes.vercel.app/posts/cupim-brasa.html</loc></url>
-  <url><loc>https://blog-carnes.vercel.app/posts/chorizo-argentino.html</loc></url>
-  <url><loc>https://blog-carnes.vercel.app/posts/primerib-grelha.html</loc></url>
-  <url><loc>https://blog-carnes.vercel.app/posts/bife-tira.html</loc></url>
-  <url><loc>https://blog-carnes.vercel.app/posts/shortrib-brasa.html</loc></url>
-  <url><loc>https://blog-carnes.vercel.app/posts/assado-tira.html</loc></url>
-  <url><loc>https://blog-carnes.vercel.app/posts/carne-sol.html</loc></url>
-  <url><loc>https://blog-carnes.vercel.app/posts/vazio-argentino.html</loc></url>
-  <url><loc>https://blog-carnes.vercel.app/posts/punta-anca.html</loc></url>
-  <url><loc>https://blog-carnes.vercel.app/posts/hamburguer-artesanal.html</loc></url>
-
-  <url><loc>https://blog-carnes.vercel.app/posts/costelinha-bbq.html</loc></url>
-  <url><loc>https://blog-carnes.vercel.app/posts/pernil-assado.html</loc></url>
-  <url><loc>https://blog-carnes.vercel.app/posts/lombo-recheado.html</loc></url>
-  <url><loc>https://blog-carnes.vercel.app/posts/pancetta-brasa.html</loc></url>
-  <url><loc>https://blog-carnes.vercel.app/posts/copalombo-brasa.html</loc></url>
-  <url><loc>https://blog-carnes.vercel.app/posts/linguica-artesanal.html</loc></url>
-  <url><loc>https://blog-carnes.vercel.app/posts/torresmo-pururuca.html</loc></url>
-
-  <url><loc>https://blog-carnes.vercel.app/posts/frango-inteiro-brasa.html</loc></url>
-  <url><loc>https://blog-carnes.vercel.app/posts/coxa-sobrecoxa.html</loc></url>
-  <url><loc>https://blog-carnes.vercel.app/posts/peito-recheado.html</loc></url>
-  <url><loc>https://blog-carnes.vercel.app/posts/galeto-primo.html</loc></url>
-  <url><loc>https://blog-carnes.vercel.app/posts/frango-caipira.html</loc></url>
-  <url><loc>https://blog-carnes.vercel.app/posts/asinhas-picantes.html</loc></url>
-
-  <url><loc>https://blog-carnes.vercel.app/posts/carre-cordeiro.html</loc></url>
-  <url><loc>https://blog-carnes.vercel.app/posts/pernil-cordeiro.html</loc></url>
-  <url><loc>https://blog-carnes.vercel.app/posts/paleta-cordeiro.html</loc></url>
-  <url><loc>https://blog-carnes.vercel.app/posts/costeletas-cordeiro.html</loc></url>
-
-  <url><loc>https://blog-carnes.vercel.app/posts/javali-brasa.html</loc></url>
-  <url><loc>https://blog-carnes.vercel.app/posts/pato-laranja.html</loc></url>
-  <url><loc>https://blog-carnes.vercel.app/posts/peixe-defumado.html</loc></url>
-
+  <url><loc>https://blog-deliciasdacasa.vercel.app/posts/ancho-marmoreio.html</loc></url>
+  <url><loc>https://blog-deliciasdacasa.vercel.app/posts/tbone-porterhouse.html</loc></url>
+  <url><loc>https://blog-deliciasdacasa.vercel.app/posts/maminha-churrasco.html</loc></url>
+  <url><loc>https://blog-deliciasdacasa.vercel.app/posts/alcatra-grelha.html</loc></url>
+  <url><loc>https://blog-deliciasdacasa.vercel.app/posts/contrafile-brasa.html</loc></url>
+  <url><loc>https://blog-deliciasdacasa.vercel.app/posts/cupim-brasa.html</loc></url>
+  <url><loc>https://blog-deliciasdacasa.vercel.app/posts/chorizo-argentino.html</loc></url>
 </urlset>
 

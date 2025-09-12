@@ -2,26 +2,26 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
   <!-- Páginas principais -->
-  <url><loc>https://blog-deliciasdacasa.vercel.app/</loc></url>
-  <url><loc>https://blog-deliciasdacasa.vercel.app/receitas.html</loc></url>
-  <url><loc>https://blog-deliciasdacasa.vercel.app/sobre.html</loc></url>
-  <url><loc>https://blog-deliciasdacasa.vercel.app/contato.html</loc></url>
-  <url><loc>https://blog-deliciasdacasa.vercel.app/politica-privacidade.html</loc></url>
-  <url><loc>https://blog-deliciasdacasa.vercel.app/termos-uso.html</loc></url>
+  <url><loc>https://blog-deliciasdacasa.vercel.app/</loc></url><lastmod>2025-09-12</lastmod>
+    <url><loc>https://blog-deliciasdacasa.vercel.app/receitas.html</loc></url><lastmod>2025-09-12</lastmod>
+  <url><loc>https://blog-deliciasdacasa.vercel.app/sobre.html</loc></url><lastmod>2025-09-12</lastmod>
+  <url><loc>https://blog-deliciasdacasa.vercel.app/contato.html</loc></url><lastmod>2025-09-12</lastmod>
+  <url><loc>https://blog-deliciasdacasa.vercel.app/politica-privacidade.html</loc></url><lastmod>2025-09-12</lastmod>
+  <url><loc>https://blog-deliciasdacasa.vercel.app/termos-uso.html</loc></url><lastmod>2025-09-12</lastmod>
 
   <!-- Posts (12) -->
-  <url><loc>https://blog-deliciasdacasa.vercel.app/posts/churrasco-picanha-perfeito.html</loc></url>
-  <url><loc>https://blog-deliciasdacasa.vercel.app/posts/brisket-texano-lento.html</loc></url>
-  <url><loc>https://blog-deliciasdacasa.vercel.app/posts/costela-na-brasa-suculenta.html</loc></url>
-  <url><loc>https://blog-deliciasdacasa.vercel.app/posts/fraldinha-marinada-rapida.html</loc></url>
-  <url><loc>https://blog-deliciasdacasa.vercel.app/posts/dry-aged-o-que-e.html</loc></url>
+  <url><loc>https://blog-deliciasdacasa.vercel.app/posts/churrasco-picanha-perfeito.html</loc></url><lastmod>2025-09-12</lastmod>
+  <url><loc>https://blog-deliciasdacasa.vercel.app/posts/brisket-texano-lento.html</loc></url><lastmod>2025-09-12</lastmod>
+  <url><loc>https://blog-deliciasdacasa.vercel.app/posts/costela-na-brasa-suculenta.html</loc></url><lastmod>2025-09-12</lastmod>
+  <url><loc>https://blog-deliciasdacasa.vercel.app/posts/fraldinha-marinada-rapida.html</loc></url><lastmod>2025-09-12</lastmod>
+  <url><loc>https://blog-deliciasdacasa.vercel.app/posts/dry-aged-o-que-e.html</loc></url><lastmod>2025-09-12</lastmod>
 
-  <url><loc>https://blog-deliciasdacasa.vercel.app/posts/ancho-marmoreio.html</loc></url>
-  <url><loc>https://blog-deliciasdacasa.vercel.app/posts/tbone-porterhouse.html</loc></url>
-  <url><loc>https://blog-deliciasdacasa.vercel.app/posts/maminha-churrasco.html</loc></url>
-  <url><loc>https://blog-deliciasdacasa.vercel.app/posts/alcatra-grelha.html</loc></url>
-  <url><loc>https://blog-deliciasdacasa.vercel.app/posts/contrafile-brasa.html</loc></url>
-  <url><loc>https://blog-deliciasdacasa.vercel.app/posts/cupim-brasa.html</loc></url>
-  <url><loc>https://blog-deliciasdacasa.vercel.app/posts/chorizo-argentino.html</loc></url>
+  <url><loc>https://blog-deliciasdacasa.vercel.app/posts/ancho-marmoreio.html</loc></url><lastmod>2025-09-12</lastmod>
+  <url><loc>https://blog-deliciasdacasa.vercel.app/posts/tbone-porterhouse.html</loc></url><lastmod>2025-09-12</lastmod>
+  <url><loc>https://blog-deliciasdacasa.vercel.app/posts/maminha-churrasco.html</loc></url><lastmod>2025-09-12</lastmod>
+  <url><loc>https://blog-deliciasdacasa.vercel.app/posts/alcatra-grelha.html</loc></url><lastmod>2025-09-12</lastmod>
+  <url><loc>https://blog-deliciasdacasa.vercel.app/posts/contrafile-brasa.html</loc></url><lastmod>2025-09-12</lastmod>
+  <url><loc>https://blog-deliciasdacasa.vercel.app/posts/cupim-brasa.html</loc></url><lastmod>2025-09-12</lastmod>
+  <url><loc>https://blog-deliciasdacasa.vercel.app/posts/chorizo-argentino.html</loc></url><lastmod>2025-09-12</lastmod>
 </urlset>
 

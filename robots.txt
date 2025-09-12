@@ -1,3 +1,4 @@
 User-agent: *
 Allow: /
-Sitemap: https://blog-carnes.vercel.app/sitemap.xml
+
+Sitemap: https://blog-deliciasdacasa.vercel.app/sitemap.xml

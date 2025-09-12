@@ -1,4 +1,4 @@
-// api/comments.js — Vercel KV
+// api/comments.js — Vercel KV - agora vai
 import { kv } from '@vercel/kv';
 
 function cors(res, reqOrigin = '') {

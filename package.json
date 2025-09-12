@@ -1,0 +1,8 @@
+{
+  "name": "delicias-da-casa",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@vercel/kv": "latest"
+  }
+}

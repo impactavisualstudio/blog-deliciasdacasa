@@ -31,7 +31,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/assets/styles.css?v=4" />
+  <link rel="stylesheet" href="/assets/styles.css?v=7" />
 
   <!-- Ícones / Manifest -->
   <link rel="icon" type="image/png" href="/assets/icon-192.png" sizes="192x192" />
@@ -236,78 +236,16 @@
     <button class="share-btn" data-share="copy">Copiar link</button>
   </div>
 </section>
-<!-- Comentários -->
-<section id="comments" class="comments">
+<script src="/assets/comments.js" defer></script>
+<section class="comments" id="comments">
   <h2>Comentários</h2>
-
-  <!-- Opção recomendada (estático): Giscus (GitHub Discussions) -->
-  <!-- Substitua REPO_OWNER/REPO_NAME pelo repositório do blog -->
-  <script src="https://giscus.app/client.js"
-          data-repo="REPO_OWNER/REPO_NAME"
-          data-repo-id="REPO_ID"
-          data-category="General"
-          data-category-id="CATEGORY_ID"
-          data-mapping="pathname"
-          data-strict="0"
-          data-reactions-enabled="1"
-          data-emit-metadata="0"
-          data-input-position="bottom"
-          data-theme="light"
-          data-lang="pt"
-          crossorigin="anonymous"
-          async>
-  </script>
-
-  <!-- Alternativa: Utterances (também GitHub Issues)
-  <script src="https://utteranc.es/client.js"
-          repo="REPO_OWNER/REPO_NAME"
-          issue-term="pathname"
-          theme="github-light"
-          crossorigin="anonymous"
-          async>
-  </script>
-  -->
-
-  <!-- Alternativa “plug and play”: Disqus
-  <div id="disqus_thread"></div>
-  <script>
-    var disqus_config = function () { this.page.url = location.href; this.page.identifier = location.pathname; };
-    (function() { var d = document, s = d.createElement('script'); s.src = 'https://SEU_SHORTNAME.disqus.com/embed.js';
-      s.setAttribute('data-timestamp', +new Date()); (d.head || d.body).appendChild(s);
-    })();
-  </script>
-  -->
+  <form id="comment-form" class="form" autocomplete="off">
+    <input type="text" name="name" placeholder="Seu nome" required />
+    <textarea name="body" rows="4" placeholder="Escreva seu comentário" required></textarea>
+    <button type="submit" class="btn">Enviar comentário</button>
+  </form>
+  <ul id="comment-list" class="comment-list"></ul>
 </section>
-<script src="https://giscus.app/client.js"
-        data-repo="impactavisualstudio/blog-carnes"
-        data-repo-id="R_kgDOPqrmWQ"
-        data-category="Comentários"
-        data-category-id="DIC_kwDOPqrmWc4CvKJK"
-        data-mapping="pathname"
-        data-strict="0"
-        data-reactions-enabled="1"
-        data-emit-metadata="0"
-        data-input-position="bottom"
-        data-theme="preferred_color_scheme"
-        data-lang="pt"
-        crossorigin="anonymous"
-        async>
-</script>
-<script src="https://giscus.app/client.js"
-        data-repo="impactavisualstudio/blog-carnes"
-        data-repo-id="R_kgDOPqrmWQ"
-        data-category="Comentários"
-        data-category-id="DIC_kwDOPqrmWc4CvKJK"
-        data-mapping="pathname"
-        data-strict="0"
-        data-reactions-enabled="1"
-        data-emit-metadata="0"
-        data-input-position="bottom"
-        data-theme="preferred_color_scheme"
-        data-lang="pt"
-        crossorigin="anonymous"
-        async>
-</script>
   </main>
 
   <footer class="site-footer">
@@ -370,11 +308,12 @@
       <a href="/sitemap.xml">Sitemap</a>
     </nav>
   </div>
+
 </footer>
 
-  <script defer src="/assets/script.js?v=4"></script>
+  <script defer src="/assets/script.js?v=6"></script>
 <!-- carrega o catálogo -->
-<script defer src="/assets/posts.js?v=10"></script>
+<script defer src="/assets/posts.js?v=11"></script>
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {

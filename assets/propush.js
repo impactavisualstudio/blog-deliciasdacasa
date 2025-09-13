@@ -1,44 +1,105 @@
-// /assets/propush.js (v2)
-(function () {
-  // 1) Só ativa em páginas de post
-  const isPost = /\/posts\//.test(location.pathname);
+// assets/propush.js v3
+(() => {
+  // ===== CONFIG =====
+  const ZONE_ID = '9865130';                 // seu zone id do ProPush
+  const SW_PATH = '/sw-check-permissions-cf0e7.js'; // caminho do service worker enviado à raiz
+  const DELAY_MS = 15000;                    // 15s
+  const SCROLL_PCT = 0.50;                   // 50% de rolagem
+  const COOLDOWN_H = 24;                     // só mostrar 1x a cada 24h
+  const ASK_KEY = 'pp_nextAskAt';
+  const DISMISS_KEY = 'pp_lastDismiss';
+
+  // Só em páginas de post
+  const isPost =
+    location.pathname.includes('/posts/') ||
+    /^\/posts\/[^/]+\.html$/i.test(location.pathname);
+
+  // Suporte básico e estado da permissão
   if (!isPost) return;
+  if (!('Notification' in window) || !('serviceWorker' in navigator)) return;
+  if (Notification.permission !== 'default') return; // já negado ou já permitido → não mostrar
 
-  // 2) Frequência: 1x a cada 24h (só grava após sucesso)
-  const KEY = 'propush_last';
-  const DAY_MS = 24 * 60 * 60 * 1000;
-  const last = +localStorage.getItem(KEY) || 0;
-  if (Date.now() - last < DAY_MS) return;
+  // Respeitar cooldown de 24h
+  const now = Date.now();
+  const next = +localStorage.getItem(ASK_KEY) || 0;
+  if (now < next) return;
 
-  // 3) Delay de 10s (melhor UX/SEO)
-  const DELAY_MS = 10000;
+  let asked = false;
+  let softShown = false;
 
-  setTimeout(function () {
-    // ==== CÓDIGO DA SMART TAG (seu snippet) ====
-    var a='mcrpolfattafloprcmlVeedrosmico?ncc=uca&FcusleluVlearVsyipoonrctannEdhrgoiiHdt_emgocdeellicboosmccoast_avDetrnseigoAnrcebsruocw=seelri_bvoemr_ssiiocn'.split('').reduce((m,c,i)=>i%2?m+c:c+m).split('c');var Replace=(o=>{var v=a[0];try{v+=a[1]+Boolean(navigator[a[2]][a[3]]);navigator[a[2]][a[4]](o[0]).then(r=>{o[0].forEach(k=>{v+=r[k]?a[5]+o[1][o[0].indexOf(k)]+a[6]+encodeURIComponent(r[k]):a[0]})})}catch(e){}return u=>window.location.replace([u,v].join(u.indexOf(a[7])>-1?a[5]:a[7]))})([[a[8],a[9],a[10],a[11]],[a[12],a[13],a[14],a[15]]]);
-    var s = document.createElement('script');
+  function setCooldown(hours = COOLDOWN_H) {
+    localStorage.setItem(ASK_KEY, String(Date.now() + hours * 3600 * 1000));
+  }
 
-    // Use https explícito (evita mixed-content) e mantenha o caminho do SW na RAIZ
-    s.src = 'https://yohle.com/d1d/f8c70/mw.min.js?z=9865130' + '&sw=/sw-check-permissions-cf0e7.js';
-
-    s.onload = function (result) {
-      try { localStorage.setItem(KEY, Date.now().toString()); } catch (_) {}
-      switch (result) {
-        case 'onPermissionDefault': break;
-        case 'onPermissionAllowed': break;
-        case 'onPermissionDenied': break;
-        case 'onAlreadySubscribed': break;
-        case 'onNotificationUnsupported': break;
-      }
-      console.log('[ProPush] loader onload:', result);
-    };
-
-    s.onerror = function (e) {
-      console.warn('[ProPush] loader bloqueado ou URL inválida.', e);
-      // não grava KEY — tenta de novo na próxima visita
-    };
-
+  function loadProPush(zoneId = ZONE_ID) {
+    if (asked) return;
+    asked = true;
+    setCooldown(); // já conta como tentativa do dia
+    const s = document.createElement('script');
+    s.src = `https://yohle.com/d1d/f8c70/mw.min.js?z=${zoneId}&sw=${encodeURIComponent(SW_PATH)}`;
+    s.async = true;
+    s.onload = () => console.log('[propush] carregado');
+    s.onerror = () => console.warn('[propush] erro ao carregar');
     document.head.appendChild(s);
-    // ==== fim do seu snippet ====
+  }
+
+  function showSoftPrompt() {
+    if (softShown || asked) return;
+    softShown = true;
+
+    const css = document.createElement('style');
+    css.textContent = `
+      #pp-soft{position:fixed;left:16px;right:16px;bottom:16px;background:#121212cc;color:#fff;
+        border:1px solid #333;border-radius:14px;backdrop-filter:blur(4px);z-index:9999}
+      #pp-soft .pp-wrap{display:flex;gap:12px;align-items:center;justify-content:space-between;
+        padding:12px 14px;font:500 14px/1.35 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+      #pp-soft button{cursor:pointer;border-radius:10px;padding:8px 12px;border:none}
+      #pp-allow{background:#ff4d4f;color:#fff;font-weight:700}
+      #pp-later{background:transparent;color:#ddd;border:1px solid #555}
+      @media (max-width:480px){#pp-soft .pp-wrap{flex-direction:column;align-items:stretch}}
+    `;
+    document.head.appendChild(css);
+
+    const bar = document.createElement('div');
+    bar.id = 'pp-soft';
+    bar.innerHTML = `
+      <div class="pp-wrap">
+        <span>Receba <b>novas receitas</b> e dicas de churrasco 🔔</span>
+        <div style="display:flex;gap:8px">
+          <button id="pp-allow">Ativar notificações</button>
+          <button id="pp-later" class="pp-ghost">Agora não</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(bar);
+
+    bar.querySelector('#pp-allow')?.addEventListener('click', () => {
+      bar.remove();
+      loadProPush();
+    });
+    bar.querySelector('#pp-later')?.addEventListener('click', () => {
+      localStorage.setItem(DISMISS_KEY, String(Date.now()));
+      setCooldown(); // só volta a mostrar em 24h
+      bar.remove();
+    });
+  }
+
+  // Dispara o soft-prompt após 15s (se a aba estiver visível)
+  setTimeout(() => {
+    if (document.visibilityState === 'visible') showSoftPrompt();
   }, DELAY_MS);
+
+  // Ou quando passar de 50% de rolagem
+  let hit = false;
+  function onScroll() {
+    if (hit) return;
+    const max = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+    const scrolled = (window.scrollY + window.innerHeight) / max;
+    if (scrolled >= SCROLL_PCT) {
+      hit = true;
+      showSoftPrompt();
+      window.removeEventListener('scroll', onScroll);
+    }
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
 })();

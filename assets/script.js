@@ -261,26 +261,27 @@ function safeUrl(p) {
 }
 
 function renderRelated() {
-  const container = document.getElementById('related-rotator');
-  if (!container) return;
+    const container = document.getElementById('related-rotator');
+    if (!container) return;
 
-  const items = pickSomePosts(); // sua função atual que escolhe os posts
+    const items = pickSomePosts(); // sua função atual que escolhe os posts
 
-  const html = items
-    .map(p => {
-      const href = safeUrl(p);
-      if (!href) return '';                   // ignora posts sem URL
-      const imgSrc = safeImg(p);
-      return `
+    const html = items
+        .map(p => {
+            const href = safeUrl(p);
+            if (!href) return '';                   // ignora posts sem URL
+            const imgSrc = safeImg(p);
+            return `
         <a class="related-card" href="${href}" aria-label="${p.title}">
           <figure>
             <img src="${imgSrc}" alt="${p.title}" loading="lazy" width="360" height="202">
             <figcaption>${p.title}</figcaption>
           </figure>
         </a>`;
-    })
-    .filter(Boolean)
-    .join('');
+        })
+        .filter(Boolean)
+        .join('');
 
-  container.innerHTML = html;
-  container.setAttribute('aria-busy', 'false');
+    container.innerHTML = html;
+    container.setAttribute('aria-busy', 'false');
+}

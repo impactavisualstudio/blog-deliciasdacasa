@@ -136,19 +136,19 @@ window.addEventListener('load', () => {
 
   // Lista dos 12 posts (sem .html para bater com suas rotas)
   const POSTS = [
-    { title: "Picanha perfeita: do sal grosso ao corte final", url: "/posts/churrasco-picanha-perfeito", img: "/assets/images/picanha-1600.png" },
-    { title: "Brisket texano: baixa temperatura, alto sabor",     url: "/posts/brisket-texano",                 img: "/assets/images/brisket-texano-hero.jpg" },
-    { title: "Costela na brasa suculenta",                         url: "/posts/costela-na-brasa-suculenta",     img: "/assets/images/costela-fogo-chao-hero.jpg" },
-    { title: "Fraldinha marinada em 30 minutos",                   url: "/posts/fraldinha-marinada-rapida",      img: "/assets/images/fraldinha-marinada-hero.jpg" },
-    { title: "Dry-aged: o que é e quando vale a pena",             url: "/posts/dry-aged-o-que-e",               img: "/assets/images/dryaged-carne-hero.jpg" },
-    { title: "Ancho: o rei do marmoreio",                          url: "/posts/ancho-marmoreio",                img: "/assets/images/ancho-marmoreio-hero.jpg" },
-    { title: "T-bone e Porterhouse: diferença e preparo",          url: "/posts/tbone-porterhouse",              img: "/assets/images/tbone-porterhouse-hero.jpg" },
-    { title: "Maminha: maciez acessível e cheia de sabor",         url: "/posts/maminha-churrasco",              img: "/assets/images/maminha-churrasco-hero.jpg" },
-    { title: "Alcatra completa: versatilidade na grelha",          url: "/posts/alcatra-grelha",                 img: "/assets/images/alcatra-grelha-hero.jpg" },
+    { title: "Picanha perfeita: do sal grosso ao corte final", url: "/posts/churrasco-picanha-perfeito.html",         img: "/assets/images/picanha-1600.png" },
+    { title: "Brisket texano: baixa temperatura, alto sabor",     url: "/posts/brisket-texano-lento.html.",           img: "/assets/images/brisket-1600.png" },
+    { title: "Costela na brasa suculenta",                         url: "/posts/costela-na-brasa-suculenta.html",     img: "/assets/images/costela-1600.png" },
+    { title: "Fraldinha marinada em 30 minutos",                   url: "/posts/fraldinha-marinada-rapida.html",      img: "/assets/images/fraldinha-1600.png" },
+    { title: "Dry-aged: o que é e quando vale a pena",             url: "/posts/dry-aged-o-que-e.html",               img: "/assets/images/dryaged-1600.png" },
+    { title: "Ancho: o rei do marmoreio",                          url: "/posts/ancho-marmoreio.html",                img: "/assets/images/ancho-marmoreio-hero.jpg" },
+    { title: "T-bone e Porterhouse: diferença e preparo",          url: "/posts/tbone-porterhouse.html",              img: "/assets/images/tbone-porterhouse-hero.jpg" },
+    { title: "Maminha: maciez acessível e cheia de sabor",         url: "/posts/maminha-churrasco.html",              img: "/assets/images/maminha-churrasco-hero.jpg" },
+    { title: "Alcatra completa: versatilidade na grelha",          url: "/posts/alcatra-grelha.html",                 img: "/assets/images/alcatra-grelha-hero.jpg" },
     // Ajuste abaixo para os slugs reais dos posts 10–12
-    { title: "Contrafilé clássico",                                url: "/posts/contrafile-classico",            img: "/assets/images/contrafile-classico-hero.jpg" },
-    { title: "Cupim no fogo lento",                                url: "/posts/cupim-fogo-lento",               img: "/assets/images/cupim-fogo-lento-hero.jpg" },
-    { title: "Alcatra completa (guia)",                            url: "/posts/alcatra-completa",               img: "/assets/images/alcatra-completa-hero.jpg" }
+    { title: "Contrafilé clássico",                                url: "/posts/contrafile-brasa.html",               img: "/assets/images/contrafile-brasa-hero.jpg" },
+    { title: "Cupim no fogo lento",                                url: "/posts/cupim-brasa.html",                    img: "/assets/images/cupim-brasa-hero.jpg" },
+    { title: "Alcatra completa (guia)",                            url: "/posts/alcatra-grelha.html",                 img: "/assets/images/alcatra-grelha-hero.jpg" }
   ];
 
   function pickRandom(arr, n, excludeUrlNorm) {

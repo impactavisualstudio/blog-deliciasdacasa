@@ -245,3 +245,42 @@ window.addEventListener('load', () => {
     document.body.classList.remove('has-cookie-banner');
   });
 })();
+const DEFAULT_HERO = '/assets/images/post-default.jpg';
+
+function safeImg(p) {
+  const raw = (p.img || '').trim();
+  if (!raw) return DEFAULT_HERO;
+  return /^https?:\/\//.test(raw) ? raw : raw.startsWith('/assets/')
+    ? raw
+    : '/assets/images/' + raw.replace(/^\/?assets\/images\//,'');
+}
+
+function safeUrl(p) {
+  // se não tiver url, descarta o item
+  return (typeof p.url === 'string' && p.url.trim()) ? p.url : null;
+}
+
+function renderRelated() {
+  const container = document.getElementById('related-rotator');
+  if (!container) return;
+
+  const items = pickSomePosts(); // sua função atual que escolhe os posts
+
+  const html = items
+    .map(p => {
+      const href = safeUrl(p);
+      if (!href) return '';                   // ignora posts sem URL
+      const imgSrc = safeImg(p);
+      return `
+        <a class="related-card" href="${href}" aria-label="${p.title}">
+          <figure>
+            <img src="${imgSrc}" alt="${p.title}" loading="lazy" width="360" height="202">
+            <figcaption>${p.title}</figcaption>
+          </figure>
+        </a>`;
+    })
+    .filter(Boolean)
+    .join('');
+
+  container.innerHTML = html;
+  container.setAttribute('aria-busy', 'false');

@@ -1,7 +1,7 @@
 // Integração ProPush/Propeller — importa o SW da Smart Tag (mesma origem)
 try { importScripts('/sw-check-permissions-ac32f.js'); } catch (e) { /* noop */ }
 
-const CACHE = 'dc-v4';
+const CACHE = 'dc-v5';
 
 // Shell básico do app
 const CORE = [

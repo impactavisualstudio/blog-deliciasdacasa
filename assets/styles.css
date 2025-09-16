@@ -1939,3 +1939,54 @@ html body .site-footer .footer-nav a{ white-space: nowrap; }
   .site-footer .social{ order:1; }
   .site-footer .footer-nav{ order:2; }
 }
+/* ==== NAV MOBILE ==== */
+.site-header { position: sticky; top: 0; z-index: 1000; }
+
+/* estado desktop */
+.nav { display: flex; gap: 14px; align-items: center; }
+
+/* botão hamburguer (mostra só no mobile) */
+.nav-toggle {
+  display: none;
+  -webkit-tap-highlight-color: transparent;
+  background: transparent; border: 0; padding: 8px; margin-left: auto;
+  width: 44px; height: 44px; border-radius: 10px;
+}
+.nav-toggle .bar{
+  display:block; width: 24px; height: 2px; background: currentColor;
+  margin: 5px auto; border-radius: 2px;
+}
+
+/* mobile */
+@media (max-width: 980px){
+  .nav-toggle{ display:inline-flex; align-items:center; justify-content:center; }
+
+  /* nav vira um painel full-width a partir do topo do header */
+  .nav{
+    position: fixed; left: 0; right: 0; top: 60px; /* ajuste a altura do seu header */
+    background: #0b0b0b; border-top: 1px solid var(--border, #222);
+    padding: 14px 16px 18px;
+    display: none; flex-direction: column; gap: 12px;
+  }
+  .nav.is-open{ display: flex; }
+
+  /* backdrop para fechar ao tocar fora */
+  .nav-backdrop{
+    position: fixed; inset: 0; background: rgba(0,0,0,.45);
+    display: none; z-index: 999; /* abaixo do header (1000) e acima do conteúdo */
+  }
+  .nav-backdrop.is-open{ display:block; }
+
+  /* trava o scroll quando menu aberto */
+  body.nav-open{ overflow: hidden; }
+}
+
+/* acessibilidade: foco visível nos links do menu */
+.nav a:focus{
+  outline: 2px solid #fff; outline-offset: 2px; border-radius: 6px;
+}
+
+/* (opcional) animação leve */
+@media (prefers-reduced-motion: no-preference){
+  .nav { transition: transform .2s ease, opacity .2s ease; }
+}

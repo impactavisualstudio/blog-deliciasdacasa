@@ -2,12 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
   <!-- Páginas principais -->
-  <url><loc>https://blog-deliciasdacasa.vercel.app/</loc></url><lastmod>2025-09-12</lastmod>
-    <url><loc>https://blog-deliciasdacasa.vercel.app/receitas.html</loc></url><lastmod>2025-09-12</lastmod>
+  <url><loc>https://blog-deliciasdacasa.vercel.app/index.html</loc></url><lastmod>2025-09-12</lastmod>
+  <url><loc>https://blog-deliciasdacasa.vercel.app/receitas.html</loc></url><lastmod>2025-09-12</lastmod>
   <url><loc>https://blog-deliciasdacasa.vercel.app/sobre.html</loc></url><lastmod>2025-09-12</lastmod>
   <url><loc>https://blog-deliciasdacasa.vercel.app/contato.html</loc></url><lastmod>2025-09-12</lastmod>
   <url><loc>https://blog-deliciasdacasa.vercel.app/politica-privacidade.html</loc></url><lastmod>2025-09-12</lastmod>
   <url><loc>https://blog-deliciasdacasa.vercel.app/termos-uso.html</loc></url><lastmod>2025-09-12</lastmod>
+  <url><loc>https://blog-deliciasdacasa.vercel.app/utensilios.html.html</loc></url><lastmod>2025-09-12</lastmod>
 
   <!-- Posts (12) -->
   <url><loc>https://blog-deliciasdacasa.vercel.app/posts/churrasco-picanha-perfeito.html</loc></url><lastmod>2025-09-12</lastmod>

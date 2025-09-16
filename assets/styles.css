@@ -1,4 +1,8 @@
 :root{
+  --page-max: 1080px;
+  --page-gutter: clamp(16px, 3vw, 24px);
+  --gutter: var(--page-gutter);  /* evita calc() inválido */
+  --header-shift: 0px;           /* neutro */
   --bg:#0b1220; --panel:#0f172a; --elev:#111827; --text:#e5e7eb; --muted:#9aa6b2;
   --accent:#ef4444; --accent-2:#f59e0b; --ok:#10b981; --border:#1f2937;
   --shadow: 0 10px 30px rgba(0,0,0,.25), 0 2px 10px rgba(0,0,0,.15);
@@ -267,7 +271,7 @@ body::before{
 .brand{
   display:inline-flex;
   align-items:center;
-  gap:.75rem;
+  gap:.1rem;
   text-decoration:none;
 }
 
@@ -323,14 +327,8 @@ body::before{
 .brand-text{
   color: #fff;
   font-weight: 800;
-  font-size: clamp(18px, 2.1vw, 24px);s
-  line-height: 1;        /* não empurra a barra */
-}
-/* === Alinhamento global do layout (header, main e footer) === */
-:root{
-  /* ajuste fino: largura máxima e espaçamento lateral */
-  --page-max: 1080px;                 /* troque para 1140/1200 se preferir */
-  --page-gutter: clamp(16px, 3vw, 28px);
+  font-size: clamp(18px, 2.1vw, 24px);
+  line-height: 1;       /* não empurra a barra */
 }
 
 /* o mesmo container em TODAS as áreas */
@@ -362,11 +360,6 @@ body::before{
 /* no mobile, volta ao normal para não colar demais nas bordas */
 @media (max-width: 640px){
   :root{ --header-nudge: 0px; }
-}
-/* === Alinhar o header com o conteúdo (puxar um pouco para a ESQUERDA) === */
-:root{
-  --gutter: 115px;        /* padding padrão do seu .container */
-  --header-shift: 1px; /* ajuste fino: -8, -12, -16… mais negativo = mais à esquerda */
 }
 
 .site-header .container{
@@ -432,15 +425,6 @@ body::before{
   transform: translateY(-2px);
   color:#fff; background:rgba(255,255,255,.12); border-color:#3a281f;
 }
-.site-footer .social { margin-left:auto; } /* opcional: joga as redes para a direita */
-
-/* layout do rodapé em 3 colunas */
-.site-footer .container.footerbar{
-  display: none;
-  grid-template-columns: 1fr auto 1fr; /* esq | centro | dir */
-  align-items: center;
-  gap: 16px;
-}
 
 .site-footer .copyright { justify-self: start; margin: 0; }
 .site-footer .social    { justify-self: center; margin: 0; } /* centraliza as redes */
@@ -455,9 +439,6 @@ body::before{
   }
   .site-footer .footer-nav{ justify-content: center; }
 }
-
-/* se existir isto no seu CSS, remova/comente para não jogar as redes p/ direita */
-/* .site-footer .social { margin-left: auto; } */
 
 /* --- Footer social: garantir que os SVGs apareçam --- */
 .site-footer .social a { color: #e5e7eb; }              /* cor clara para currentColor */
@@ -515,30 +496,12 @@ body::before{
   .social{ order:1; }
   .footer-nav{ order:2; }
 }
-/* ===== Footer: tudo em 1 linha (desktop) ===== */
-.site-footer .container.footerbar{
-  display: flex;
-  align-items: center;
-  gap: 14px;             /* menos espaço entre blocos */
-  flex-wrap: nowrap;     /* <<< impede quebra no desktop */
-}
 
 /* texto da esquerda SEM quebra */
 .site-footer .copyright{
   margin: 0;
   white-space: nowrap;   /* <<< mantém "© … — Conteúdo original." numa linha */
   flex: 0 0 auto;
-}
-
-/* Redes no meio (uma linha) e levemente à direita */
-.site-footer .social{
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex: 0 0 auto;
-  flex-wrap: nowrap;      /* não quebrar linha */
-  margin-left: auto;      /* empurra o bloco das redes para a direita */
-  margin-right: 50px;     /* espaço antes dos links (Termos/Privacidade/Sitemap) */
 }
 
 /* Links do rodapé, encostados à direita */
@@ -688,204 +651,1291 @@ img, video { max-width: 100%; height: auto; }
   line-height: 1;
 }
 
+@media (max-width: 900px) {
+    /* botão aparece no mobile */
+    .nav-toggle {
+        display: inline-block;
+    }
+
+    /* o container precisa ser referência pro dropdown absoluto */
+    .site-header .container {
+        position: relative;
+    }
+
+    /* nav vira dropdown abaixo do header */
+    .nav {
+        display: none;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 100%;
+        margin-top: 8px;
+        background: color-mix(in hsl, var(--panel) 92%, transparent);
+        border-top: 1px solid var(--border);
+        border-bottom: 1px solid var(--border);
+        padding: 10px 16px;
+        z-index: 39;
+    }
+
+    .nav.is-open {
+        display: block;
+    }
+
+    .nav a {
+        display: block;
+        padding: 12px;
+        border-radius: 10px;
+    }
+
+    /* fundo “fixed” dá bug em mobile; deixa rolar */
+    body {
+        background-attachment: scroll;
+    }
+
+    /* Header base */
+    .site-header {
+        position: sticky;
+        top: 0;
+        z-index: 40;
+        background: rgba(15, 10, 8, .9);
+        border-bottom: 1px solid #2a1a14;
+        padding-top: env(safe-area-inset-top); /* evita notch cobrir no iOS */
+    }
+
+    .headerbar {
+        position: relative;
+    }
+
+    .site-header .container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+    }
+
+    /* Marca */
+    .brand {
+        display: flex;
+        align-items: center;
+        gap: .6rem;
+        min-width: 0;
+    }
+
+    .brand img {
+        height: 44px;
+        width: auto;
+        border-radius: 50%;
+        display: block;
+    }
+
+    .brand-text {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-weight: 800;
+    }
+
+    /* Navegação (desktop) */
+    .nav {
+        display: flex;
+        gap: 1px;
+    }
+
+    .nav a {
+        color: var(--muted);
+        padding: 10px 12px;
+        border-radius: 10px;
+    }
+
+    .nav a:hover {
+        color: #fff;
+        background: rgba(255, 255, 255, .06);
+    }
+
+    /* Botão hambúrguer (esconde no desktop) */
+    .nav-toggle {
+        display: none;
+        border: 0;
+        background: transparent;
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        position: relative;
+        cursor: pointer;
+    }
+
+    .nav-toggle .bar {
+        position: absolute;
+        left: 9px;
+        right: 9px;
+        height: 2px;
+        background: #fff;
+        border-radius: 1px;
+        transition: transform .2s, opacity .2s, top .2s;
+    }
+
+    .nav-toggle .bar:nth-child(1) {
+        top: 12px;
+    }
+
+    .nav-toggle .bar:nth-child(2) {
+        top: 19px;
+    }
+
+    .nav-toggle .bar:nth-child(3) {
+        top: 26px;
+    }
+
+    .nav-toggle[aria-expanded="true"] .bar:nth-child(1) {
+        top: 19px;
+        transform: rotate(45deg);
+    }
+
+    .nav-toggle[aria-expanded="true"] .bar:nth-child(2) {
+        opacity: 0;
+    }
+
+    .nav-toggle[aria-expanded="true"] .bar:nth-child(3) {
+        top: 19px;
+        transform: rotate(-45deg);
+    }
+
+    /* Mobile: menu drop-down */
+    @media (max-width: 900px) {
+        .nav-toggle {
+            display: block;
+        }
+
+        .nav {
+            position: absolute;
+            left: 16px;
+            right: 16px;
+            top: calc(100% + 6px);
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            background: rgba(15, 10, 8, .95);
+            border: 1px solid #2a1a14;
+            border-radius: 12px;
+            padding: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, .45);
+        }
+
+        .nav.is-open {
+            display: flex;
+        }
+
+        .nav a {
+            padding: 12px;
+            background: transparent;
+        }
+
+        .brand img {
+            height: 36px;
+        }
+
+        /* logo um pouco menor no mobile */
+    }
+
+    /* Footer: ícones menores no mobile */
+    .site-footer .social a {
+        padding: 6px;
+    }
+
+    .site-footer .social svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    @media (max-width: 520px) {
+        .footerbar {
+            gap: 12px;
+        }
+
+        .footer-nav a {
+            padding: 6px 8px;
+        }
+    }
+    /* ===== Header responsivo (mobile fix) ===== */
+    .site-header {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
+
+    .headerbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding-block: 10px;
+        min-height: 64px;
+    }
+
+    .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: .6rem;
+        min-width: 0;
+    }
+
+    .brand img {
+        height: 40px;
+        width: 40px;
+        border-radius: 50%;
+        flex: 0 0 auto;
+    }
+
+    .brand-text {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 60vw;
+    }
+
+    /* botão hambúrguer */
+    .nav-toggle {
+        display: none;
+        width: 40px;
+        height: 40px;
+        border: 0;
+        background: rgba(255, 255, 255, .06);
+        border-radius: 12px;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .nav-toggle .bar {
+        display: block;
+        width: 18px;
+        height: 2px;
+        margin: 2px 0;
+        border-radius: 2px;
+        background: #fff;
+    }
+
+    /* menu drop-down */
+    @media (max-width: 900px) {
+        .nav-toggle {
+            display: inline-flex;
+            order: 2;
+        }
+
+        #primary-nav {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            display: none;
+            background: rgba(15, 10, 8, .98);
+            border-top: 1px solid #2a1a14;
+            padding: 10px 16px;
+        }
+
+        #primary-nav.is-open {
+            display: block;
+        }
+
+        #primary-nav a {
+            display: block;
+            padding: 12px 2px;
+        }
+
+        /* evita o texto da marca colidir com o botão */
+        .brand-text {
+            max-width: 48vw;
+        }
+    }
+
+    /* telas bem pequenas: mostra só o ícone para não quebrar o layout */
+    @media (max-width: 420px) {
+        .brand-text {
+            display: none;
+        }
+    }
+
+    /* ===== Cookie banner acima do rodapé ===== */
+    .cookie-banner {
+        z-index: 9999;
+    }
+
+    /* garante ficar por cima do footer */
+    body.has-cookie-banner {
+        padding-bottom: 96px;
+    }
+
+
+    /* ===== Rodapé central, 3 linhas (links • redes • copyright) ===== */
+.site-footer .footerbar {
+    display: flex;
+    flex-direction: column;      /* empilha tudo em coluna */
+    align-items: center;          /* centraliza na horizontal */
+    justify-content: center;
+    gap: 10px;
+    text-align: center;
+    padding-block: 16px;
+}
+
+    /* 1ª linha: Termos • Privacidade • Sitemap (sempre no topo) */
+    .site-footer .footerbar .footer-nav {
+        order: 1;
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    /* 2ª linha: redes sociais no meio */
+    .site-footer .footerbar .social {
+        order: 2;
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin: 0 !important; /* override de regras antigas */
+    }
+
+    /* 3ª linha: copyright */
+    .site-footer .footerbar .copyright {
+        order: 3;
+        margin: 0;
+        opacity: .9;
+    }
+
+    /* se existir esta regra antiga, garantimos que não empurre as redes p/ direita */
+    .site-footer .social {
+        margin-left: 0 !important;
+    }
+
+    /* opcional: no mobile pode ser um pouco menos */
+    @media (max-width: 480px) {
+        .site-footer .footerbar .footer-nav {
+            transform: translateX(-6px);
+        }
+    }
+    /* Copyright menor apenas no mobile */
+    @media (max-width: 600px) {
+        .site-footer .copyright {
+            font-size: 0.60rem; /* ajuste fino: 0.80–0.90rem */
+            line-height: 1.3;
+            text-align: center; /* garante alinhamento ao centro */
+            letter-spacing: .1px; /* opcional, melhora a leitura */
+        }
+    }
+
+    /* Se quiser ainda menor em telas muito pequenas */
+    @media (max-width: 380px) {
+        .site-footer .copyright {
+            font-size: 0.50rem;
+        }
+    }
+
+    .comment-list {
+        list-style: none;
+        padding: 0;
+        margin: 14px 0 0;
+        display: grid;
+        gap: 10px
+    }
+
+    .comment-list li {
+        background: rgba(255, 255, 255, .04);
+        border: 1px solid #2a1a14;
+        border-radius: 12px;
+        padding: 12px
+    }
+
+    .comment-meta {
+        color: var(--muted);
+        font-size: .9rem;
+        margin-bottom: 6px
+    }
+
+    .utensilios-page main {
+        font-size: var(--step-0);
+        line-height: 1.7;
+    }
+
+    .utensilios-page h1 {
+        font-size: var(--step-2);
+        line-height: 1.15;
+        margin: 10px 0 8px;
+    }
+
+    .utensilios-page h2 {
+        font-size: clamp(1.25rem, 1.1rem + .6vw, 1.6rem);
+    }
+
+    .utensilios-page h3 {
+        font-size: var(--step-0);
+        line-height: 1.35;
+    }
+
+    .utensilios-page .card h3 {
+        font-size: var(--step-0);
+        line-height: 1.35;
+    }
+
+    .utensilios-page .card p {
+        font-size: var(--step-0);
+        line-height: 1.7;
+    }
+
+    .utensilios-page .btn {
+        font-size: var(--step-0);
+    }
+
+    .utensilios-page .disclaimer {
+        font-size: var(--step--1);
+        color: var(--muted);
+    }
+}
+
+/* força 1 linha no desktop */
+.site-header .container{ flex-wrap: nowrap !important; }
+.nav{ flex-wrap: nowrap; white-space: nowrap; }
+
+/* --- BRAND: nunca quebrar em duas linhas --- */
+.brand{
+  display:inline-flex;
+  align-items:center;
+  gap:.6rem;
+  white-space: nowrap;           /* impede quebra dentro do bloco */
+}
+
+.brand-text{
+  white-space: nowrap;           /* impede quebra do texto */
+  font-weight: 800;
+  font-size: clamp(18px, 1.8vw, 22px);
+  line-height: 1;
+}
+
+/* mobile muito estreito: corta com reticências em vez de quebrar */
+@media (max-width: 420px){
+  .brand-text{
+    max-width: 52vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+/* ===== Utensílios: header mais baixo (apenas nesta página) ===== */
+.utensilios-page{
+  /* sobrescreve variáveis só nesta página */
+  --logo-size: 50px;   /* altura do selo */
+  --header-pad: 4px;   /* respiro vertical do header */
+}
+
+.utensilios-page .site-header{
+  padding-block: var(--header-pad);
+}
+
+.utensilios-page .site-header .container{
+  /* altura mínima = logo + paddings do header */
+  min-height: calc(var(--logo-size) + 2 * var(--header-pad));
+  gap: 12px;
+}
+
+.utensilios-page .brand img{
+  height: var(--logo-size);
+}
+
+.utensilios-page .brand-text{
+  font-size: clamp(16px, 1.7vw, 20px);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.utensilios-page .nav a{
+  padding: 8px 10px;            /* compacta os links do menu */
+}
+
+/* Mobile: mantém tudo confortável */
 @media (max-width: 900px){
-  /* botão aparece no mobile */
-  .nav-toggle{ display: inline-block; }
-
-  /* o container precisa ser referência pro dropdown absoluto */
-  .site-header .container{ position: relative; }
-
-  /* nav vira dropdown abaixo do header */
-  .nav{
-    display: none;
-    position: absolute;
-    left: 0; right: 0;
-    top: 100%;
-    margin-top: 8px;
-    background: color-mix(in hsl, var(--panel) 92%, transparent);
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-    padding: 10px 16px;
-    z-index: 39;
+  .utensilios-page{
+    --logo-size: 32px;
+    --header-pad: 4px;
   }
-  .nav.is-open{ display: block; }
-
-  .nav a{
-    display: block;
-    padding: 12px;
-    border-radius: 10px;
-  }
-
-  /* fundo “fixed” dá bug em mobile; deixa rolar */
-  body { background-attachment: scroll; }
-/* Header base */
-.site-header{
-  position: sticky; top: 0; z-index: 40;
-  background: rgba(15,10,8,.9); border-bottom: 1px solid #2a1a14;
-  padding-top: env(safe-area-inset-top); /* evita notch cobrir no iOS */
+  .utensilios-page .nav a{ padding: 10px 12px; }
 }
-.headerbar{ position: relative; }
-.site-header .container{
-  display: flex; align-items: center; justify-content: space-between; gap: 16px;
-}
-
-/* Marca */
-.brand{ display:flex; align-items:center; gap:.6rem; min-width:0; }
-.brand img{ height:44px; width:auto; border-radius:50%; display:block; }
-.brand-text{ white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-weight:800; }
-
-/* Navegação (desktop) */
-.nav{ display:flex; gap:12px; }
-.nav a{ color:var(--muted); padding:10px 12px; border-radius:10px; }
-.nav a:hover{ color:#fff; background:rgba(255,255,255,.06); }
-
-/* Botão hambúrguer (esconde no desktop) */
-.nav-toggle{
-  display:none; border:0; background:transparent; width:40px; height:40px; border-radius:10px;
-  position:relative; cursor:pointer;
-}
-.nav-toggle .bar{
-  position:absolute; left:9px; right:9px; height:2px; background:#fff; border-radius:1px;
-  transition:transform .2s, opacity .2s, top .2s;
-}
-.nav-toggle .bar:nth-child(1){ top:12px; }
-.nav-toggle .bar:nth-child(2){ top:19px; }
-.nav-toggle .bar:nth-child(3){ top:26px; }
-.nav-toggle[aria-expanded="true"] .bar:nth-child(1){ top:19px; transform:rotate(45deg); }
-.nav-toggle[aria-expanded="true"] .bar:nth-child(2){ opacity:0; }
-.nav-toggle[aria-expanded="true"] .bar:nth-child(3){ top:19px; transform:rotate(-45deg); }
-
-/* Mobile: menu drop-down */
-@media (max-width: 900px){
-  .nav-toggle{ display:block; }
-  .nav{
-    position:absolute; left:16px; right:16px; top:calc(100% + 6px);
-    display:none; flex-direction:column; gap:6px;
-    background:rgba(15,10,8,.95); border:1px solid #2a1a14; border-radius:12px;
-    padding:8px; box-shadow:0 10px 30px rgba(0,0,0,.45);
-  }
-  .nav.is-open{ display:flex; }
-  .nav a{ padding:12px; background:transparent; }
-  .brand img{ height:36px; } /* logo um pouco menor no mobile */
-}
-
-/* Footer: ícones menores no mobile */
-.site-footer .social a{ padding:6px; }
-.site-footer .social svg{ width:18px; height:18px; }
-@media (max-width:520px){
-  .footerbar{ gap:12px; }
-  .footer-nav a{ padding:6px 8px; }
-}
-/* ===== Header responsivo (mobile fix) ===== */
-.site-header{ position:sticky; top:0; z-index:100; }
-.headerbar{
-  display:flex; align-items:center; justify-content:space-between;
-  gap:12px; padding-block:10px; min-height:64px;
-}
-.brand{ display:inline-flex; align-items:center; gap:.6rem; min-width:0; }
-.brand img{ height:40px; width:40px; border-radius:50%; flex:0 0 auto; }
-.brand-text{ white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:60vw; }
-
-/* botão hambúrguer */
-.nav-toggle{
-  display:none; width:40px; height:40px; border:0;
-  background:rgba(255,255,255,.06); border-radius:12px;
-  align-items:center; justify-content:center;
-}
-.nav-toggle .bar{ display:block; width:18px; height:2px; margin:2px 0; border-radius:2px; background:#fff; }
-
-/* menu drop-down */
-@media (max-width:900px){
-  .nav-toggle{ display:inline-flex; order:2; }
-  #primary-nav{
-    position:absolute; top:100%; left:0; right:0; display:none;
-    background:rgba(15,10,8,.98); border-top:1px solid #2a1a14;
-    padding:10px 16px;
-  }
-  #primary-nav.is-open{ display:block; }
-  #primary-nav a{ display:block; padding:12px 2px; }
-
-  /* evita o texto da marca colidir com o botão */
-  .brand-text{ max-width:48vw; }
-}
-
-/* telas bem pequenas: mostra só o ícone para não quebrar o layout */
-@media (max-width:420px){
-  .brand-text{ display:none; }
-}
-
-/* ===== Cookie banner acima do rodapé ===== */
-.cookie-banner{ z-index:9999; }               /* garante ficar por cima do footer */
-body.has-cookie-banner{ padding-bottom:96px; } /
-
-/* ===== Rodapé central, 3 linhas (links • redes • copyright) ===== */
-.site-footer .footerbar{
+/* ===== Footer global: copyright alinhado à esquerda ===== */
+.site-footer .container.footerbar{
   display: flex;
-  flex-direction: column;      /* empilha tudo em coluna */
-  align-items: center;          /* centraliza na horizontal */
-  justify-content: center;
-  gap: 10px;
-  text-align: center;
-  padding-block: 16px;
+  flex-direction: row;          /* desktop em linha */
+  align-items: center;
+  justify-content: flex-start;  /* começa à esquerda */
+  gap: 14px;
+  flex-wrap: nowrap;
 }
 
-/* 1ª linha: Termos • Privacidade • Sitemap (sempre no topo) */
-.site-footer .footerbar .footer-nav{
-  order: 1;
-  display: flex;
-  gap: 15px;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-/* 2ª linha: redes sociais no meio */
-.site-footer .footerbar .social{
-  order: 2;
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin: 0 !important;        /* override de regras antigas */
-}
-
-/* 3ª linha: copyright */
-.site-footer .footerbar .copyright{
-  order: 3;
+.site-footer .copyright{
   margin: 0;
-  opacity: .9;
+  margin-right: auto;           /* empurra o resto pro lado direito */
+  text-align: left;
+  white-space: nowrap;          /* evita quebrar em 2 linhas */
 }
 
-/* se existir esta regra antiga, garantimos que não empurre as redes p/ direita */
-.site-footer .social{ margin-left: 0 !important; }
+.site-footer .social{
+  margin: 0 18px 0 24px;        /* respiro entre copyright e redes */
+  flex-wrap: nowrap;
+}
 
-/* opcional: no mobile pode ser um pouco menos */
-@media (max-width: 480px){
-  .site-footer .footerbar .footer-nav{
-    transform: translateX(-6px);
+.site-footer .footer-nav{
+  margin: 0;                    /* encosta nos chips de redes */
+  display: flex;
+  gap: 14px;
+}
+
+/* Mobile: empilha e centraliza pra caber bem */
+@media (max-width: 720px){
+  .site-footer .container.footerbar{
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
   }
-}
-/* Copyright menor apenas no mobile */
-@media (max-width: 600px){
   .site-footer .copyright{
-    font-size: 0.60rem;    /* ajuste fino: 0.80–0.90rem */
-    line-height: 1.3;
-    text-align: center;    /* garante alinhamento ao centro */
-    letter-spacing: .1px;  /* opcional, melhora a leitura */
+    order: 3;
+    width: 100%;
+    text-align: center;
+    margin: 0;
   }
+  .site-footer .social{ order: 1; margin: 0; }
+  .site-footer .footer-nav{ order: 2; }
 }
 
-/* Se quiser ainda menor em telas muito pequenas */
-@media (max-width: 380px){
+/* TODO .container usa o mesmo cálculo */
+.container{
+  width: min(100% - 2*var(--page-gutter), var(--page-max));
+  margin-inline: auto;
+  padding-inline: var(--page-gutter) !important; /* vence variações antigas */
+}
+
+/* ===== FOOTER ALINHADO À ESQUERDA ===== */
+.site-footer .container.footerbar{
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: nowrap;
+  padding-inline: var(--page-gutter) !important; /* garante o mesmo gutter */
+}
+
+.site-footer .copyright{
+  margin: 0;
+  margin-right: auto;         /* empurra redes/links para a direita */
+  text-align: left;
+  white-space: nowrap;        /* evita quebrar em 2 linhas */
+}
+
+.site-footer .social{
+  margin: 0 18px 0 24px;      /* respiro entre copyright e redes */
+  flex-wrap: nowrap;
+}
+
+.site-footer .footer-nav{
+  margin: 0;
+  display: flex;
+  gap: 14px;
+}
+
+/* Mobile: empilha sem desalinhamento */
+@media (max-width: 720px){
+  .site-footer .container.footerbar{
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
   .site-footer .copyright{
-    font-size: 0.50rem;
+    order: 3;
+    width: 100%;
+    text-align: center;
+    margin: 0;
+  }
+  .site-footer .social{ order: 1; margin: 0; }
+  .site-footer .footer-nav{ order: 2; }
+}
+/* ===== CONTAINER GLOBAL (único padrão) ===== */
+:root{
+  --page-max: 1080px;
+  --page-gutter: 16px;          /* gutter base */
+}
+@media (min-width: 1200px){
+  :root{ --page-gutter: 24px; } /* gutter desktop */
+}
+
+.container{
+  width: min(100% - 2*var(--page-gutter), var(--page-max));
+  margin-inline: auto !important;
+  padding-left: var(--page-gutter) !important;
+  padding-right: var(--page-gutter) !important;
+}
+
+/* ===== FOOTER ALINHADO AO CONTAINER ===== */
+.site-footer .container.footerbar{
+  width: min(100% - 2*var(--page-gutter), var(--page-max));
+  margin-inline: auto !important;
+  padding-left: var(--page-gutter) !important;
+  padding-right: var(--page-gutter) !important;
+
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: nowrap;
+}
+
+.site-footer .copyright{
+  margin: 0;
+  margin-right: auto;     /* empurra redes/links para a direita */
+  white-space: nowrap;
+}
+.site-footer .social{
+  margin: 0 16px 0 24px;  /* respiro entre copyright e redes */
+  flex-wrap: nowrap;
+}
+.site-footer .footer-nav{
+  margin: 0;
+  display: flex;
+  gap: 14px;
+}
+
+/* Mobile: empilha sem desalinho */
+@media (max-width: 720px){
+  .site-footer .container.footerbar{
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+  .site-footer .copyright{
+    order: 3; width: 100%; text-align: center; margin: 0;
+  }
+  .site-footer .social{ order: 1; margin: 0; }
+  .site-footer .footer-nav{ order: 2; }
+}
+/* ===== FIX GLOBAL DE ALINHAMENTO (cole no FINAL do styles.css) ===== */
+:root{
+  --page-max: 1080px;
+  --page-gutter: 16px;         /* mobile / base */
+}
+@media (min-width: 1200px){
+  :root{ --page-gutter: 24px; }/* desktop */
+}
+
+/* 1) Um único padrão de container (força ganhar a cascata) */
+html body .container{
+  width: min(100% - 2*var(--page-gutter), var(--page-max)) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding-left: var(--page-gutter) !important;
+  padding-right: var(--page-gutter) !important;
+}
+
+/* 2) Footer alinhado ao mesmo container */
+html body .site-footer .container.footerbar{
+  width: min(100% - 2*var(--page-gutter), var(--page-max)) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding-left: var(--page-gutter) !important;
+  padding-right: var(--page-gutter) !important;
+
+  display: flex !important;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: nowrap;
+}
+
+/* 3) Remove “empurrões” que desalinham */
+html body .site-footer .social{
+  margin: 0 !important;        /* zera qualquer margem herdada */
+  flex-wrap: nowrap;
+}
+html body .site-footer .footer-nav{
+  margin: 0 !important;
+  display: flex;
+  gap: 14px;
+}
+html body .site-footer .copyright{
+  margin: 0 !important;
+  margin-right: auto !important; /* mantém os links à direita */
+  white-space: nowrap;
+}
+
+/* 4) Mobile: pode empilhar sem perder o alinhamento lateral */
+@media (max-width: 720px){
+  html body .site-footer .container.footerbar{
+    flex-wrap: wrap;
+    justify-content: center;
+    row-gap: 8px;
+  }
+  html body .site-footer .copyright{
+    order: 3; width: 100%; text-align: center; margin: 0 !important;
+  }
+  html body .site-footer .social{ order: 1; }
+  html body .site-footer .footer-nav{ order: 2; }
+}
+/* ===== PADRÃO ÚNICO DE LARGURA/GUTTER ===== */
+:root{
+  --page-max: 1080px;
+  --page-gutter: 16px;               /* mobile/base */
+}
+@media (min-width: 1200px){
+  :root{ --page-gutter: 24px; }      /* desktop */
+}
+
+/* 1) Container único para todas as seções */
+html body .container{
+  width: min(100% - 2*var(--page-gutter), var(--page-max)) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding-left: var(--page-gutter) !important;
+  padding-right: var(--page-gutter) !important;
+}
+
+/* 2) Footer usando o MESMO container */
+html body .site-footer .container.footerbar{
+  width: min(100% - 2*var(--page-gutter), var(--page-max)) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding-left: var(--page-gutter) !important;
+  padding-right: var(--page-gutter) !important;
+
+  display: flex !important;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: nowrap;
+  justify-content: flex-start !important;
+}
+
+html body .site-footer .copyright{
+  margin: 0 !important;
+  margin-right: auto !important;      /* empurra redes/links p/ direita */
+  white-space: nowrap !important;
+  text-align: left !important;
+}
+
+html body .site-footer .social,
+html body .site-footer .footer-nav{
+  margin: 0 !important;
+  display: flex !important;
+  gap: 14px !important;
+  flex-wrap: nowrap !important;
+}
+
+/* 3) Mobile: empilha mantendo o mesmo gutter */
+@media (max-width: 720px){
+  html body .site-footer .container.footerbar{
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    row-gap: 8px !important;
+  }
+  html body .site-footer .copyright{
+    order: 3; width: 100%; text-align: center !important; margin: 0 !important;
+  }
+  html body .site-footer .social{ order: 1; }
+  html body .site-footer .footer-nav{ order: 2; }
+}
+/* ===== FIX DEFINITIVO: footer alinhado ao container global ===== */
+
+/* Mesmos parâmetros usados no site todo */
+:root{
+  --page-max: 1080px;
+  --page-gutter: 16px;           /* mobile/base */
+}
+@media (min-width: 1200px){
+  :root{ --page-gutter: 24px; }  /* desktop */
+}
+
+/* 1) Força o mesmo container no footer (com e sem .footerbar) */
+.site-footer > .container,
+.site-footer > .container.footerbar{
+  width: min(100% - 2*var(--page-gutter), var(--page-max)) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding-left: var(--page-gutter) !important;
+  padding-right: var(--page-gutter) !important;
+
+  display: flex !important;
+  align-items: center !important;
+  gap: 14px !important;
+  flex-wrap: nowrap !important;
+  justify-content: flex-start !important;   /* texto começa à esquerda */
+}
+
+/* 2) Zera empurrões que desalinham */
+.site-footer .copyright{
+  margin: 0 !important;
+  margin-right: auto !important;           /* redes/links vão para a direita */
+  white-space: nowrap !important;
+  text-align: left !important;
+}
+.site-footer .social,
+.site-footer .footer-nav{
+  margin: 0 !important;
+  display: flex !important;
+  gap: 14px !important;
+  flex-wrap: nowrap !important;
+}
+
+/* 3) Garante que o próprio footer não tenha paddings laterais extras */
+.site-footer{
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+/* 4) Mobile: pode empilhar mantendo o mesmo gutter */
+@media (max-width: 720px){
+  .site-footer > .container,
+  .site-footer > .container.footerbar{
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    row-gap: 8px !important;
+  }
+  .site-footer .copyright{
+    order: 3; width: 100%; text-align: center !important; margin: 0 !important;
+  }
+  .site-footer .social{ order: 1; }
+  .site-footer .footer-nav{ order: 2; }
+}
+/* === FIX: footer alinhado ao container global (colar NO FINAL) === */
+:root{
+  --page-max: 1080px;
+  --page-gutter: 16px;           /* base/mobile */
+}
+@media (min-width: 1200px){
+  :root{ --page-gutter: 24px; }  /* desktop */
+}
+
+.site-footer > .container,
+.site-footer > .container.footerbar{
+  width: min(100% - 2*var(--page-gutter), var(--page-max)) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding-left: var(--page-gutter) !important;
+  padding-right: var(--page-gutter) !important;
+
+  display: flex !important;
+  align-items: center !important;
+  gap: 14px !important;
+  flex-wrap: nowrap !important;
+  justify-content: flex-start !important;  /* começa alinhado à esquerda */
+}
+
+/* elementos internos sem “empurrões” */
+.site-footer .copyright{
+  margin: 0 !important;
+  margin-right: auto !important;           /* redes/links vão para a direita */
+  white-space: nowrap !important;
+  text-align: left !important;
+}
+.site-footer .social,
+.site-footer .footer-nav{
+  margin: 0 !important;
+  display: flex !important;
+  gap: 14px !important;
+  flex-wrap: nowrap !important;
+}
+
+/* mobile: pode empilhar, mantendo os mesmos gutters */
+@media (max-width: 720px){
+  .site-footer > .container,
+  .site-footer > .container.footerbar{
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    row-gap: 8px !important;
+  }
+  .site-footer .copyright{
+    order: 3; width: 100%; text-align: center !important; margin: 0 !important;
+  }
+  .site-footer .social{ order: 1; }
+  .site-footer .footer-nav{ order: 2; }
+}
+/* === FOOTER ALINHADO: copy à ESQ • redes no MEIO • links à DIR === */
+html body .site-footer .container.footerbar{
+  display: grid !important;
+  grid-template-columns: 1fr auto 1fr;
+  grid-template-areas: "copy social links";
+  align-items: center;
+  gap: 14px;
+  width: min(100% - 2*var(--page-gutter), var(--page-max)) !important;
+  margin-inline: auto !important;
+  padding-inline: var(--page-gutter) !important;
+}
+
+/* Áreas */
+html body .site-footer .copyright{
+  grid-area: copy;
+  justify-self: start;
+  margin: 0 !important;
+  white-space: nowrap;
+}
+html body .site-footer .social{
+  grid-area: social;
+  justify-self: center;
+  margin: 0 !important;
+  display: flex; gap: 10px; flex-wrap: wrap;
+}
+html body .site-footer .footer-nav{
+  grid-area: links;
+  justify-self: end;
+  margin: 0 !important;
+  display: flex; gap: 14px; flex-wrap: wrap;
+}
+
+/* Mobile: empilha centralizado (redes • links • copy) */
+@media (max-width: 720px){
+  html body .site-footer .container.footerbar{
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "social"
+      "links"
+      "copy";
+    row-gap: 8px;
+    text-align: center;
+  }
+  html body .site-footer .copyright,
+  html body .site-footer .social,
+  html body .site-footer .footer-nav{
+    justify-self: center;
   }
 }
-<<<<<<< HEAD
-.comment-list{list-style:none;padding:0;margin:14px 0 0;display:grid;gap:10px}
-.comment-list li{
-  background:rgba(255,255,255,.04);
-  border:1px solid #2a1a14;border-radius:12px;padding:12px
+/* === FOOTER ALINHADO: copy à ESQ • redes no MEIO • links à DIR === */
+html body .site-footer .container.footerbar{
+  display: grid !important;
+  grid-template-columns: 1fr auto 1fr;
+  grid-template-areas: "copy social links";
+  align-items: center;
+  gap: 14px;
+  width: min(100% - 2*var(--page-gutter), var(--page-max)) !important;
+  margin-inline: auto !important;
+  padding-inline: var(--page-gutter) !important;
 }
-.comment-meta{color:var(--muted);font-size:.9rem;margin-bottom:6px}
-=======
->>>>>>> d8b9befc1d4ff76a41338d93ecf679b159a04e6f
+
+/* Áreas */
+html body .site-footer .copyright{
+  grid-area: copy;
+  justify-self: start;
+  margin: 0 !important;
+  white-space: nowrap;
+}
+html body .site-footer .social{
+  grid-area: social;
+  justify-self: center;
+  margin: 0 !important;
+  display: flex; gap: 10px; flex-wrap: wrap;
+}
+html body .site-footer .footer-nav{
+  grid-area: links;
+  justify-self: end;
+  margin: 0 !important;
+  display: flex; gap: 14px; flex-wrap: wrap;
+}
+
+/* Mobile: empilha centralizado (redes • links • copy) */
+@media (max-width: 720px){
+  html body .site-footer .container.footerbar{
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "social"
+      "links"
+      "copy";
+    row-gap: 8px;
+    text-align: center;
+  }
+  html body .site-footer .copyright,
+  html body .site-footer .social,
+  html body .site-footer .footer-nav{
+    justify-self: center;
+  }
+}
+/* ===== FOOTER: alinhamento definitivo ao container ===== */
+html body .site-footer{ padding-left:0 !important; padding-right:0 !important; }
+
+html body .site-footer > .container.footerbar{
+  width: min(100% - 2*var(--page-gutter), var(--page-max)) !important;
+  margin-inline: auto !important;
+  padding-inline: var(--page-gutter) !important;
+
+  display: grid !important;
+  grid-template-columns: 1fr auto auto; /* 3 colunas: esq • meio • dir */
+  align-items: center !important;
+  gap: 12px !important;
+}
+
+html body .site-footer .copyright{
+  margin: 0 !important;
+  white-space: nowrap !important;
+  justify-self: start !important;   /* cola na borda esquerda do container */
+}
+
+html body .site-footer .social{
+  margin: 0 !important;
+  justify-self: center !important;  /* fica exatamente no meio */
+  display: flex !important;
+  gap: 40px !important;
+}
+
+html body .site-footer .footer-nav{
+  margin: 0 !important;
+  justify-self: end !important;     /* alinha pela borda direita do container */
+  display: flex !important;
+  gap: 14px !important;
+  width: auto !important;           /* evita larguras herdadas estranhas */
+}
+html body .site-footer .footer-nav a{ white-space: nowrap; }
+
+/* Mobile: empilha mantendo os mesmos gutters */
+@media (max-width: 720px){
+  html body .site-footer > .container.footerbar{
+    grid-template-columns: 1fr !important;
+    justify-items: center !important;
+    row-gap: 8px !important;
+  }
+  html body .site-footer .social{ order:1; }
+  html body .site-footer .footer-nav{ order:2; }
+  html body .site-footer .copyright{ order:3; text-align:center !important; }
+}
+/* === FOOTER: alinhado ao container e sem vazamento === */
+.site-footer { padding: 0; }
+
+.site-footer > .container,
+.site-footer .container.footerbar{
+  width: min(100% - 2*var(--page-gutter), var(--page-max)) !important;
+  margin-inline: auto !important;
+  padding-inline: var(--page-gutter) !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  flex-wrap: nowrap !important;   /* tudo em 1 linha no desktop */
+  justify-content: flex-start !important;
+}
+
+.site-footer .copyright{
+  flex: 1 1 auto !important;      /* ocupa o espaço “elástico” da esquerda */
+  margin: 0 !important;
+  white-space: nowrap !important;
+  min-width: 0 !important;
+  text-align: left !important;
+}
+
+.site-footer .social{
+  margin: 0 !important;
+  flex: 0 1 auto !important;
+  min-width: 0 !important;
+}
+
+.site-footer .footer-nav{
+  margin: 0 0 0 auto !important;  /* encosta à direita, mas dentro do container */
+  display: flex !important;
+  gap: 12px !important;
+  flex: 0 1 auto !important;      /* pode encolher; não estoura o container */
+  min-width: 0 !important;
+  position: static !important;
+  transform: none !important;
+}
+
+/* links um pouco mais compactos */
+.site-footer .footer-nav a{ padding: 6px 8px; }
+
+/* Quando faltar espaço, quebra em 2 linhas sem desalinhamento */
+@media (max-width: 1100px){
+  .site-footer .container.footerbar{
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    row-gap: 8px !important;
+  }
+  .site-footer .social{ order: 1; }
+  .site-footer .footer-nav{
+    order: 2; width: 100%; justify-content: center;
+  }
+  .site-footer .copyright{
+    order: 3; width: 100%; text-align: center !important;
+  }
+}
+/* === FOOTER: layout estável e alinhado ao container === */
+:root{
+  --page-max: 1080px;
+  --page-gutter: clamp(16px, 3vw, 24px);
+}
+
+.site-footer{ padding:0; }
+
+/* usa o MESMO container do site e grade 3 colunas */
+.site-footer .container.footerbar{
+  width: min(100% - 2*var(--page-gutter), var(--page-max)) !important;
+  margin-inline: auto !important;
+  padding-inline: var(--page-gutter) !important;
+
+  display: grid !important;                 /* <- troca flex por GRID */
+  grid-template-columns: 1fr auto auto;     /* copyright | social | links */
+  align-items: center;
+  column-gap: 14px;
+  row-gap: 8px;
+  justify-content: initial !important;      /* neutraliza overrides antigos */
+}
+
+/* zera empurrões herdados */
+.site-footer .copyright,
+.site-footer .social,
+.site-footer .footer-nav{
+  margin: 0 !important;
+}
+
+/* copyright à esquerda, sem quebrar */
+.site-footer .copyright{
+  white-space: nowrap;
+}
+
+/* grupos da direita lado a lado, com wrap se faltar espaço */
+.site-footer .social,
+.site-footer .footer-nav{
+  display: flex !important;
+  gap: 10px;
+  flex-wrap: wrap;                           /* permite quebrar, não sobrepor */
+}
+
+/* responsivo: empilha e centraliza */
+@media (max-width: 800px){
+  .site-footer .container.footerbar{
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+  .site-footer .footer-nav{ order: 1; }
+  .site-footer .social{ order: 2; }
+  .site-footer .copyright{
+    order: 3;
+    text-align: center;
+  }
+}
+/* === FOOTER estável + redes SÓ COM ÍCONES === */
+
+/* usa o mesmo container e 3 colunas */
+.site-footer .container.footerbar{
+  width: min(100% - 2*var(--page-gutter), var(--page-max)) !important;
+  margin-inline: auto !important;
+  padding-inline: var(--page-gutter) !important;
+
+  display: grid !important;
+  grid-template-columns: 1fr auto auto;  /* copyright | social | links */
+  align-items: center;
+  column-gap: 14px;
+  row-gap: 8px;
+}
+
+/* MUITO IMPORTANTE: deixa os itens encolherem sem sobrepor */
+.site-footer .container.footerbar > *{ min-width: 0 !important; }
+
+/* zera possíveis “empurrões” herdados */
+.site-footer .copyright,
+.site-footer .social,
+.site-footer .footer-nav{ margin: 0 !important; }
+
+/* --- Redes: só ícones, nunca sobrepõe --- */
+.site-footer .social{
+  display: flex !important;
+  gap: 8px;
+  flex-wrap: wrap;                 /* se faltar espaço, quebra */
+}
+
+.site-footer .social a{
+  position: static !important;     /* mata qualquer absolute antigo */
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 36px;                     /* tamanho do botão */
+  height: 36px;
+  padding: 0 !important;
+  border-radius: 999px !important; /* redondo */
+  background: rgba(255,255,255,.06);
+  border: 1px solid #2a1a14;
+  color: #e5e7eb;
+  overflow: hidden;                /* esconde textos residuais */
+  line-height: 1;
+  font-size: 0 !important;         /* esconde o texto do link se houver */
+  gap: 0 !important;               /* evita “chips” largos */
+}
+
+.site-footer .social a:hover{
+  transform: translateY(-2px);
+  background: rgba(255,255,255,.12);
+  border-color: #3a281f;
+}
+
+.site-footer .social svg{
+  width: 18px; height: 18px;       /* tamanho do ícone */
+  display: block;
+  stroke: currentColor;
+  fill: none;
+}
+
+/* se você tiver <span class="label">Instagram</span> dentro do link */
+.site-footer .social a .label{
+  position: absolute !important;
+  width: 1px; height: 1px;
+  overflow: hidden; white-space: nowrap;
+  clip: rect(1px,1px,1px,1px);
+}
+
+/* --- Links “Termos • Privacidade • Sitemap” --- */
+.site-footer .footer-nav{
+  display: flex !important;
+  gap: 14px;
+  flex-wrap: wrap;                 /* quebra bonitinho quando faltar espaço */
+}
+
+.site-footer .footer-nav a{ white-space: nowrap; }
+/* ===== Só ícones no rodapé (reset forte) ===== */
+:root{ --social-ico: 24px; } /* ajuste fino do tamanho */
+
+.site-footer .footerbar{
+  display:flex; align-items:center; gap:14px;
+  flex-wrap:nowrap; /* quebra só no mobile (abaixo) */
+}
+
+/* grupo do meio: apenas ícones */
+.site-footer .social.social-icons-only{
+  display:flex; align-items:center; gap:12px;
+  flex: 0 0 auto; min-width:0;
+}
+
+/* zera os “chips” antigos e garante só o ícone */
+.site-footer .social.social-icons-only a{
+  width: var(--social-ico);
+  height: var(--social-ico);
+  display:inline-flex; align-items:center; justify-content:center;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: var(--muted);            /* se o SVG usar currentColor */
+  transition: transform .15s ease, opacity .2s ease, color .2s ease;
+}
+.site-footer .social.social-icons-only a:hover{
+  transform: translateY(-2px);
+  color:#fff;
+}
+
+/* o arquivo SVG vira “bloco” e ocupa 100% do quadrado */
+.site-footer .social.social-icons-only img,
+.site-footer .social.social-icons-only svg{
+  width:100%; height:100%; display:block;
+}
+
+/* se seus SVGs tiverem stroke/fill = currentColor, estas linhas colorem eles */
+.site-footer .social.social-icons-only svg [stroke] { stroke: currentColor; }
+.site-footer .social.social-icons-only svg [fill="currentColor"],
+.site-footer .social.social-icons-only svg .icon-fill { fill: currentColor; }
+
+/* mantém copyright à esquerda e links à direita */
+.site-footer .copyright{ margin:0; margin-right:auto; white-space:nowrap; }
+.site-footer .footer-nav{ margin-left:auto; display:flex; gap:14px; }
+
+/* Mobile: pode empilhar sem atropelar nada */
+@media (max-width: 720px){
+  .site-footer .footerbar{
+    flex-wrap: wrap;
+    justify-content: center;
+    row-gap: 10px;
+  }
+  .site-footer .copyright{
+    order:3; width:100%; text-align:center; margin:0;
+  }
+  .site-footer .social{ order:1; }
+  .site-footer .footer-nav{ order:2; }
+}

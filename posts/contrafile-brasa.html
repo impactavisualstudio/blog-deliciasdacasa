@@ -97,27 +97,24 @@
   </script>
 </head>
 <body>
-  <header class="site-header">
+<header class="site-header">
   <div class="container headerbar">
-    <a class="brand" href="/" aria-label="Delícias da Casa — Início">
-      <img
-        src="/assets/images/logo-delicias-da-casa.svg"
-        srcset="/assets/images/logo-delicias-da-casa.svg 1x, /assets/images/logo-delicias-da-casa.svg 2x"
-        alt="Delícias da Casa" width="44" height="44">
+    <a class="brand" href="/index.html" aria-label="Delícias da Casa — Início">
+      <img src="/assets/images/logo-delicias-da-casa.svg" alt="Delícias da Casa" width="44" height="44">
       <span class="brand-text">Delícias da Casa</span>
     </a>
 
-    <!-- botão hambúrguer -->
     <button class="nav-toggle" aria-label="Abrir menu" aria-controls="primary-nav" aria-expanded="false">
       <span class="bar"></span><span class="bar"></span><span class="bar"></span>
     </button>
 
     <nav id="primary-nav" class="nav" aria-label="Navegação principal">
-      <a href="/">Início</a>
+      <a href="/index.html">Início</a>
       <a href="/receitas.html">Receitas</a>
       <a href="/sobre.html">Sobre</a>
       <a href="/contato.html">Contato</a>
       <a href="/politica-privacidade.html">Privacidade</a>
+      <a href="/utensilios.html">Utensílios</a>
     </nav>
   </div>
 </header>
@@ -222,67 +219,42 @@
 
   </main>
 
-  <footer class="site-footer">
+<footer class="site-footer">
   <div class="container footerbar">
-    <p class="copyright">© <span id="ano"></span> Delícias da Casa — Conteúdo original.</p>
+    <p class="copyright">© 2025 Delícias da Casa — Conteúdo original.</p>
 
-    <nav class="social" aria-label="Redes sociais">
-      <!-- Instagram -->
+    <!-- SÓ ÍCONES -->
+    <nav class="social social-icons-only" aria-label="Redes sociais">
       <a href="https://www.instagram.com/bruno_b_hidalgo/?next=%2F" target="_blank" rel="noopener" aria-label="Instagram">
-        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
-          <rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.6"/>
-          <circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.6"/>
-          <circle cx="17.3" cy="6.7" r="1.2" class="icon-fill"/>
-        </svg>
+        <img src="/assets/icons/instagram.svg" alt="" aria-hidden="true">
       </a>
-
-      <!-- YouTube -->
       <a href="https://www.youtube.com/@ImpactaVisualStudio" target="_blank" rel="noopener" aria-label="YouTube">
-        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
-          <rect x="2.5" y="6" width="19" height="12" rx="3" fill="none" stroke="currentColor" stroke-width="1.6"/>
-          <polygon points="10,9 16,12 10,15" class="icon-fill"/>
-        </svg>
+        <img src="/assets/icons/youtube.svg" alt="" aria-hidden="true">
       </a>
-
-      <!-- TikTok -->
       <a href="https://www.tiktok.com/@impactavisualstudio" target="_blank" rel="noopener" aria-label="TikTok">
-        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
-          <path d="M14 4v6.5a4.5 4.5 0 1 1-3.5 7V13.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-          <circle cx="10.5" cy="16" r="2.2" class="icon-fill"/>
-        </svg>
+        <img src="/assets/icons/tiktok.svg" alt="" aria-hidden="true">
       </a>
-
-      <!-- X (Twitter) -->
       <a href="https://x.com/deliciasdecarne" target="_blank" rel="noopener" aria-label="X (Twitter)">
-        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
-          <path d="M4 4L20 20M20 4L9.5 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-        </svg>
+        <img src="/assets/icons/twitter.svg" alt="" aria-hidden="true">
       </a>
-
-      <!-- Facebook -->
       <a href="https://www.facebook.com/bruno.hidalgo.143042" target="_blank" rel="noopener" aria-label="Facebook">
-        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
-          <rect x="3" y="3" width="18" height="18" rx="3" fill="none" stroke="currentColor" stroke-width="1.6"/>
-          <path d="M13 10h3V7h-3c-2.2 0-3.5 1.5-3.5 3.3V12H7.8v3H9.5v4h3v-4h2.8l.5-3H12v-1c0-.6.4-1 1-1Z" class="icon-fill"/>
-        </svg>
+        <img src="/assets/icons/facebook.svg" alt="" aria-hidden="true">
       </a>
-
-      <!-- WhatsApp -->
       <a href="https://wa.me/5511949236034?text=Gostei%20do%20site%20Del%C3%ADcias%20da%20Casa" target="_blank" rel="noopener" aria-label="WhatsApp">
-        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
-          <path d="M12 4a8 8 0 0 0-6.9 12.1L4 21l4.9-1.3A8 8 0 1 0 12 4Z" fill="none" stroke="currentColor" stroke-width="1.6"/>
-          <path d="M8.8 10.2c.2-.2.5-.2.7 0l1 .8c.2.2.3.4.2.7l-.2.6c.8 1.1 1.8 1.9 3 2.4l.5-.4c.2-.2.5-.2.7 0l1 .9c.2.2.2.5 0 .7l-.4.5c-.3.4-.8.6-1.3.5-1.7-.2-3.3-1.1-4.7-2.5-1.3-1.3-2.2-2.9-2.4-4.6 0-.5.2-.9.5-1.2Z" class="icon-fill"/>
-        </svg>
+        <img src="/assets/icons/whatsapp.svg" alt="" aria-hidden="true">
       </a>
     </nav>
 
-    <nav class="footer-nav" aria-label="Rodapé">
+    <nav class="footer-nav" aria-label="Links do rodapé">
       <a href="/termos-uso.html">Termos</a>
       <a href="/politica-privacidade.html">Privacidade</a>
       <a href="/sitemap.xml">Sitemap</a>
     </nav>
   </div>
 </footer>
+
+<!-- scripts finais -->
+<script src="/assets/nav.js" defer></script>
 
   <!-- Atualize para a versão do script que tem o rotator -->
 <script defer src="/assets/posts.js?v=10"></script>

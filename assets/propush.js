@@ -35,7 +35,7 @@
   }
 
   // ===== Onde MOSTRAR o soft-prompt (arquivo carrega no site todo) =====
-  const PATH_CAN_ASK = /^\/(posts|produtos)\/[^/]+\.html$/i;
+  const PATH_CAN_ASK = /^(\/(posts|produtos)\/[^/]+\.html|\/(receitas|utensilios)\.html)$/i;
   const canAskHere = PATH_CAN_ASK.test(location.pathname);
 
   // ===== Cooldown & Sessão =====

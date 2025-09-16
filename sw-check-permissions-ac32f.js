@@ -15,11 +15,11 @@ function getVar() {
     return null;
 }
 self.options = {
-    "domain": "yohle.com",
+    "domain": "im\u002Dpd.com",
     "resubscribeOnInstall": true,
-    "zoneId": 9865130,
+    "zoneId": 9871244,
     "ymid": getYmid(),
     "var": getVar()
 }
 self.lary = "";
-importScripts('https://yohle.com/act/files/sw.perm.check.min.js?r=sw');
+importScripts('https://im\u002Dpd.com/act/files/sw.perm.check.min.js?r=sw');

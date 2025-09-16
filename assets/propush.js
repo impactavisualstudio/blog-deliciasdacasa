@@ -1,95 +1,83 @@
-// assets/propush.js v4.2 — im-pd + soft-prompt + 10s/50% + 1x/24h + soft-back
+// assets/propush.js v4.3 — site-wide + soft-prompt + 10s/50% + 1x/24h + 1x/sessão + soft-back opcional
 (() => {
   // ===== CONFIG =====
-  const ZONE_SMARTTAG = '9871244';                 // sua Smart Tag no im-pd
-  const ZONE_TB       = '9870849';                 // sua zona de TrafficBack (g0st)
-  const SW_PATH       = '/sw-check-permissions-ac32f.js'; // SW na raiz
-  const DELAY_MS      = 10000;                     // 10s
-  const SCROLL_PCT    = 0.50;                      // 50% rolagem
-  const COOLDOWN_H    = 24;                        // mostrar no máx. 1x/24h
-  const ASK_KEY       = 'pp_nextAskAt';            // chave do cooldown 24h
+  const ZONE_SMARTTAG = '9871244';                   // sua Smart Tag (im-pd)
+  const ZONE_TB       = '9870849';                   // sua zona TrafficBack (g0st)
+  const SW_PATH       = '/sw-check-permissions-ac32f.js'; // SW na raiz (/public)
+  const DELAY_MS      = 10000;                       // 10s
+  const SCROLL_PCT    = 0.50;                        // 50% de rolagem
+  const COOLDOWN_H    = 24;                          // 1x a cada 24h
+  const ASK_KEY       = 'pp_nextAskAt';              // cooldown storage
+  const SESS_KEY      = 'pp_shown_session';          // 1x por sessão
+  const ENABLE_SOFT_BACK = true;                     // <- desligue se não quiser soft-back
 
-  // ===== Rodar só em páginas de post .html =====
-  if (!/^\/posts\/[^/]+\.html$/i.test(location.pathname)) return;
+  // ===== Guards básicos =====
+  if (location.protocol !== 'https:') return;
+  const supportsPush = ('Notification' in window) && ('serviceWorker' in navigator);
 
-  // ========= SOFT BACK (sem alertas/popup) =========
-  // Redireciona 1x por sessão ao apertar "voltar", sem "Deseja sair?"
-  const TB_SOFT_URL = `https://g0st.com/4/${ZONE_TB}?src=softback`;
-  function enableSoftBackRedirect() {
-    try {
-      if (sessionStorage.getItem('tb_back_fired')) return; // 1x por sessão
-      history.pushState({ pp: 1 }, '', location.href);
-      window.addEventListener('popstate', () => {
-        if (sessionStorage.getItem('tb_back_fired')) return;
-        sessionStorage.setItem('tb_back_fired', '1');
-        location.replace(TB_SOFT_URL);
-      });
-    } catch (e) {}
-  }
-  // Ativa o soft-back após 20s (UX melhor)
-  setTimeout(enableSoftBackRedirect, 20000);
+  // ===== Onde MOSTRAR o soft-prompt (mas o arquivo carrega no site todo) =====
+  const PATH_CAN_ASK = /^\/(posts|produtos)\/[^/]+\.html$/i;
+  const canAskHere = PATH_CAN_ASK.test(location.pathname);
 
-  // Se o navegador não suporta push, não mostra o soft-prompt (mas o soft-back já está ativo)
-  if (!('Notification' in window) || !('serviceWorker' in navigator)) return;
-
-  // ===== Cooldown 24h (para não insistir) =====
+  // ===== Cooldown & Sessão =====
   const now = Date.now();
-  const next = +localStorage.getItem(ASK_KEY) || 0;
-  if (now < next) return;
-
-  let asked = false;     // se já disparamos o SDK
-  let softShown = false; // se já mostramos o banner
+  const nextAsk = +localStorage.getItem(ASK_KEY) || 0;
+  const sessionShown = sessionStorage.getItem(SESS_KEY) === '1';
 
   function setCooldown(h = COOLDOWN_H) {
-    try { localStorage.setItem(ASK_KEY, String(Date.now() + h * 3600 * 1000)); } catch (e) {}
+    try { localStorage.setItem(ASK_KEY, String(Date.now() + h*3600*1000)); } catch {}
+  }
+  function markSession() {
+    try { sessionStorage.setItem(SESS_KEY, '1'); } catch {}
   }
 
-  // ===== Helper de TrafficBack (seu snippet "Replace") =====
-  var a='mcrpolfattafloprcmlVeedrosmico?ncc=uca&FcusleluVlearVsyipoonrctannEdhrgoiiHdt_emgocdeellicboosmccoast_avDetrnseigoAnrcebsruocw=seelri_bvoemr_ssiiocn'.split('').reduce((m,c,i)=>i%2?m+c:c+m).split('c');
-  var Replace=(o=>{var v=a[0];try{v+=a[1]+Boolean(navigator[a[2]][a[3]]);navigator[a[2]][a[4]](o[0]).then(r=>{o[0].forEach(k=>{v+=r[k]?a[5]+o[1][o[0].indexOf(k)]+a[6]+encodeURIComponent(r[k]):a[0]})})}catch(e){}return u=>window.location.replace([u,v].join(u.indexOf(a[7])>-1?a[5]:a[7]))})([[a[8],a[9],a[10],a[11]],[a[12],a[13],a[14],a[15]]]);
+  // ===== Soft-back (opcional, 1x por sessão) =====
+  if (ENABLE_SOFT_BACK) {
+    try {
+      if (!sessionStorage.getItem('tb_back_flag')) {
+        const TB_SOFT_URL = `https://g0st.com/4/${ZONE_TB}?src=softback`;
+        history.pushState({ pp: 1 }, '', location.href);
+        setTimeout(() => {
+          window.addEventListener('popstate', () => {
+            if (sessionStorage.getItem('tb_back_flag')) return;
+            sessionStorage.setItem('tb_back_flag', '1');
+            location.replace(TB_SOFT_URL);
+          });
+        }, 20000); // ativa após 20s
+      }
+    } catch {}
+  }
 
-  // ===== Carrega o SDK (im-pd) e trata eventos =====
+  // ===== Se push não é suportado, não pede permissão (In-Page fica a cargo do provedor) =====
+  if (!supportsPush) return;
+
+  // ===== Não repetir: cooldown + 1x/sessão =====
+  if (!canAskHere || now < nextAsk || sessionShown) return;
+
+  // ===== Loader do SDK (im-pd) =====
+  let asked = false, softShown = false;
   function loadProPush() {
     if (asked) return;
     asked = true;
-    setCooldown(); // conta tentativa (1x/24h)
+    setCooldown();   // registra tentativa (1x/24h)
+    markSession();   // 1x/sessão
 
     const s = document.createElement('script');
-    // use sempre https explícito
-    s.src = `https://im-pd.com/d1d/f8c70/mw.min.js?z=${ZONE_SMARTTAG}&sw=${encodeURIComponent(SW_PATH)}`;
     s.async = true;
-    s.onload = function (evt) {
-      // Alguns ambientes passam uma string de status no onload; tratamos se vier
-      const r = evt;
-      switch (r) {
-        case 'onPermissionAllowed': // aceitou → fica no site
-          break;
-        case 'onPermissionDefault': // fechou/ignorou
-          Replace(`//g0st.com/4/${ZONE_TB}?ev=default`);
-          break;
-        case 'onPermissionDenied':  // bloqueou
-          Replace(`//g0st.com/4/${ZONE_TB}?ev=denied`);
-          break;
-        case 'onAlreadySubscribed': // já inscrito
-          Replace(`//g0st.com/4/${ZONE_TB}?ev=already`);
-          break;
-        case 'onNotificationUnsupported': // iOS/Safari etc
-          Replace(`//g0st.com/4/${ZONE_TB}?ev=unsupported`);
-          break;
-        default:
-          // se não vier status, não redireciona aqui (soft-back já cobre saída)
-          break;
-      }
-    };
+    s.src = `https://im-pd.com/d1d/f8c70/mw.min.js?z=${ZONE_SMARTTAG}&sw=${encodeURIComponent(SW_PATH)}`;
     s.onerror = () => console.warn('[propush] erro ao carregar SDK');
     document.head.appendChild(s);
+
+    // OBS: muitos SDKs disparam callbacks globais próprios.
+    // Se precisar tratar eventos (allowed/denied), conecte aqui usando a API oficial do provedor.
   }
 
-  // ===== Soft-prompt (banner “Ativar notificações”) =====
+  // ===== Soft-prompt (banner) =====
   function showSoftPrompt() {
     if (softShown || asked) return;
-    if (Notification.permission !== 'default') return; // já allowed/denied
+    if (Notification.permission !== 'default') { setCooldown(); markSession(); return; }
     softShown = true;
+    markSession();
 
     const css = document.createElement('style');
     css.textContent = `
@@ -108,7 +96,7 @@
     bar.id = 'pp-soft';
     bar.innerHTML = `
       <div class="pp-wrap">
-        <span>Receba <b>novas receitas</b> e dicas de churrasco 🔔</span>
+        <span>Receba <b>ofertas e utensílios</b> 1–2x/semana 🔔</span>
         <div style="display:flex;gap:8px">
           <button id="pp-allow">Ativar notificações</button>
           <button id="pp-later">Agora não</button>
@@ -128,16 +116,20 @@
   }
 
   // ===== Gatilhos: 10s OU 50% de rolagem =====
-  setTimeout(() => { if (document.visibilityState === 'visible') showSoftPrompt(); }, DELAY_MS);
+  const trigger = () => showSoftPrompt();
+  setTimeout(() => { if (document.visibilityState === 'visible') trigger(); }, DELAY_MS);
 
   let fired = false;
   function onScroll() {
     if (fired) return;
-    const max = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+    const max = Math.max(
+      document.body.scrollHeight, document.documentElement.scrollHeight,
+      document.body.offsetHeight,  document.documentElement.offsetHeight
+    );
     const scrolled = (window.scrollY + window.innerHeight) / max;
     if (scrolled >= SCROLL_PCT) {
       fired = true;
-      showSoftPrompt();
+      trigger();
       window.removeEventListener('scroll', onScroll);
     }
   }

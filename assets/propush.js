@@ -1,21 +1,40 @@
-// assets/propush.js v4.3 — site-wide + soft-prompt + 10s/50% + 1x/24h + 1x/sessão + soft-back opcional
+// assets/propush.js v4.4 — site-wide + auto-subscribe(granted) + soft-prompt + 10s/50% + 1x/24h + 1x/sessão
 (() => {
   // ===== CONFIG =====
   const ZONE_SMARTTAG = '9871244';                   // sua Smart Tag (im-pd)
-  const ZONE_TB       = '9870849';                   // sua zona TrafficBack (g0st)
+  const ZONE_TB       = '9870849';                   // sua zona TrafficBack (g0st) — só se usar soft-back
   const SW_PATH       = '/sw-check-permissions-ac32f.js'; // SW na raiz (/public)
   const DELAY_MS      = 10000;                       // 10s
   const SCROLL_PCT    = 0.50;                        // 50% de rolagem
   const COOLDOWN_H    = 24;                          // 1x a cada 24h
-  const ASK_KEY       = 'pp_nextAskAt';              // cooldown storage
-  const SESS_KEY      = 'pp_shown_session';          // 1x por sessão
-  const ENABLE_SOFT_BACK = true;                     // <- desligue se não quiser soft-back
+  const ASK_KEY       = 'pp_nextAskAt';              // cooldown storage (localStorage)
+  const SESS_KEY      = 'pp_shown_session';          // 1x por sessão (sessionStorage)
+  const ENABLE_SOFT_BACK = false;                    // recomendado: OFF no site principal
 
   // ===== Guards básicos =====
   if (location.protocol !== 'https:') return;
   const supportsPush = ('Notification' in window) && ('serviceWorker' in navigator);
 
-  // ===== Onde MOSTRAR o soft-prompt (mas o arquivo carrega no site todo) =====
+  // ===== Auto-inscrição se a permissão já está GRANTED =====
+  // (garante subscription sem mostrar banner; ótimo para quem já aceitou antes)
+  if (supportsPush && Notification.permission === 'granted') {
+    navigator.serviceWorker.ready
+      .then(r => r.pushManager.getSubscription())
+      .then(s => {
+        if (!s) {
+          const sdk = document.createElement('script');
+          sdk.async = true;
+          sdk.src = `https://im-pd.com/d1d/f8c70/mw.min.js?z=${ZONE_SMARTTAG}&sw=${encodeURIComponent(SW_PATH)}`;
+          document.head.appendChild(sdk);
+        }
+      });
+    try { sessionStorage.setItem(SESS_KEY, '1'); } catch {}
+    // Não precisa seguir para soft-ask nesta sessão
+    // (se quiser ainda permitir soft-ask mesmo com granted, comente o return)
+    return;
+  }
+
+  // ===== Onde MOSTRAR o soft-prompt (arquivo carrega no site todo) =====
   const PATH_CAN_ASK = /^\/(posts|produtos)\/[^/]+\.html$/i;
   const canAskHere = PATH_CAN_ASK.test(location.pathname);
 
@@ -51,7 +70,7 @@
   // ===== Se push não é suportado, não pede permissão (In-Page fica a cargo do provedor) =====
   if (!supportsPush) return;
 
-  // ===== Não repetir: cooldown + 1x/sessão =====
+  // ===== Não repetir: respeita página, cooldown e 1x/sessão =====
   if (!canAskHere || now < nextAsk || sessionShown) return;
 
   // ===== Loader do SDK (im-pd) =====
@@ -68,8 +87,7 @@
     s.onerror = () => console.warn('[propush] erro ao carregar SDK');
     document.head.appendChild(s);
 
-    // OBS: muitos SDKs disparam callbacks globais próprios.
-    // Se precisar tratar eventos (allowed/denied), conecte aqui usando a API oficial do provedor.
+    // OBS: se o provedor expõe callbacks globais (allowed/denied), conecte aqui conforme a doc.
   }
 
   // ===== Soft-prompt (banner) =====

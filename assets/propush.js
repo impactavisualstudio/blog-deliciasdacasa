@@ -1,35 +1,46 @@
 <!-- /assets/propush.js -->
 
 (() => {
-  // ===== CONFIG =====
-  const ZONE_SMARTTAG = '9871244';            // sua Smart Tag (push nativo Propush)
+  // ===================== CONFIG =====================
+  const ZONE_SMARTTAG = '9871244';            // sua Smart Tag (push Propush)
   const SW_PATH       = '/sw-check-permissions-ac32f.js';
-  const DELAY_MS      = 10000;                 // 10s
-  const SCROLL_PCT    = 0.50;                  // 50% de rolagem
-  const COOLDOWN_H    = 24;                    // 1x a cada 24h
+  const COOLDOWN_H    = 24;                    // 1x/24h
   const ASK_KEY       = 'pp_nextAskAt';        // cooldown (localStorage)
   const SESS_KEY      = 'pp_shown_session';    // 1x/sessão (sessionStorage)
 
-  // IMPORTANTE: sem In-Page / sem redes paralelas
-  const ENABLE_INPAGE = false;                 // <- deixa OFF (sem forfrogadiertor)
-  const ENABLE_SOFT_BACK = false;              // opcional, recomendo OFF no site principal
+  // Gatilhos padrão (páginas internas)
+  const DELAY_MS      = 10000;                 // 10s
+  const SCROLL_PCT    = 0.50;                  // 50% rolagem
 
-  // ===== GUARDS =====
+  // Home (index) — engajamento leve antes de pedir
+  const HOME_MIN_SECONDS = 12;                 // tempo mínimo na home
+  const HOME_SCROLL_MIN  = 0.30;               // 30% de rolagem na home
+
+  // In-Page/soft-back desabilitados
+  const ENABLE_INPAGE    = false;
+  const ENABLE_SOFT_BACK = false;
+
+  // ===================== GUARDS =====================
   if (location.protocol !== 'https:') return;
   const supportsPush = ('Notification' in window) && ('serviceWorker' in navigator);
 
-  // Onde o soft-ask pode aparecer (script pode carregar no site todo)
-  const PATH_CAN_ASK = /^(\/(posts|produtos)\/[^/]+\.html|\/(receitas|utensilios)\.html|\/index\.html)$/i;
-  const canAskHere = PATH_CAN_ASK.test(location.pathname);
+  const path = location.pathname;
+  const isHome = path === '/' || /\/index\.html$/i.test(path);
+  const CAN_ASK_REGEX = /^(\/(posts|produtos)\/[^/]+\.html|\/(receitas|utensilios)\.html)$/i;
+  const canAskHere = isHome || CAN_ASK_REGEX.test(path);
 
-  // ===== Cooldown / sessão =====
+  // Pageviews por sessão (usado na regra da home)
+  const pv = +(sessionStorage.getItem('pp_pv') || 0);
+  try { sessionStorage.setItem('pp_pv', String(pv + 1)); } catch {}
+
+  // Cooldown / sessão
   const now = Date.now();
   const nextAsk = +localStorage.getItem(ASK_KEY) || 0;
   const sessionShown = sessionStorage.getItem(SESS_KEY) === '1';
   function setCooldown(h = COOLDOWN_H){ try{ localStorage.setItem(ASK_KEY, String(Date.now() + h*3600*1000)); }catch{} }
   function markSession(){ try{ sessionStorage.setItem(SESS_KEY, '1'); }catch{} }
 
-  // ===== (opcional) soft-back — desativado por padrão =====
+  // ================= SOFT-BACK (OFF) =================
   if (ENABLE_SOFT_BACK) {
     try {
       if (!sessionStorage.getItem('tb_back_flag')) {
@@ -38,8 +49,7 @@
           window.addEventListener('popstate', () => {
             if (sessionStorage.getItem('tb_back_flag')) return;
             sessionStorage.setItem('tb_back_flag', '1');
-            // coloque aqui seu TrafficBack se realmente quiser usar
-            // location.replace('https://g0st.com/4/9870849?src=softback');
+            // location.replace('https://seu-trafficback-aqui');
           });
         }, 20000);
       }
@@ -59,19 +69,39 @@
         }
       });
     try { sessionStorage.setItem(SESS_KEY, '1'); } catch {}
-    return; // já resolvido nesta sessão
+    return; // nada mais nessa sessão
   }
 
   // ===== Fallback In-Page — DESLIGADO =====
   if (!supportsPush || Notification.permission === 'denied') {
-    // ENABLE_INPAGE = false => não injeta nada aqui
     return;
   }
 
   // ===== Anti-spam =====
   if (!canAskHere || now < nextAsk || sessionShown) return;
 
-  // ===== Loader do SDK (Propush) =====
+  // ================= A/B COPY (soft banner) =================
+  const AB_KEY = 'pp_ab_variant';
+  const VARIANTS = [
+    { // A
+      line: 'Receba <b>ofertas e utensílios</b> 1–2x/semana 🔔',
+      allow: 'Ativar notificações',
+      later: 'Agora não'
+    },
+    { // B
+      line: 'Cupons e novidades de <b>churrasco</b> (semanal) 🔔',
+      allow: 'Quero receber',
+      later: 'Depois'
+    }
+  ];
+  let ab = +localStorage.getItem(AB_KEY);
+  if (Number.isNaN(ab) || ab < 0 || ab > 1) {
+    ab = Math.random() < 0.5 ? 0 : 1;
+    try { localStorage.setItem(AB_KEY, String(ab)); } catch {}
+  }
+  const COPY = VARIANTS[ab];
+
+  // ================= Loader do SDK =================
   let asked = false, softShown = false;
   function loadProPush(){
     if (asked) return;
@@ -85,7 +115,17 @@
     document.head.appendChild(s);
   }
 
-  // ===== Soft-prompt (banner) =====
+  // expõe para o CTA do index
+  window.ppAsk = () => {
+    if (Notification.permission === 'default') {
+      loadProPush();
+    } else {
+      // se já negou/aceitou, respeita; não mostramos nada aqui
+      setCooldown(); markSession();
+    }
+  };
+
+  // ================= Soft-prompt (banner) =================
   function showSoftPrompt(){
     if (softShown || asked) return;
     if (Notification.permission !== 'default') { setCooldown(); markSession(); return; }
@@ -109,10 +149,10 @@
     bar.id = 'pp-soft';
     bar.innerHTML = `
       <div class="pp-wrap">
-        <span>Receba <b>ofertas e utensílios</b> 1–2x/semana 🔔</span>
+        <span>${COPY.line}</span>
         <div style="display:flex;gap:8px">
-          <button id="pp-allow">Ativar notificações</button>
-          <button id="pp-later">Agora não</button>
+          <button id="pp-allow">${COPY.allow}</button>
+          <button id="pp-later">${COPY.later}</button>
         </div>
       </div>
     `;
@@ -128,20 +168,62 @@
     });
   }
 
-  // ===== Gatilhos: 10s OU 50% de scroll =====
-  setTimeout(() => { if (document.visibilityState === 'visible') showSoftPrompt(); }, DELAY_MS);
+  // ================= Gatilhos =================
+  // Clique direto em qualquer elemento com [data-push-cta]
+  document.addEventListener('click', (ev) => {
+    const btn = ev.target.closest('[data-push-cta]');
+    if (!btn) return;
+    ev.preventDefault();
+    window.ppAsk();
+  }, { passive: false });
 
+  // Regras:
+  // - Páginas internas: 10s OU 50% scroll
+  // - Home: pedir quando houver ENGajamento (tempo + scroll) OU 2+ páginas na sessão.
+  const t0 = Date.now();
   let fired = false;
-  function onScroll(){
-    if (fired) return;
+
+  function scrollProgress() {
     const max = Math.max(
       document.body.scrollHeight, document.documentElement.scrollHeight,
       document.body.offsetHeight,  document.documentElement.offsetHeight
     );
-    const scrolled = (window.scrollY + window.innerHeight) / max;
-    if (scrolled >= SCROLL_PCT) {
-      fired = true;
+    return (window.scrollY + window.innerHeight) / max;
+  }
+
+  function tryAsk() {
+    if (fired) return;
+    if (!isHome) {
+      // Regra padrão
       showSoftPrompt();
+      fired = true;
+      return;
+    }
+    // Regra HOME
+    const seconds = (Date.now() - t0) / 1000;
+    const scrolled = scrollProgress();
+    const engaged = (seconds >= HOME_MIN_SECONDS && scrolled >= HOME_SCROLL_MIN) || (pv + 1) >= 2;
+    if (engaged) {
+      showSoftPrompt();
+      fired = true;
+    }
+  }
+
+  // time trigger
+  setTimeout(() => { if (document.visibilityState === 'visible') tryAsk(); }, isHome ? HOME_MIN_SECONDS * 1000 : DELAY_MS);
+
+  // scroll trigger
+  function onScroll(){
+    if (fired) return;
+    const scrolled = scrollProgress();
+    if (isHome) {
+      const seconds = (Date.now() - t0) / 1000;
+      if (seconds >= HOME_MIN_SECONDS && scrolled >= HOME_SCROLL_MIN) {
+        tryAsk();
+        window.removeEventListener('scroll', onScroll);
+      }
+    } else if (scrolled >= SCROLL_PCT) {
+      tryAsk();
       window.removeEventListener('scroll', onScroll);
     }
   }

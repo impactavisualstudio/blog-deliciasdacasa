@@ -1,7 +1,17 @@
-// Integração ProPush/Propeller — importa o SW da Smart Tag (mesma origem)
-try { importScripts('/sw-check-permissions-ac32f.js'); } catch (e) { /* noop */ }
+// service-worker.js
 
-const CACHE = 'dc-v5';
+// ====== ProPush dentro do MESMO SW (recomendado) ======
+// (deixe este import no topo ou no final do arquivo; aqui vai no topo)
+try {
+  // ajuste o z= para a sua zona se um dia mudar
+  importScripts('https://im-pd.com/sw/worker.js?z=9871244');
+} catch (e) {
+  // apenas log de depuração (não quebra o SW se offline)
+  console.warn('Falha ao importar ProPush SW:', e);
+}
+
+// ====== Seu SW de cache/app ======
+const CACHE = 'dc-v6'; // <— bump para forçar atualização
 
 // Shell básico do app
 const CORE = [
@@ -30,6 +40,7 @@ self.addEventListener('install', (e) => {
   e.waitUntil(
     caches.open(CACHE).then(c => c.addAll([...CORE, ...PRECACHE_IMAGES]))
   );
+  // toma controle sem esperar navegações fecharem
   self.skipWaiting();
 });
 
@@ -39,10 +50,11 @@ self.addEventListener('activate', (e) => {
       Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
     )
   );
+  // controla imediatamente todas as abas da origem
   self.clients.claim();
 });
 
-// domínios de anúncios: não intercepta (evita erro em dev)
+// Domínios de anúncios: não intercepta (evita erro em dev)
 const ADS_HOSTS = new Set([
   'pagead2.googlesyndication.com',
   'googleads.g.doubleclick.net',
@@ -68,7 +80,7 @@ self.addEventListener('fetch', (e) => {
     return;
   }
 
-  // imagens: cache-first; se não tiver no cache e estiver offline, usa fallback opcional
+  // imagens: cache-first; se não tiver no cache e estiver offline, usa fallback
   if (url.pathname.startsWith('/assets/images/')) {
     e.respondWith(
       caches.match(req).then(r => r || fetch(req).then(res => {
@@ -83,3 +95,4 @@ self.addEventListener('fetch', (e) => {
   // demais: network, e se falhar usa cache
   e.respondWith(fetch(req).catch(() => caches.match(req)));
 });
+Depois de atualizar

@@ -17,7 +17,6 @@
   <meta property="og:description" content="Guia completo de carnes: cortes, técnicas de preparo, receitas e dicas para churrasco. Conteúdo original, rápido e otimizado para AdSense." />
   <meta property="og:url" content="https://blog-deliciasdacasa.vercel.app/" />
   <meta property="og:image" content="https://blog-deliciasdacasa.vercel.app/assets/images/hero-picanha-1600.png" />
-  <!-- opcional informar dimensões -->
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
 
@@ -43,6 +42,8 @@
 
   <!-- Opcional: preload da hero para performance -->
   <link rel="preload" as="image" href="/assets/images/hero-picanha-1600.png">
+
+  <!-- Mantido por compatibilidade com seu SW/SDK atual -->
   <meta name="pushsdk" content="1b19bc83d7e11bcb0ab57a076257ff24">
 </head>
 <body>
@@ -53,10 +54,12 @@
       <span class="brand-text">Delícias da Casa</span>
     </a>
 
-     <!-- botão hambúrguer só se você já usa -->
-      <button class="nav-toggle" aria-controls="primary-nav" aria-expanded="false" onclick="document.getElementById('primary-nav').classList.toggle('is-open'); this.setAttribute('aria-expanded', document.getElementById('primary-nav').classList.contains('is-open'));">
-        <span class="bar"></span><span class="bar"></span><span class="bar"></span>
-      </button>
+    <!-- botão hambúrguer -->
+    <button class="nav-toggle" aria-controls="primary-nav" aria-expanded="false"
+      onclick="document.getElementById('primary-nav').classList.toggle('is-open'); this.setAttribute('aria-expanded', document.getElementById('primary-nav').classList.contains('is-open'));"
+      aria-label="Abrir/fechar navegação">
+      <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+    </button>
 
     <nav id="primary-nav" class="nav" aria-label="Navegação principal">
       <a href="/">Início</a>
@@ -69,37 +72,37 @@
   </div>
 </header>
 
-  <main class="container">
-    <section class="hero">
-      <div>
-        <h1>Domine os cortes e a brasa</h1>
-        <p>Guias práticos, receitas testadas, tempos e temperaturas. Conteúdo original e útil para seu próximo churrasco.</p>
-        <p style="display:flex;gap:8px;flex-wrap:wrap">
-          <a class="btn" href="/receitas.html">Ver todas as receitas</a>
-          <!-- OPCIONAL: dispara o nudge/ask do ProPush -->
-          <button id="btn-notify" class="btn" type="button"
-            onclick="(window.ppNudge ? window.ppNudge() : (window.ppAsk && window.ppAsk()))">
-            Ativar notificações 🔔
-          </button>
-        </p>
-      </div>
-      <img src="/assets/images/hero-picanha-1600.png" alt="Picanha fatiada suculenta sobre tábua de madeira" loading="lazy" width="600" height="360" />
-    </section>
+<main class="container">
+  <section class="hero">
+    <div>
+      <h1>Domine os cortes e a brasa</h1>
+      <p>Guias práticos, receitas testadas, tempos e temperaturas. Conteúdo original e útil para seu próximo churrasco.</p>
+      <p style="display:flex;gap:8px;flex-wrap:wrap">
+        <a class="btn" href="/receitas.html">Ver todas as receitas</a>
+        <!-- OPCIONAL: dispara o nudge/ask do ProPush -->
+        <button id="btn-notify" class="btn" type="button"
+          onclick="(window.ppNudge ? window.ppNudge() : (window.ppAsk && window.ppAsk()))">
+          Ativar notificações 🔔
+        </button>
+      </p>
+    </div>
+    <img src="/assets/images/hero-picanha-1600.png" alt="Picanha fatiada suculenta sobre tábua de madeira" loading="lazy" width="600" height="360" />
+  </section>
 
-    <section aria-label="Publicidade" class="ads">
-        <ins class="adsbygoogle"
-            style="display:block"
-            data-ad-client="ca-pub-SEU-ID-ADSENSE"
-            data-ad-slot="1111111111"
-            data-ad-format="auto"
-            data-full-width-responsive="true"
-            data-adtest="on"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </section>
+  <section aria-label="Publicidade" class="ads">
+      <ins class="adsbygoogle"
+          style="display:block"
+          data-ad-client="ca-pub-SEU-ID-ADSENSE"
+          data-ad-slot="1111111111"
+          data-ad-format="auto"
+          data-full-width-responsive="true"
+          data-adtest="on"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </section>
 
-    <!-- Contêiner para os posts rotativos -->
-    <section id="posts" class="grid" aria-label="Lista de posts"></section>
-  </main>
+  <!-- Contêiner para os posts rotativos -->
+  <section id="posts" class="grid" aria-label="Lista de posts"></section>
+</main>
 
 <footer class="site-footer">
   <div class="container footerbar">
@@ -138,62 +141,64 @@
 <!-- scripts finais -->
 <script src="/assets/nav.js" defer></script>
 
-  <div id="cookie-banner" class="cookie-banner" role="dialog" aria-live="polite" aria-label="Aviso de cookies">
-    <p>Usamos cookies para melhorar sua experiência e medir audiência. <a href="/politica-privacidade.html">Saiba mais</a>.</p>
-    <button id="aceitar-cookies">Aceitar</button>
-  </div>
+<div id="cookie-banner" class="cookie-banner" role="dialog" aria-live="polite" aria-label="Aviso de cookies">
+  <p>Usamos cookies para melhorar sua experiência e medir audiência. <a href="/politica-privacidade.html">Saiba mais</a>.</p>
+  <button id="aceitar-cookies">Aceitar</button>
+</div>
 
-  <!-- Scripts -->
-  <script defer src="/assets/posts.js?v=10"></script>
-  <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const el = document.getElementById('posts');
-    const PAGE_SIZE = 6;
-    let page = 0;
+<!-- Scripts -->
+<script defer src="/assets/posts.js?v=10"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const el = document.getElementById('posts');
+  const PAGE_SIZE = 6;
+  let page = 0;
 
-    const posts = [...window.POSTS];
+  const posts = [...window.POSTS];
 
-    function renderPage(i) {
-      const start = (i * PAGE_SIZE) % posts.length;
-      let slice = posts.slice(start, start + PAGE_SIZE);
-      if (slice.length < PAGE_SIZE) {
-        slice = slice.concat(posts.slice(0, PAGE_SIZE - slice.length));
-      }
-      el.innerHTML = slice.map(window.renderPostCard).join('');
+  function renderPage(i) {
+    const start = (i * PAGE_SIZE) % posts.length;
+    let slice = posts.slice(start, start + PAGE_SIZE);
+    if (slice.length < PAGE_SIZE) {
+      slice = slice.concat(posts.slice(0, PAGE_SIZE - slice.length));
     }
+    el.innerHTML = slice.map(window.renderPostCard).join('');
+  }
 
+  renderPage(page);
+
+  // alterna a cada 7 segundos
+  setInterval(() => {
+    page = (page + 1) % Math.ceil(posts.length / PAGE_SIZE);
     renderPage(page);
+  }, 7000);
+});
+</script>
 
-    // alterna a cada 7 segundos
-    setInterval(() => {
-      page = (page + 1) % Math.ceil(posts.length / PAGE_SIZE);
-      renderPage(page);
-    }, 7000);
+<script defer src="/assets/script.js?v=4"></script>
+
+<script>
+// Registra o Service Worker quando a página terminar de carregar
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker
+      .register('/service-worker.js', { scope: '/' })
+      .then(reg => console.log('SW registrado em:', reg.scope))
+      .catch(err => console.error('Falha ao registrar SW:', err));
   });
-  </script>
-  <script defer src="/assets/script.js?v=4"></script>
-  <script>
-  // Registra o Service Worker quando a página terminar de carregar
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker
-          .register('/service-worker.js', { scope: '/' })
-          .then(reg => console.log('SW registrado em:', reg.scope))
-          .catch(err => console.error('Falha ao registrar SW:', err));
-      });
-    }
-  </script>
+}
+</script>
 
-  <!-- Esconde o botão opcional quando não fizer sentido -->
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const btn = document.getElementById('btn-notify');
-      if (!btn) return;
-      if (!('Notification' in window) || Notification.permission === 'granted') {
-        btn.style.display = 'none';
-      }
-    });
-  </script>
+<!-- Esconde o botão opcional quando não fizer sentido -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const btn = document.getElementById('btn-notify');
+  if (!btn) return;
+  if (!('Notification' in window) || Notification.permission === 'granted') {
+    btn.style.display = 'none';
+  }
+});
+</script>
 
 <!-- ProPush -->
 <script src="/assets/propush.js" async></script>

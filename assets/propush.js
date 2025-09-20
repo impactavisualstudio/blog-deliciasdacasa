@@ -1,10 +1,15 @@
+<!-- /assets/propush.js -->
+<script>
 (() => {
   // ===== CONFIG =====
   const ZONE_SMARTTAG = '9871244';                    // sua Smart Tag (Propush)
   const SW_PATH       = '/sw-check-permissions-ac32f.js';
-  const COOLDOWN_H    = 24;                           // 1x/24h
-  const ASK_KEY       = 'pp_nextAskAt';               // cooldown (local)
-  const SESS_KEY      = 'pp_shown_session';           // 1x/sessão (session)
+
+  // Cooldowns
+  const COOLDOWN_H_INDEX = 12;                        // home: volta em 12h
+  const COOLDOWN_H_OTHER = 24;                        // outras páginas: 24h
+  const ASK_KEY       = 'pp_nextAskAt';               // cooldown (localStorage)
+  const SESS_KEY      = 'pp_shown_session';           // 1x/sessão (sessionStorage)
   const AB_KEY        = 'pp_ab_variant';              // fixa variante de copy
 
   // Sem In-Page / sem tráfego extra
@@ -16,11 +21,11 @@
   const supportsPush = ('Notification' in window) && ('serviceWorker' in navigator);
 
   // Onde pode pedir (inclui INDEX)
-  const isIndex     = /^(\/|\/index\.html)$/i.test(location.pathname);
-  const canAskHere  = /^(\/(posts|produtos)\/[^/]+\.html|\/(receitas|utensilios)\.html|\/index\.html|\/)$/i
-                        .test(location.pathname);
+  const isIndex = /^(\/|\/index\.html)$/i.test(location.pathname);
+  const canAskHere = /^(\/(posts|produtos)\/[^/]+\.html|\/(receitas|utensilios)\.html|\/index\.html|\/)$/i
+                      .test(location.pathname);
 
-  // Timings por contexto
+  // Timings por contexto (um pouco mais agressivo na home)
   const DELAY_MS   = isIndex ? 6000 : 10000;          // 6s no index, 10s nos demais
   const SCROLL_PCT = isIndex ? 0.30 : 0.50;           // 30% no index, 50% nos demais
 
@@ -29,11 +34,11 @@
   const nextAsk      = +localStorage.getItem(ASK_KEY) || 0;
   const sessionShown = sessionStorage.getItem(SESS_KEY) === '1';
 
-  const setCooldown = (h = COOLDOWN_H) => { try {
-    localStorage.setItem(ASK_KEY, String(Date.now() + h*3600*1000));
-  } catch{} };
-
-  const markSession = () => { try { sessionStorage.setItem(SESS_KEY, '1'); } catch{} };
+  function setCooldown(hours) {
+    const h = (typeof hours === 'number' ? hours : (isIndex ? COOLDOWN_H_INDEX : COOLDOWN_H_OTHER));
+    try { localStorage.setItem(ASK_KEY, String(Date.now() + h*3600*1000)); } catch {}
+  }
+  function markSession(){ try { sessionStorage.setItem(SESS_KEY, '1'); } catch{} }
 
   // ===== (opcional) soft-back — OFF por padrão =====
   if (ENABLE_SOFT_BACK) {
@@ -96,16 +101,18 @@
   function loadProPush(){
     if (asked) return;
     asked = true;
-    setCooldown();   // 1x/24h
-    markSession();   // 1x/sessão
+    setCooldown();           // aplica 12h na home / 24h nas demais
+    markSession();           // 1x/sessão
     const s = document.createElement('script');
     s.async = true;
     s.src = `https://im-pd.com/d1d/f8c70/mw.min.js?z=${ZONE_SMARTTAG}&sw=${encodeURIComponent(SW_PATH)}`;
     s.onerror = () => console.warn('[propush] erro ao carregar SDK');
     document.head.appendChild(s);
   }
-  // gatilho manual opcional (botão no index)
-  window.ppAsk   = loadProPush;
+  // triggers manuais (opcional)
+  window.ppAsk  = loadProPush;
+  window.ppOpen = loadProPush;   // alias
+  window.ppNudge = showSoftPrompt;
 
   // ===== Soft-prompt (banner) =====
   function showSoftPrompt(){
@@ -145,11 +152,10 @@
       loadProPush();
     });
     bar.querySelector('#pp-later')?.addEventListener('click', () => {
-      setCooldown();
+      setCooldown(); // aplica 12h/24h conforme página
       bar.remove();
     });
   }
-  window.ppNudge = showSoftPrompt;  // também expõe o “nudge”
 
   // ===== Gatilhos: tempo, scroll e exit-intent desktop =====
   setTimeout(() => {
@@ -185,4 +191,4 @@
     }, { passive: true });
   }
 })();
-
+</script>

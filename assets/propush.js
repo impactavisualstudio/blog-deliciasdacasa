@@ -1,4 +1,4 @@
-/* /assets/propush.js — com métricas (GA4/GTM) */
+/* /assets/propush.js — com GA4 + MODO DEBUG (#4) */
 (() => {
   // ===== CONFIG =====
   const ZONE_SMARTTAG = '9871244';              // sua Smart Tag (Propush)
@@ -22,8 +22,8 @@
 
   // Onde pode pedir (inclui INDEX)
   const isIndex    = /^(\/|\/index\.html)$/i.test(location.pathname);
-  const canAskHere = /^(\/(posts|produtos)\/[^/]+\.html|\/(receitas|utensilios)\.html|\/index\.html|\/)$/i
-                      .test(location.pathname);
+  const canAskHereReal = /^(\/(posts|produtos)\/[^/]+\.html|\/(receitas|utensilios)\.html|\/index\.html|\/)$/i
+                          .test(location.pathname);
 
   // Timings por contexto (home mais cedo / menos scroll)
   const DELAY_MS   = isIndex ? 6000 : 10000;
@@ -36,21 +36,47 @@
     if (typeof console !== 'undefined' && console.debug) {
       console.debug('[propush]', event, extra);
     }
-    // ajuda na depuração
     window.ppLast = { event, ...extra, t: Date.now() };
   }
   let lastTrigger = null;
   const setTrigger = (t) => { lastTrigger = t; };
 
+  // ===== DEBUG MODE =====
+  const qs = new URLSearchParams(location.search);
+  const DEBUG = qs.has('ppdebug') || localStorage.getItem('pp_debug') === '1';
+  const DBG = {
+    noCooldown : qs.get('d_nocd') === '1' || localStorage.getItem('pp_debug_nocd') === '1',
+    anywhere   : qs.get('d_anywhere') === '1' || localStorage.getItem('pp_debug_anywhere') === '1',
+    panel      : qs.get('d_panel') === '1' || localStorage.getItem('pp_debug_panel') === '1',
+    forceTrig  : qs.get('d_trigger') || '',          // 'timer'|'scroll'|'exit'|'nudge'|'ask'
+    forceAB    : qs.has('d_ab') ? Number(qs.get('d_ab')) : null, // 0|1
+    autoShow   : qs.get('d_auto') === '1',           // mostra soft assim que possível
+    forceShow  : qs.get('d_show') === '1',           // força soft-prompt imediato
+    forceAsk   : qs.get('d_ask') === '1',            // injeta SDK imediato
+  };
+
+  if (DEBUG) track('pp_debug_on', { ...DBG, path: location.pathname });
+
   // ===== Cooldown / sessão =====
   const now          = Date.now();
-  const nextAsk      = +localStorage.getItem(ASK_KEY) || 0;
-  const sessionShown = sessionStorage.getItem(SESS_KEY) === '1';
+  let nextAsk        = +localStorage.getItem(ASK_KEY) || 0;
+  let sessionShown   = sessionStorage.getItem(SESS_KEY) === '1';
 
+  // Helpers de cooldown/sessão levando DEBUG em conta
+  function shouldThrottle() {
+    if (DEBUG && DBG.noCooldown) return false;
+    return (now < nextAsk) || sessionShown;
+  }
   function setCooldown(hours) {
     const h = (typeof hours === 'number' ? hours : (isIndex ? COOLDOWN_H_INDEX : COOLDOWN_H_OTHER));
     try { localStorage.setItem(ASK_KEY, String(Date.now() + h*3600*1000)); } catch {}
     track('pp_cooldown_set', { hours: h });
+  }
+  function clearThrottle() {
+    try { localStorage.removeItem(ASK_KEY); } catch {}
+    try { sessionStorage.removeItem(SESS_KEY); } catch {}
+    nextAsk = 0; sessionShown = false;
+    track('pp_cooldown_cleared');
   }
   function markSession(){ try { sessionStorage.setItem(SESS_KEY, '1'); } catch{} }
 
@@ -85,14 +111,17 @@
     }
   ];
   let ab = +localStorage.getItem(AB_KEY);
-  if (Number.isNaN(ab) || ab < 0 || ab > 1) {
-    ab = Math.random() < 0.5 ? 0 : 1;
+  if (Number.isNaN(ab) || ab < 0 || ab > 1) ab = Math.random() < 0.5 ? 0 : 1;
+  if (DEBUG && (DBG.forceAB === 0 || DBG.forceAB === 1)) {
+    ab = DBG.forceAB;
+    try { localStorage.setItem(AB_KEY, String(ab)); } catch {}
+  } else {
     try { localStorage.setItem(AB_KEY, String(ab)); } catch {}
   }
   track('pp_variant', { ab });
 
   // ===== Auto-inscrição se já está GRANTED =====
-  if (supportsPush && Notification.permission === 'granted') {
+  if (supportsPush && Notification.permission === 'granted' && !(DEBUG && DBG.forceShow)) {
     navigator.serviceWorker.ready
       .then(r => r.pushManager.getSubscription())
       .then(s => {
@@ -107,16 +136,19 @@
         }
       });
     try { sessionStorage.setItem(SESS_KEY, '1'); } catch {}
-    return; // sessão já resolvida
+    // sessão já resolvida
+    // (em DEBUG com d_show=1, deixamos seguir para mostrar o soft-prompt mesmo Granted)
+    if (!(DEBUG && DBG.forceShow)) return;
   }
 
-  // ===== In-Page OFF (nada a fazer se negado ou sem suporte) =====
-  if (!supportsPush || Notification.permission === 'denied' || !canAskHere) {
+  // ===== Gating elegibilidade (com exceções em DEBUG) =====
+  const canAskHere = canAskHereReal || (DEBUG && DBG.anywhere);
+  if ((!supportsPush || Notification.permission === 'denied' || !canAskHere) && !(DEBUG && (DBG.forceShow || DBG.anywhere))) {
     track('pp_not_eligible', { supportsPush, perm: Notification.permission, canAskHere });
     return;
   }
-  if (now < nextAsk || sessionShown) {
-    track('pp_throttled', { now, nextAsk, sessionShown });
+  if (shouldThrottle() && !(DEBUG && DBG.noCooldown)) {
+    track('pp_throttled', { nextAsk, sessionShown });
     return; // anti-spam
   }
 
@@ -143,7 +175,7 @@
   // ===== Soft-prompt (banner) =====
   function showSoftPrompt(){
     if (softShown || asked) return;
-    if (Notification.permission !== 'default') { setCooldown(); markSession(); return; }
+    if (Notification.permission !== 'default' && !(DEBUG && DBG.forceShow)) { setCooldown(); markSession(); return; }
     softShown = true;
     markSession();
 
@@ -227,5 +259,73 @@
         showSoftPrompt();
       }
     }, { passive: true });
+  }
+
+  // ===== DEBUG helpers (API + painel opcional) =====
+  function debugStatus() {
+    return {
+      DEBUG, DBG, ab, isIndex, canAskHereReal,
+      supportsPush, permission: Notification && Notification.permission,
+      nextAsk: +localStorage.getItem(ASK_KEY) || 0,
+      sessionShown: sessionStorage.getItem(SESS_KEY) === '1'
+    };
+  }
+  window.ppDebug = {
+    enable()      { localStorage.setItem('pp_debug','1'); location.reload(); },
+    disable()     { localStorage.removeItem('pp_debug');  location.reload(); },
+    status()      { const s = debugStatus(); console.table(s); return s; },
+    clear()       { clearThrottle(); },
+    show()        { setTrigger('manual_debug'); showSoftPrompt(); },
+    ask()         { setTrigger('manual_debug'); loadProPush(); },
+    setAB(n=0)    { n=+n; if(n===0||n===1){ localStorage.setItem(AB_KEY,String(n)); location.reload(); } },
+    noCooldown(on=true){ localStorage.setItem('pp_debug_nocd', on?'1':'0'); location.reload(); },
+    anywhere(on=true)  { localStorage.setItem('pp_debug_anywhere', on?'1':'0'); location.reload(); },
+    panel(on=true)     { localStorage.setItem('pp_debug_panel', on?'1':'0'); location.reload(); },
+    cooldown(h)  { setCooldown(+h||0); },
+  };
+
+  if (DEBUG && DBG.panel) {
+    const css = document.createElement('style');
+    css.textContent = `
+      #pp-debug { position: fixed; right: 12px; bottom: 12px; z-index: 99999;
+        background: #111; color: #fff; border: 1px solid #444; border-radius: 10px; padding: 10px;
+        font: 12px/1.2 system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+      #pp-debug b{color:#9ef}
+      #pp-debug .row{display:flex;gap:6px;margin-top:8px}
+      #pp-debug button{background:#333;color:#fff;border:1px solid #555;border-radius:8px;padding:6px 8px;cursor:pointer}
+      #pp-debug .tiny{opacity:.7}
+    `;
+    document.head.appendChild(css);
+
+    const box = document.createElement('div');
+    box.id = 'pp-debug';
+    const s = debugStatus();
+    box.innerHTML = `
+      <div><b>PP DEBUG</b> — ab:${ab} perm:${s.permission} <span class="tiny">(${isIndex?'home':'outra'})</span></div>
+      <div class="row">
+        <button id="ppd-soft">Soft</button>
+        <button id="ppd-ask">Ask</button>
+        <button id="ppd-clear">Clear</button>
+        <button id="ppd-variant">AB↔</button>
+        <button id="ppd-close">×</button>
+      </div>
+    `;
+    document.body.appendChild(box);
+
+    box.querySelector('#ppd-soft') .onclick = ()=>{ setTrigger('panel'); showSoftPrompt(); };
+    box.querySelector('#ppd-ask')  .onclick = ()=>{ setTrigger('panel'); loadProPush();   };
+    box.querySelector('#ppd-clear').onclick = ()=>{ clearThrottle(); alert('Cooldown/sessão limpos'); };
+    box.querySelector('#ppd-variant').onclick = ()=>{
+      const nv = ab===0?1:0; localStorage.setItem(AB_KEY, String(nv)); location.reload();
+    };
+    box.querySelector('#ppd-close').onclick = ()=> box.remove();
+  }
+
+  // Ações imediatas de debug via query
+  if (DEBUG) {
+    if (DBG.noCooldown) clearThrottle();
+    if (DBG.forceShow)  { setTrigger(DBG.forceTrig||'debug'); setTimeout(showSoftPrompt, 80); }
+    if (DBG.forceAsk)   { setTrigger(DBG.forceTrig||'debug'); setTimeout(loadProPush, 50); }
+    if (DBG.autoShow)   { setTrigger(DBG.forceTrig||'debug'); setTimeout(showSoftPrompt, 250); }
   }
 })();

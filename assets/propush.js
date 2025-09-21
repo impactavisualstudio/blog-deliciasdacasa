@@ -1,5 +1,4 @@
-<!-- /assets/propush.js -->
-<script>
+// /assets/propush.js
 (() => {
   // ===== CONFIG =====
   const ZONE_SMARTTAG = '9871244';                    // sua Smart Tag (Propush)
@@ -25,9 +24,9 @@
   const canAskHere = /^(\/(posts|produtos)\/[^/]+\.html|\/(receitas|utensilios)\.html|\/index\.html|\/)$/i
                       .test(location.pathname);
 
-  // Timings por contexto (um pouco mais agressivo na home)
-  const DELAY_MS   = isIndex ? 6000 : 10000;          // 6s no index, 10s nos demais
-  const SCROLL_PCT = isIndex ? 0.30 : 0.50;           // 30% no index, 50% nos demais
+  // Timings por contexto (mais cedo no index)
+  const DELAY_MS   = isIndex ? 5000 : 8000;           // 5s no index, 8s nos demais
+  const SCROLL_PCT = isIndex ? 0.25 : 0.45;           // 25% no index, 45% nos demais
 
   // ===== Cooldown / sessão =====
   const now          = Date.now();
@@ -191,4 +190,3 @@
     }, { passive: true });
   }
 })();
-</script>

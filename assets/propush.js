@@ -1,26 +1,34 @@
-/* /assets/propush.js — com GA4 + MODO DEBUG (#4) */
+/* /assets/propush.js — GA4 + DEBUG + In-Page SAFE (iOS/Safari em produto/receitas) */
 (() => {
-  // ===== CONFIG =====
-  const ZONE_SMARTTAG = '9871244';              // sua Smart Tag (Propush)
+  // ===== CONFIG GERAL =====
+  const ZONE_SMARTTAG = '9871244';                // sua Smart Tag (ProPush)
   const SW_PATH       = '/sw-check-permissions-ac32f.js';
 
   // Cooldowns (home mais agressivo)
-  const COOLDOWN_H_INDEX = 12;                  // volta em 12h na home
-  const COOLDOWN_H_OTHER = 24;                  // 24h nas demais
+  const COOLDOWN_H_INDEX = 12;                    // volta em 12h na home
+  const COOLDOWN_H_OTHER = 24;                    // 24h nas demais
 
-  const ASK_KEY   = 'pp_nextAskAt';             // cooldown (localStorage)
-  const SESS_KEY  = 'pp_shown_session';         // 1x/sessão (sessionStorage)
-  const AB_KEY    = 'pp_ab_variant';            // fixa variante de copy
+  const ASK_KEY   = 'pp_nextAskAt';               // cooldown (localStorage)
+  const SESS_KEY  = 'pp_shown_session';           // 1x/sessão (sessionStorage)
+  const AB_KEY    = 'pp_ab_variant';              // fixa variante de copy
 
-  // Sem in-page / sem soft-back por padrão
-  const ENABLE_INPAGE    = false;
+  // ===== IN-PAGE SAFE (somente iOS/Safari e só em páginas alvo) =====
+  // ➜ ZONE_INPAGE é a sua zona *In-Page Push* oficial do ProPush (não é SmartTag).
+  //    Se você já usava 9886724 para In-Page, mantenha. Senão, troque pelo ID da sua zona In-Page.
+  const ENABLE_INPAGE_SAFARI = true;
+  const ZONE_INPAGE          = '9886724';         // <-- sua zona In-Page
+  const INPAGE_SRC           = 'https://forfrogadiertor.com/tag.min.js'; // src oficial que o painel te deu
+  // Onde permitir In-Page (produto/receitas):
+  const PATH_INPAGE = /^(\/(posts|produtos)\/[^/]+\.html|\/receitas\.html)$/i;
+
+  // Sem soft-back por padrão
   const ENABLE_SOFT_BACK = false;
 
   // ===== GUARDS =====
   if (location.protocol !== 'https:') return;
   const supportsPush = ('Notification' in window) && ('serviceWorker' in navigator);
 
-  // Onde pode pedir (inclui INDEX)
+  // Onde pode pedir nativo (inclui INDEX)
   const isIndex    = /^(\/|\/index\.html)$/i.test(location.pathname);
   const canAskHereReal = /^(\/(posts|produtos)\/[^/]+\.html|\/(receitas|utensilios)\.html|\/index\.html|\/)$/i
                           .test(location.pathname);
@@ -33,9 +41,7 @@
   function dl(){ if (!window.dataLayer) window.dataLayer = []; return window.dataLayer; }
   function track(event, extra = {}) {
     try { dl().push({ event, ...extra }); } catch {}
-    if (typeof console !== 'undefined' && console.debug) {
-      console.debug('[propush]', event, extra);
-    }
+    if (typeof console !== 'undefined' && console.debug) console.debug('[propush]', event, extra);
     window.ppLast = { event, ...extra, t: Date.now() };
   }
   let lastTrigger = null;
@@ -50,11 +56,10 @@
     panel      : qs.get('d_panel') === '1' || localStorage.getItem('pp_debug_panel') === '1',
     forceTrig  : qs.get('d_trigger') || '',          // 'timer'|'scroll'|'exit'|'nudge'|'ask'
     forceAB    : qs.has('d_ab') ? Number(qs.get('d_ab')) : null, // 0|1
-    autoShow   : qs.get('d_auto') === '1',           // mostra soft assim que possível
-    forceShow  : qs.get('d_show') === '1',           // força soft-prompt imediato
-    forceAsk   : qs.get('d_ask') === '1',            // injeta SDK imediato
+    autoShow   : qs.get('d_auto') === '1',
+    forceShow  : qs.get('d_show') === '1',
+    forceAsk   : qs.get('d_ask') === '1',
   };
-
   if (DEBUG) track('pp_debug_on', { ...DBG, path: location.pathname });
 
   // ===== Cooldown / sessão =====
@@ -62,7 +67,6 @@
   let nextAsk        = +localStorage.getItem(ASK_KEY) || 0;
   let sessionShown   = sessionStorage.getItem(SESS_KEY) === '1';
 
-  // Helpers de cooldown/sessão levando DEBUG em conta
   function shouldThrottle() {
     if (DEBUG && DBG.noCooldown) return false;
     return (now < nextAsk) || sessionShown;
@@ -120,7 +124,51 @@
   }
   track('pp_variant', { ab });
 
-  // ===== Auto-inscrição se já está GRANTED =====
+  // ===== Detectar iOS/Safari p/ In-Page SAFE =====
+  const ua       = navigator.userAgent || '';
+  const isIOS    = /iPhone|iPad|iPod/i.test(ua);
+  const isSafari = /\bSafari\//.test(ua) && !/(Chrome|CriOS|FxiOS|OPR|EdgiOS)/i.test(ua);
+  const allowInPage = ENABLE_INPAGE_SAFARI && isIOS && isSafari &&
+                      (PATH_INPAGE.test(location.pathname) || (DEBUG && DBG.anywhere));
+
+  // ===== Função para renderizar In-Page SAFE =====
+  function renderInPage() {
+    if (!ZONE_INPAGE || !INPAGE_SRC) return;
+    if (document.getElementById('inpage-slot')) return;
+
+    const css = document.createElement('style');
+    css.textContent = `
+      #inpage-slot{position:sticky;bottom:0;z-index:9998}
+      @media (max-width:480px){#inpage-slot{position:fixed;left:0;right:0;bottom:0}}
+    `;
+    document.head.appendChild(css);
+
+    const slot = document.createElement('div');
+    slot.id = 'inpage-slot';
+    document.body.appendChild(slot);
+
+    // tag oficial da zona In-Page (apenas para iOS/Safari)
+    const s = document.createElement('script');
+    s.async = true;
+    s.src = INPAGE_SRC;
+    s.dataset.zone = ZONE_INPAGE; // vira data-zone="..."
+    s.onload  = () => track('pp_inpage_loaded',  { zone: ZONE_INPAGE });
+    s.onerror = () => track('pp_inpage_error',   { zone: ZONE_INPAGE });
+    slot.appendChild(s);
+
+    // Fallback visual simples (se bloqueado)
+    setTimeout(() => {
+      const anyScript = slot.querySelector('script[src*="tag.min.js"]');
+      if (!anyScript) {
+        const fb = document.createElement('div');
+        fb.style.cssText = 'background:#111;color:#fff;border-top:1px solid #333;padding:10px 14px;font:500 14px/1.3 system-ui,-apple-system,Segoe UI,Roboto,sans-serif';
+        fb.innerHTML = '🔔 Receba ofertas rápidas — ative notificações no Android/Chrome para não perder promoções.';
+        slot.appendChild(fb);
+      }
+    }, 1500);
+  }
+
+  // ===== Auto-inscrição se já está GRANTED (nativo) =====
   if (supportsPush && Notification.permission === 'granted' && !(DEBUG && DBG.forceShow)) {
     navigator.serviceWorker.ready
       .then(r => r.pushManager.getSubscription())
@@ -136,12 +184,17 @@
         }
       });
     try { sessionStorage.setItem(SESS_KEY, '1'); } catch {}
-    // sessão já resolvida
-    // (em DEBUG com d_show=1, deixamos seguir para mostrar o soft-prompt mesmo Granted)
-    if (!(DEBUG && DBG.forceShow)) return;
+    if (!(DEBUG && DBG.forceShow)) return; // sessão já resolvida
   }
 
-  // ===== Gating elegibilidade (com exceções em DEBUG) =====
+  // ===== Se iOS/Safari elegível p/ In-Page SAFE, usa In-Page e encerra =====
+  if (allowInPage) {
+    track('pp_inpage_start', { path: location.pathname });
+    renderInPage();
+    return; // não mostra soft-prompt nativo
+  }
+
+  // ===== Gating nativo (com exceções em DEBUG) =====
   const canAskHere = canAskHereReal || (DEBUG && DBG.anywhere);
   if ((!supportsPush || Notification.permission === 'denied' || !canAskHere) && !(DEBUG && (DBG.forceShow || DBG.anywhere))) {
     track('pp_not_eligible', { supportsPush, perm: Notification.permission, canAskHere });
@@ -152,7 +205,7 @@
     return; // anti-spam
   }
 
-  // ===== Loader do SDK =====
+  // ===== Loader do SDK nativo =====
   let asked = false, softShown = false;
   function loadProPush(){
     if (asked) return;
@@ -167,9 +220,9 @@
     document.head.appendChild(s);
   }
 
-  // Expor gatilhos manuais (usados pelo index)
-  window.ppAsk = () => { setTrigger('manual'); track('pp_manual_click', { ab }); loadProPush(); };
-  window.ppOpen  = window.ppAsk;
+  // Expor gatilhos manuais (usados no index)
+  window.ppAsk  = () => { setTrigger('manual'); track('pp_manual_click', { ab }); loadProPush(); };
+  window.ppOpen = window.ppAsk;
   window.ppNudge = () => { setTrigger('manual'); track('pp_nudge', { ab }); showSoftPrompt(); };
 
   // ===== Soft-prompt (banner) =====
@@ -284,7 +337,7 @@
     cooldown(h)  { setCooldown(+h||0); },
   };
 
-  if (DEBUG && DBG.panel) {
+  if (DEBUG && (qs.get('d_panel')==='1' || localStorage.getItem('pp_debug_panel')==='1')) {
     const css = document.createElement('style');
     css.textContent = `
       #pp-debug { position: fixed; right: 12px; bottom: 12px; z-index: 99999;

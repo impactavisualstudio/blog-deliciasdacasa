@@ -40,11 +40,28 @@
   <!-- AdSense (substitua seu ID) -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-SEU-ID-ADSENSE" crossorigin="anonymous"></script>
 
-  <!-- Opcional: preload da hero para performance -->
+  <!-- Preload da hero -->
   <link rel="preload" as="image" href="/assets/images/hero-picanha-1600.png">
 
   <!-- Mantido por compatibilidade com seu SW/SDK atual -->
   <meta name="pushsdk" content="1b19bc83d7e11bcb0ab57a076257ff24">
+
+  <!-- Mini estilos do card-CTA -->
+  <style>
+    .notify-card{
+      margin: 18px 0;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: #0b0b0b;
+      display:flex; gap:10px; align-items:center; justify-content:space-between;
+    }
+    .notify-card p{ margin:0; color:var(--muted); }
+    .notify-link{ font-weight:600; }
+    @media (max-width:680px){
+      .notify-card{ flex-direction:column; align-items:stretch }
+    }
+  </style>
 </head>
 <body>
 <header class="site-header">
@@ -68,6 +85,8 @@
       <a href="/contato.html">Contato</a>
       <a href="/politica-privacidade.html">Privacidade</a>
       <a href="/utensilios.html">Utensílios</a>
+      <!-- NOVO: CTA no menu -->
+      <a href="#" class="notify-link notify-elt" onclick="event.preventDefault(); notifyClick('nav');">Notificações 🔔</a>
     </nav>
   </div>
 </header>
@@ -79,9 +98,8 @@
       <p>Guias práticos, receitas testadas, tempos e temperaturas. Conteúdo original e útil para seu próximo churrasco.</p>
       <p style="display:flex;gap:8px;flex-wrap:wrap">
         <a class="btn" href="/receitas.html">Ver todas as receitas</a>
-        <!-- OPCIONAL: dispara o nudge/ask do ProPush -->
-        <button id="btn-notify" class="btn" type="button"
-          onclick="(window.ppNudge ? window.ppNudge() : (window.ppAsk && window.ppAsk()))">
+        <!-- CTA da home usando a função comum -->
+        <button id="btn-notify" class="btn notify-elt" type="button" onclick="notifyClick('hero')">
           Ativar notificações 🔔
         </button>
       </p>
@@ -102,6 +120,12 @@
 
   <!-- Contêiner para os posts rotativos -->
   <section id="posts" class="grid" aria-label="Lista de posts"></section>
+
+  <!-- NOVO: CTA discreto no fim do conteúdo -->
+  <section class="notify-card notify-elt" aria-label="Ative as notificações">
+    <p>Receba receitas e ofertas 1–2x por semana. Sem spam — pode sair quando quiser.</p>
+    <button class="btn" type="button" onclick="notifyClick('footer-card')">Ativar notificações 🔔</button>
+  </section>
 </main>
 
 <footer class="site-footer">
@@ -189,15 +213,23 @@ if ('serviceWorker' in navigator) {
 }
 </script>
 
-<!-- Esconde o botão opcional quando não fizer sentido -->
+<!-- Funções comuns p/ CTAs de push + ocultação automática -->
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-  const btn = document.getElementById('btn-notify');
-  if (!btn) return;
-  if (!('Notification' in window) || Notification.permission === 'granted') {
-    btn.style.display = 'none';
+  window.dataLayer = window.dataLayer || [];
+  function notifyClick(place){
+    try { window.dataLayer.push({event:'notify_click', place}); } catch(e) {}
+    if (window.ppNudge) window.ppNudge();
+    else if (window.ppAsk) window.ppAsk();
   }
-});
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const hide = (!('Notification' in window)) ||
+                 (Notification.permission === 'granted') ||
+                 (Notification.permission === 'denied');
+    if (hide) {
+      document.querySelectorAll('.notify-elt').forEach(el => el.style.display = 'none');
+    }
+  });
 </script>
 
 <!-- ProPush -->

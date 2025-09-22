@@ -1,4 +1,5 @@
-/* /assets/propush.js — GA4 + DEBUG + In-Page SAFE (iOS/Safari em produto/receitas) */
+<!-- /assets/propush.js -->
+
 (() => {
   // ===== CONFIG GERAL =====
   const ZONE_SMARTTAG = '9871244';                // sua Smart Tag (ProPush)
@@ -8,32 +9,26 @@
   const COOLDOWN_H_INDEX = 12;                    // volta em 12h na home
   const COOLDOWN_H_OTHER = 24;                    // 24h nas demais
 
-  const ASK_KEY   = 'pp_nextAskAt';               // cooldown (localStorage)
-  const SESS_KEY  = 'pp_shown_session';           // 1x/sessão (sessionStorage)
-  const AB_KEY    = 'pp_ab_variant';              // fixa variante de copy
+  const ASK_KEY   = 'pp_nextAskAt';
+  const SESS_KEY  = 'pp_shown_session';
+  const AB_KEY    = 'pp_ab_variant';
 
-  // ===== IN-PAGE SAFE (somente iOS/Safari e só em páginas alvo) =====
-  // ➜ ZONE_INPAGE é a sua zona *In-Page Push* oficial do ProPush (não é SmartTag).
-  //    Se você já usava 9886724 para In-Page, mantenha. Senão, troque pelo ID da sua zona In-Page.
-  const ENABLE_INPAGE_SAFARI = true;
-  const ZONE_INPAGE          = '9886724';         // <-- sua zona In-Page
-  const INPAGE_SRC           = 'https://forfrogadiertor.com/tag.min.js'; // src oficial que o painel te deu
-  // Onde permitir In-Page (produto/receitas):
-  const PATH_INPAGE = /^(\/(posts|produtos)\/[^/]+\.html|\/receitas\.html)$/i;
+  // ===== In-Page SAFE (iOS/Safari) — DESLIGADO =====
+  const ENABLE_INPAGE_SAFARI = false;             // <- desligado para evitar banners
+  const ZONE_INPAGE          = '9886724';         // (mantido só p/ referência)
+  const INPAGE_SRC           = 'https://forfrogadiertor.com/tag.min.js';
+  const PATH_INPAGE          = /^(\/(posts|produtos)\/[^/]+\.html|\/receitas\.html)$/i;
 
-  // Sem soft-back por padrão
   const ENABLE_SOFT_BACK = false;
 
   // ===== GUARDS =====
   if (location.protocol !== 'https:') return;
   const supportsPush = ('Notification' in window) && ('serviceWorker' in navigator);
 
-  // Onde pode pedir nativo (inclui INDEX)
-  const isIndex    = /^(\/|\/index\.html)$/i.test(location.pathname);
+  const isIndex = /^(\/|\/index\.html)$/i.test(location.pathname);
   const canAskHereReal = /^(\/(posts|produtos)\/[^/]+\.html|\/(receitas|utensilios)\.html|\/index\.html|\/)$/i
                           .test(location.pathname);
 
-  // Timings por contexto (home mais cedo / menos scroll)
   const DELAY_MS   = isIndex ? 6000 : 10000;
   const SCROLL_PCT = isIndex ? 0.30 : 0.50;
 
@@ -47,15 +42,15 @@
   let lastTrigger = null;
   const setTrigger = (t) => { lastTrigger = t; };
 
-  // ===== DEBUG MODE =====
+  // ===== DEBUG =====
   const qs = new URLSearchParams(location.search);
   const DEBUG = qs.has('ppdebug') || localStorage.getItem('pp_debug') === '1';
   const DBG = {
     noCooldown : qs.get('d_nocd') === '1' || localStorage.getItem('pp_debug_nocd') === '1',
     anywhere   : qs.get('d_anywhere') === '1' || localStorage.getItem('pp_debug_anywhere') === '1',
     panel      : qs.get('d_panel') === '1' || localStorage.getItem('pp_debug_panel') === '1',
-    forceTrig  : qs.get('d_trigger') || '',          // 'timer'|'scroll'|'exit'|'nudge'|'ask'
-    forceAB    : qs.has('d_ab') ? Number(qs.get('d_ab')) : null, // 0|1
+    forceTrig  : qs.get('d_trigger') || '',
+    forceAB    : qs.has('d_ab') ? Number(qs.get('d_ab')) : null,
     autoShow   : qs.get('d_auto') === '1',
     forceShow  : qs.get('d_show') === '1',
     forceAsk   : qs.get('d_ask') === '1',
@@ -84,35 +79,10 @@
   }
   function markSession(){ try { sessionStorage.setItem(SESS_KEY, '1'); } catch{} }
 
-  // ===== (opcional) soft-back — OFF por padrão =====
-  if (ENABLE_SOFT_BACK) {
-    try {
-      if (!sessionStorage.getItem('tb_back_flag')) {
-        history.pushState({pp:1}, '', location.href);
-        setTimeout(() => {
-          window.addEventListener('popstate', () => {
-            if (sessionStorage.getItem('tb_back_flag')) return;
-            sessionStorage.setItem('tb_back_flag','1');
-            track('pp_softback_fired');
-            // location.replace('https://g0st.com/4/SEU_TB?src=softback');
-          });
-        }, 20000);
-      }
-    } catch {}
-  }
-
-  // ===== A/B copy (fixa por usuário) =====
+  // ===== A/B copy =====
   const VARIANTS = [
-    { // A: ofertas
-      line: 'Receba <b>ofertas e utensílios</b> 1–2x/semana 🔔',
-      allow: 'Ativar notificações',
-      later: 'Agora não'
-    },
-    { // B: receitas
-      line: 'Novas <b>receitas e dicas</b> direto no seu aparelho 🔔',
-      allow: 'Quero receber',
-      later: 'Depois'
-    }
+    { line: 'Receba <b>ofertas e utensílios</b> 1–2x/semana 🔔', allow: 'Ativar notificações', later: 'Agora não' },
+    { line: 'Novas <b>receitas e dicas</b> direto no seu aparelho 🔔', allow: 'Quero receber',   later: 'Depois'    }
   ];
   let ab = +localStorage.getItem(AB_KEY);
   if (Number.isNaN(ab) || ab < 0 || ab > 1) ab = Math.random() < 0.5 ? 0 : 1;
@@ -124,51 +94,16 @@
   }
   track('pp_variant', { ab });
 
-  // ===== Detectar iOS/Safari p/ In-Page SAFE =====
+  // ===== Detectar iOS/Safari (In-Page está DESLIGADO) =====
   const ua       = navigator.userAgent || '';
   const isIOS    = /iPhone|iPad|iPod/i.test(ua);
   const isSafari = /\bSafari\//.test(ua) && !/(Chrome|CriOS|FxiOS|OPR|EdgiOS)/i.test(ua);
-  const allowInPage = ENABLE_INPAGE_SAFARI && isIOS && isSafari &&
+  const allowInPage = false && ENABLE_INPAGE_SAFARI && isIOS && isSafari &&
                       (PATH_INPAGE.test(location.pathname) || (DEBUG && DBG.anywhere));
 
-  // ===== Função para renderizar In-Page SAFE =====
-  function renderInPage() {
-    if (!ZONE_INPAGE || !INPAGE_SRC) return;
-    if (document.getElementById('inpage-slot')) return;
+  function renderInPage(){ /* intencionalmente vazio enquanto desativado */ }
 
-    const css = document.createElement('style');
-    css.textContent = `
-      #inpage-slot{position:sticky;bottom:0;z-index:9998}
-      @media (max-width:480px){#inpage-slot{position:fixed;left:0;right:0;bottom:0}}
-    `;
-    document.head.appendChild(css);
-
-    const slot = document.createElement('div');
-    slot.id = 'inpage-slot';
-    document.body.appendChild(slot);
-
-    // tag oficial da zona In-Page (apenas para iOS/Safari)
-    const s = document.createElement('script');
-    s.async = true;
-    s.src = INPAGE_SRC;
-    s.dataset.zone = ZONE_INPAGE; // vira data-zone="..."
-    s.onload  = () => track('pp_inpage_loaded',  { zone: ZONE_INPAGE });
-    s.onerror = () => track('pp_inpage_error',   { zone: ZONE_INPAGE });
-    slot.appendChild(s);
-
-    // Fallback visual simples (se bloqueado)
-    setTimeout(() => {
-      const anyScript = slot.querySelector('script[src*="tag.min.js"]');
-      if (!anyScript) {
-        const fb = document.createElement('div');
-        fb.style.cssText = 'background:#111;color:#fff;border-top:1px solid #333;padding:10px 14px;font:500 14px/1.3 system-ui,-apple-system,Segoe UI,Roboto,sans-serif';
-        fb.innerHTML = '🔔 Receba ofertas rápidas — ative notificações no Android/Chrome para não perder promoções.';
-        slot.appendChild(fb);
-      }
-    }, 1500);
-  }
-
-  // ===== Auto-inscrição se já está GRANTED (nativo) =====
+  // ===== Auto-inscrição se já está GRANTED =====
   if (supportsPush && Notification.permission === 'granted' && !(DEBUG && DBG.forceShow)) {
     navigator.serviceWorker.ready
       .then(r => r.pushManager.getSubscription())
@@ -184,17 +119,17 @@
         }
       });
     try { sessionStorage.setItem(SESS_KEY, '1'); } catch {}
-    if (!(DEBUG && DBG.forceShow)) return; // sessão já resolvida
+    if (!(DEBUG && DBG.forceShow)) return;
   }
 
-  // ===== Se iOS/Safari elegível p/ In-Page SAFE, usa In-Page e encerra =====
+  // ===== iOS In-Page (desligado) =====
   if (allowInPage) {
     track('pp_inpage_start', { path: location.pathname });
     renderInPage();
-    return; // não mostra soft-prompt nativo
+    return;
   }
 
-  // ===== Gating nativo (com exceções em DEBUG) =====
+  // ===== Gating nativo =====
   const canAskHere = canAskHereReal || (DEBUG && DBG.anywhere);
   if ((!supportsPush || Notification.permission === 'denied' || !canAskHere) && !(DEBUG && (DBG.forceShow || DBG.anywhere))) {
     track('pp_not_eligible', { supportsPush, perm: Notification.permission, canAskHere });
@@ -202,7 +137,7 @@
   }
   if (shouldThrottle() && !(DEBUG && DBG.noCooldown)) {
     track('pp_throttled', { nextAsk, sessionShown });
-    return; // anti-spam
+    return;
   }
 
   // ===== Loader do SDK nativo =====
@@ -210,8 +145,8 @@
   function loadProPush(){
     if (asked) return;
     asked = true;
-    setCooldown();           // 12h na home / 24h nas demais
-    markSession();           // 1x/sessão
+    setCooldown();
+    markSession();
     const s = document.createElement('script');
     s.async = true;
     s.src = `https://im-pd.com/d1d/f8c70/mw.min.js?z=${ZONE_SMARTTAG}&sw=${encodeURIComponent(SW_PATH)}`;
@@ -220,12 +155,12 @@
     document.head.appendChild(s);
   }
 
-  // Expor gatilhos manuais (usados no index)
+  // Expor gatilhos manuais
   window.ppAsk  = () => { setTrigger('manual'); track('pp_manual_click', { ab }); loadProPush(); };
   window.ppOpen = window.ppAsk;
   window.ppNudge = () => { setTrigger('manual'); track('pp_nudge', { ab }); showSoftPrompt(); };
 
-  // ===== Soft-prompt (banner) =====
+  // ===== Soft-prompt =====
   function showSoftPrompt(){
     if (softShown || asked) return;
     if (Notification.permission !== 'default' && !(DEBUG && DBG.forceShow)) { setCooldown(); markSession(); return; }
@@ -267,17 +202,15 @@
     });
     bar.querySelector('#pp-later')?.addEventListener('click', () => {
       track('pp_click_later', { trigger: lastTrigger || 'unknown', ab });
-      setCooldown(); // aplica 12h/24h conforme página
+      setCooldown();
       bar.remove();
     });
   }
 
-  // ===== Gatilhos: tempo, scroll e exit-intent desktop =====
+  // ===== Gatilhos =====
   setTimeout(() => {
     if (document.visibilityState === 'visible') {
-      setTrigger('timer');
-      track('pp_trigger_timer', { isIndex });
-      showSoftPrompt();
+      setTrigger('timer'); track('pp_trigger_timer', { isIndex }); showSoftPrompt();
     }
   }, DELAY_MS);
 
@@ -291,15 +224,12 @@
     const scrolled = (window.scrollY + window.innerHeight) / max;
     if (scrolled >= SCROLL_PCT) {
       fired = true;
-      setTrigger('scroll');
-      track('pp_trigger_scroll', { pct: SCROLL_PCT });
-      showSoftPrompt();
+      setTrigger('scroll'); track('pp_trigger_scroll', { pct: SCROLL_PCT }); showSoftPrompt();
       window.removeEventListener('scroll', onScroll);
     }
   }
   window.addEventListener('scroll', onScroll, { passive: true });
 
-  // Exit-intent (somente desktop)
   const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
   if (!isMobile) {
     let exitUsed = false;
@@ -307,14 +237,12 @@
       if (exitUsed || softShown || asked) return;
       if (e.clientY <= 0 && document.visibilityState === 'visible') {
         exitUsed = true;
-        setTrigger('exit');
-        track('pp_trigger_exit');
-        showSoftPrompt();
+        setTrigger('exit'); track('pp_trigger_exit'); showSoftPrompt();
       }
     }, { passive: true });
   }
 
-  // ===== DEBUG helpers (API + painel opcional) =====
+  // ===== DEBUG helpers =====
   function debugStatus() {
     return {
       DEBUG, DBG, ab, isIndex, canAskHereReal,
@@ -368,13 +296,10 @@
     box.querySelector('#ppd-soft') .onclick = ()=>{ setTrigger('panel'); showSoftPrompt(); };
     box.querySelector('#ppd-ask')  .onclick = ()=>{ setTrigger('panel'); loadProPush();   };
     box.querySelector('#ppd-clear').onclick = ()=>{ clearThrottle(); alert('Cooldown/sessão limpos'); };
-    box.querySelector('#ppd-variant').onclick = ()=>{
-      const nv = ab===0?1:0; localStorage.setItem(AB_KEY, String(nv)); location.reload();
-    };
+    box.querySelector('#ppd-variant').onclick = ()=>{ const nv = ab===0?1:0; localStorage.setItem(AB_KEY,String(nv)); location.reload(); };
     box.querySelector('#ppd-close').onclick = ()=> box.remove();
   }
 
-  // Ações imediatas de debug via query
   if (DEBUG) {
     if (DBG.noCooldown) clearThrottle();
     if (DBG.forceShow)  { setTrigger(DBG.forceTrig||'debug'); setTimeout(showSoftPrompt, 80); }
@@ -382,3 +307,4 @@
     if (DBG.autoShow)   { setTrigger(DBG.forceTrig||'debug'); setTimeout(showSoftPrompt, 250); }
   }
 })();
+

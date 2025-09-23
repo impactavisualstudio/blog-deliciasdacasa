@@ -6,7 +6,7 @@
   <meta name="description" content="Seleção prática de utensílios de churrasco que realmente ajudam na grelha. Links de afiliado Amazon.">
   <link rel="canonical" href="https://blog-deliciasdacasa.vercel.app/utensilios.html">
 
-  <!-- CSS global (uma vez só) -->
+  <!-- CSS global -->
   <link rel="stylesheet" href="/assets/styles.css?v=16">
 
   <!-- Open Graph básico -->
@@ -21,15 +21,17 @@
   .grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}
   .card{border:1px solid #2a1a14;border-radius:12px;background:rgba(15,10,8,.9);color:#eee;overflow:hidden;display:flex;flex-direction:column}
   .card .imgwrap{display:block;background:#0f0f0f;text-align:center;padding:12px}
+  .card .card-media{margin:0}
+  .card .card-media img{width:100%;height:auto;border-radius:10px}
   .card h3{font:700 18px/1.3 system-ui;margin:12px 12px 8px}
   .card p{margin:0 12px 12px;color:#d4d4d4;font:400 15px/1.6 system-ui}
   .btn{margin:12px;display:inline-block;text-align:center;padding:10px 14px;border-radius:10px;background:#ef4444;color:#fff !important;text-decoration:none;font-weight:700}
   .btn:hover{filter:brightness(1.06)}
-  .disclaimer{font:12px/1.6 system-ui;color:#b8b8b8;margin-top:24px}
   .hero{margin:10px 0 24px}
   .hero h1{margin:0 0 8px;}
   .hero p{color:#d6d6d6;margin:0}
-</style>
+  </style>
+
   <!-- Ícones / Manifest -->
   <link rel="icon" type="image/png" href="/assets/icon-192.png" sizes="192x192">
   <link rel="apple-touch-icon" href="/assets/apple-touch-icon-180.png">
@@ -44,10 +46,10 @@
       <span class="brand-text">Delícias da Casa</span>
     </a>
 
-     <!-- botão hambúrguer só se você já usa -->
-      <button class="nav-toggle" aria-controls="primary-nav" aria-expanded="false" onclick="document.getElementById('primary-nav').classList.toggle('is-open'); this.setAttribute('aria-expanded', document.getElementById('primary-nav').classList.contains('is-open'));">
-        <span class="bar"></span><span class="bar"></span><span class="bar"></span>
-      </button>
+    <!-- botão hambúrguer -->
+    <button class="nav-toggle" aria-controls="primary-nav" aria-expanded="false" onclick="document.getElementById('primary-nav').classList.toggle('is-open'); this.setAttribute('aria-expanded', document.getElementById('primary-nav').classList.contains('is-open'));">
+      <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+    </button>
 
     <nav id="primary-nav" class="nav" aria-label="Navegação principal">
       <a href="/index.html">Início</a>
@@ -55,7 +57,7 @@
       <a href="/sobre.html">Sobre</a>
       <a href="/contato.html">Contato</a>
       <a href="/politica-privacidade.html">Privacidade</a>
-      <a href="/utensilios.html">Utensílios</a>
+      <a href="/utensilios.html" aria-current="page">Utensílios</a>
     </nav>
   </div>
 </header>
@@ -68,134 +70,63 @@
 
   <section class="grid">
 
-    <!-- 1) PINÇA -->
+    <!-- 1) Jogo de Churrasco Inox 12pcs Dynamic -->
     <article class="card product-card">
-  <a class="card-link" href="posts/jogo-de-churrasco-inox-12pcs-dynamic.html"
-     aria-label="Ver detalhes do Jogo de Churrasco Inox 12pcs Dynamic">
-    <figure class="card-media">
-      <img
-        src="/assets/images/produtos/tramontina-dynamic-12pc.jpg"
-        alt="Jogo de Churrasco Tramontina Dynamic, 12 peças em inox"
-        loading="lazy" width="640" height="360">
-    </figure>
-  </a>
-      <a class="imgwrap" aria-label="Jogo de Churrasco Inox 12pcs Dynamic"
-         href="/posts/jogo-de-churrasco-inox-12pcs-dynamic.html"
-         target="_blank" rel="nofollow sponsored noopener">
-        <!-- COLE AQUI a imagem do SiteStripe -->
-      </a>
-      <h3>Jogo de Churrasco Inox 12pcs Dynamic</h3>
-      <p>Afiadas, firmes e seguras: corte profissional no seu churrasco.</p>
-      <a class="btn" href="/posts/jogo-de-churrasco-inox-12pcs-dynamic.html" target="_blank" rel="nofollow sponsored noopener">Detalhes</a>
-
-    </article>
-
-
-<article class="card product-card">
-    <a class="imgwrap" aria-label="Processador de Alimentos Mini 3 Lâminas Aço Inoxidável 500 ml Manual"
-         href="/posts/processador-mini-3-laminas-500ml.html"
-         target="_blank" rel="nofollow sponsored noopener">
-      <figure class="card-media">
-        <img
-        src="/assets/images/produtos/Processador de Alimentos Mini 3 Laminas1.jpg"
-        alt="Processador de Alimentos Mini 3 Lâminas Aço Inoxidável 500 ml Manual"
-        loading="lazy" width="640" height="360">
-      </figure>
-    </a>
-      <h3>Processador de Alimentos Mini 3 Lâminas Aço Inoxidável 500 ml Manual</h3>
-      <p>Pique rápido e seguro: 3 lâminas inox, 500 ml de praticidade!!</p>
-      <a class="btn" href="/posts/processador-mini-3-laminas-500ml.html" target="_blank" rel="nofollow sponsored noopener">Detalhes</a>
-    </article>
-
-
-    <article class="card">
-      <a class="imgwrap" aria-label="Mor - Churrasqueira Califórnia Bacia Esmaltada"
-         href="https://www.amazon.com.br/dp/ASIN03?tag=SEU-ID-20&utm_source=blog&utm_medium=utensilios&utm_campaign=luva"
-         target="_blank" rel="nofollow sponsored noopener">
+      <a class="imgwrap" aria-label="Jogo de Churrasco Inox 12pcs Dynamic" href="/posts/jogo-de-churrasco-inox-12pcs-dynamic.html">
         <figure class="card-media">
           <img
-          src="/assets/images/produtos/churrasqueira-california-mor.jpg"
-          alt="Mor - Churrasqueira Califórnia Bacia Esmaltada"
-          loading="lazy" width="640" height="360">
+            src="/assets/images/produtos/tramontina-dynamic-12pc.jpg"
+            alt="Jogo de Churrasco Tramontina Dynamic, 12 peças em inox"
+            loading="lazy" width="640" height="360">
+        </figure>
+      </a>
+      <h3>Jogo de Churrasco Inox 12pcs Dynamic</h3>
+      <p>Kit completo para servir: 6 facas + 6 garfos, lâminas inox e cabos resistentes.</p>
+      <a class="btn" href="/posts/jogo-de-churrasco-inox-12pcs-dynamic.html" rel="nofollow sponsored noopener">Detalhes</a>
+    </article>
+
+    <!-- 2) Processador Mini 3 lâminas 500 ml -->
+    <article class="card product-card">
+      <a class="imgwrap" aria-label="Processador de Alimentos Mini 3 Lâminas Aço Inoxidável 500 ml Manual" href="/posts/processador-mini-3-laminas-500ml.html">
+        <figure class="card-media">
+          <img
+            src="/assets/images/produtos/Processador de Alimentos Mini 3 Laminas1.jpg"
+            alt="Processador de Alimentos Mini 3 Lâminas Aço Inoxidável 500 ml Manual"
+            loading="lazy" width="640" height="360">
+        </figure>
+      </a>
+      <h3>Processador de Alimentos Mini 3 Lâminas Aço Inoxidável 500 ml Manual</h3>
+      <p>Pique rápido e seguro: 3 lâminas inox e capacidade ideal para temperos.</p>
+      <a class="btn" href="/posts/processador-mini-3-laminas-500ml.html" rel="nofollow sponsored noopener">Detalhes</a>
+    </article>
+
+    <!-- 3) Mor - Churrasqueira Califórnia Bacia Esmaltada -->
+    <article class="card product-card">
+      <a class="imgwrap" aria-label="Mor - Churrasqueira Califórnia Bacia Esmaltada" href="/posts/churrasqueira-california-mor.html">
+        <figure class="card-media">
+          <img
+            src="/assets/images/produtos/churrasqueira-california-mor.jpg"
+            alt="Mor - Churrasqueira Califórnia Bacia Esmaltada"
+            loading="lazy" width="640" height="360">
         </figure>
       </a>
       <h3>Mor - Churrasqueira Califórnia Bacia Esmaltada</h3>
-      <p>Churrasco fácil e portátil: bacia esmaltada que dura por anos!</p>
-      <a class="btn" href="/posts/churrasqueira-california-mor.html" target="_blank" rel="nofollow sponsored noopener">Detalhes</a>
-    </article>
-
-    <!-- 4) TÁBUA -->
-    <article class="card">
-      <a class="imgwrap" aria-label="Tábua de corte (ver na Amazon)"
-         href="https://www.amazon.com.br/dp/ASIN04?tag=SEU-ID-20&utm_source=blog&utm_medium=utensilios&utm_campaign=tabua"
-         target="_blank" rel="nofollow sponsored noopener">
-      </a>
-      <h3>Tábua de Corte com Canaleta</h3>
-      <p>Canaleta segura os sucos ao fatiar picanha ou costela.</p>
-      <a class="btn" href="https://www.amazon.com.br/dp/ASIN04?tag=SEU-ID-20&utm_source=blog&utm_medium=utensilios&utm_campaign=tabua" target="_blank" rel="nofollow sponsored noopener">Ver na Amazon</a>
-    </article>
-
-    <!-- 5) FACA -->
-    <article class="card">
-      <a class="imgwrap" aria-label="Faca do chef (ver na Amazon)"
-         href="https://www.amazon.com.br/dp/ASIN05?tag=SEU-ID-20&utm_source=blog&utm_medium=utensilios&utm_campaign=faca"
-         target="_blank" rel="nofollow sponsored noopener">
-      </a>
-      <h3>Faca do Chef 8”</h3>
-      <p>Cortes limpos, menos esforço e mais segurança.</p>
-      <a class="btn" href="https://www.amazon.com.br/dp/ASIN05?tag=SEU-ID-20&utm_source=blog&utm_medium=utensilios&utm_campaign=faca" target="_blank" rel="nofollow sponsored noopener">Ver na Amazon</a>
-    </article>
-
-    <!-- 6) CHAIRA -->
-    <article class="card">
-      <a class="imgwrap" aria-label="Chaira/afiador (ver na Amazon)"
-         href="https://www.amazon.com.br/dp/ASIN06?tag=SEU-ID-20&utm_source=blog&utm_medium=utensilios&utm_campaign=chaira"
-         target="_blank" rel="nofollow sponsored noopener">
-      </a>
-      <h3>Chaira / Afiador</h3>
-      <p>Manutenção simples do fio para cortes precisos.</p>
-      <a class="btn" href="https://www.amazon.com.br/dp/ASIN06?tag=SEU-ID-20&utm_source=blog&utm_medium=utensilios&utm_campaign=chaira" target="_blank" rel="nofollow sponsored noopener">Ver na Amazon</a>
-    </article>
-
-    <!-- 7) CESTO -->
-    <article class="card">
-      <a class="imgwrap" aria-label="Cesto grelha aramada (ver na Amazon)"
-         href="https://www.amazon.com.br/dp/ASIN07?tag=SEU-ID-20&utm_source=blog&utm_medium=utensilios&utm_campaign=cesto"
-         target="_blank" rel="nofollow sponsored noopener">
-      </a>
-      <h3>Cesto / Grelha Aramada</h3>
-      <p>Legumes e cortes pequenos sem cair na brasa.</p>
-      <a class="btn" href="https://www.amazon.com.br/dp/ASIN07?tag=SEU-ID-20&utm_source=blog&utm_medium=utensilios&utm_campaign=cesto" target="_blank" rel="nofollow sponsored noopener">Ver na Amazon</a>
-    </article>
-
-    <!-- 8) SPRAY -->
-    <article class="card">
-      <a class="imgwrap" aria-label="Borrifador culinário (ver na Amazon)"
-         href="https://www.amazon.com.br/dp/ASIN08?tag=SEU-ID-20&utm_source=blog&utm_medium=utensilios&utm_campaign=spray"
-         target="_blank" rel="nofollow sponsored noopener">
-      </a>
-      <h3>Spray / Borrifador</h3>
-      <p>Ajuda a manter a umidade em preparos longos.</p>
-      <a class="btn" href="https://www.amazon.com.br/dp/ASIN08?tag=SEU-ID-20&utm_source=blog&utm_medium=utensilios&utm_campaign=spray" target="_blank" rel="nofollow sponsored noopener">Ver na Amazon</a>
+      <p>Portátil, prática e durável: ideal para churrascos rápidos e varandas.</p>
+      <a class="btn" href="/posts/churrasqueira-california-mor.html" rel="nofollow sponsored noopener">Detalhes</a>
     </article>
 
   </section>
 
-  <!-- Schema.org ItemList -->
+  <!-- Schema.org ItemList (somente os 3 itens) -->
   <script type="application/ld+json">
   {
     "@context":"https://schema.org",
     "@type":"ItemList",
     "name":"Utensílios de Churrasco Recomendados",
     "itemListElement":[
-      {"@type":"ListItem","position":1,"name":"Pinça de Churrasco Inox","url":"https://www.amazon.com.br/dp/ASIN01?tag=SEU-ID-20"},
-      {"@type":"ListItem","position":2,"name":"Termômetro Digital de Espeto","url":"https://www.amazon.com.br/dp/ASIN02?tag=SEU-ID-20"},
-      {"@type":"ListItem","position":3,"name":"Luva Térmica Anticalor","url":"https://www.amazon.com.br/dp/ASIN03?tag=SEU-ID-20"},
-      {"@type":"ListItem","position":4,"name":"Tábua de Corte com Canaleta","url":"https://www.amazon.com.br/dp/ASIN04?tag=SEU-ID-20"},
-      {"@type":"ListItem","position":5,"name":"Faca do Chef 8”","url":"https://www.amazon.com.br/dp/ASIN05?tag=SEU-ID-20"},
-      {"@type":"ListItem","position":6,"name":"Chaira / Afiador","url":"https://www.amazon.com.br/dp/ASIN06?tag=SEU-ID-20"},
-      {"@type":"ListItem","position":7,"name":"Cesto/Grelha Aramada","url":"https://www.amazon.com.br/dp/ASIN07?tag=SEU-ID-20"},
-      {"@type":"ListItem","position":8,"name":"Spray/Borrifador","url":"https://www.amazon.com.br/dp/ASIN08?tag=SEU-ID-20"}
+      {"@type":"ListItem","position":1,"name":"Jogo de Churrasco Inox 12pcs Dynamic","url":"https://blog-deliciasdacasa.vercel.app/posts/jogo-de-churrasco-inox-12pcs-dynamic.html"},
+      {"@type":"ListItem","position":2,"name":"Processador de Alimentos Mini 3 Lâminas Aço Inoxidável 500 ml Manual","url":"https://blog-deliciasdacasa.vercel.app/posts/processador-mini-3-laminas-500ml.html"},
+      {"@type":"ListItem","position":3,"name":"Mor - Churrasqueira Califórnia Bacia Esmaltada","url":"https://blog-deliciasdacasa.vercel.app/posts/churrasqueira-california-mor.html"}
     ]
   }
   </script>
@@ -203,9 +134,8 @@
 
 <footer class="site-footer">
   <div class="container footerbar">
-    <p class="copyright">© 2025 Delícias da Casa — Conteúdo original.</p>
+    <p class="copyright">© <span id="ano"></span> Delícias da Casa — Conteúdo original.</p>
 
-    <!-- SÓ ÍCONES -->
     <nav class="social social-icons-only" aria-label="Redes sociais">
       <a href="https://www.instagram.com/bruno_b_hidalgo/?next=%2F" target="_blank" rel="noopener" aria-label="Instagram">
         <img src="/assets/icons/instagram.svg" alt="" aria-hidden="true">
@@ -238,14 +168,14 @@
 <!-- scripts finais -->
 <script src="/assets/nav.js" defer></script>
 
-<!-- Ano automático + navegação ativa -->
+<!-- Ano automático -->
 <script>
   (function(){
     var y=document.getElementById('ano');
     if(y) y.textContent=new Date().getFullYear();
   })();
 </script>
-<script src="/assets/nav.js" defer></script>
+
 <script src="/assets/propush.js" async></script>
 </body>
 </html>

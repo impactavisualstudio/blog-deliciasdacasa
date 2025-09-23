@@ -61,37 +61,17 @@
   }
   </script>
 
-  <!-- JSON-LD: FAQPage (mesmo conteúdo do FAQ visível no fim do post) -->
+  <!-- JSON-LD: FAQPage -->
   <script type="application/ld+json">
   {
     "@context":"https://schema.org",
     "@type":"FAQPage",
     "mainEntity":[
-      {
-        "@type":"Question",
-        "name":"Qual a melhor temperatura para assar costela na churrasqueira?",
-        "acceptedAnswer":{"@type":"Answer","text":"Trabalhe em calor indireto entre 110–130 °C. O baixo e constante é que derrete o colágeno e preserva a suculência."}
-      },
-      {
-        "@type":"Question",
-        "name":"O que é a técnica 3-2-1 para costela?",
-        "acceptedAnswer":{"@type":"Answer","text":"É uma lógica de tempos: ~3 h em calor indireto, ~2 h embrulhada (alumínio ou papel manteiga) e ~1 h sem embrulho para formar crosta. Os tempos variam conforme peso e estabilidade do fogo."}
-      },
-      {
-        "@type":"Question",
-        "name":"Como manter a costela suculenta por horas?",
-        "acceptedAnswer":{"@type":"Answer","text":"Mantenha temperatura estável, borrife líquido (suco de maçã, cerveja ou caldo) a cada 60–90 minutos, evite virar demais e descanse 20–30 minutos depois de pronta."}
-      },
-      {
-        "@type":"Question",
-        "name":"Qual tipo de costela escolher (ripa, minga ou janela)?",
-        "acceptedAnswer":{"@type":"Answer","text":"A ripa tem ossos largos e muita carne; a minga é mais fina e muito saborosa; a janela é uniforme e ótima para assados inteiros. Todas pedem cozimento lento."}
-      },
-      {
-        "@type":"Question",
-        "name":"Dá para fazer no forno ou na pressão?",
-        "acceptedAnswer":{"@type":"Answer","text":"Sim. No forno: 150 °C por ~5 h coberta e finalize sem tampa. Panela de pressão é prática para ensopados e desfiada, mas não entrega a mesma crosta e defumado da brasa."}
-      }
+      {"@type":"Question","name":"Qual a melhor temperatura para assar costela na churrasqueira?","acceptedAnswer":{"@type":"Answer","text":"Trabalhe em calor indireto entre 110–130 °C. O baixo e constante é que derrete o colágeno e preserva a suculência."}},
+      {"@type":"Question","name":"O que é a técnica 3-2-1 para costela?","acceptedAnswer":{"@type":"Answer","text":"É uma lógica de tempos: ~3 h em calor indireto, ~2 h embrulhada (alumínio ou papel manteiga) e ~1 h sem embrulho para formar crosta. Os tempos variam conforme peso e estabilidade do fogo."}},
+      {"@type":"Question","name":"Como manter a costela suculenta por horas?","acceptedAnswer":{"@type":"Answer","text":"Mantenha temperatura estável, borrife líquido (suco de maçã, cerveja ou caldo) a cada 60–90 minutos, evite virar demais e descanse 20–30 minutos depois de pronta."}},
+      {"@type":"Question","name":"Qual tipo de costela escolher (ripa, minga ou janela)?","acceptedAnswer":{"@type":"Answer","text":"A ripa tem ossos largos e muita carne; a minga é mais fina e muito saborosa; a janela é uniforme e ótima para assados inteiros. Todas pedem cozimento lento."}},
+      {"@type":"Question","name":"Dá para fazer no forno ou na pressão?","acceptedAnswer":{"@type":"Answer","text":"Sim. No forno: 150 °C por ~5 h coberta e finalize sem tampa. Panela de pressão é prática para ensopados e desfiada, mas não entrega a mesma crosta e defumado da brasa."}}
     ]
   }
   </script>
@@ -104,10 +84,7 @@
       <span class="brand-text">Delícias da Casa</span>
     </a>
 
-     <!-- botão hambúrguer só se você já usa -->
-      <button class="nav-toggle" aria-controls="primary-nav" aria-expanded="false" onclick="document.getElementById('primary-nav').classList.toggle('is-open'); this.setAttribute('aria-expanded', document.getElementById('primary-nav').classList.contains('is-open'));">
-        <span class="bar"></span><span class="bar"></span><span class="bar"></span>
-      </button>
+    <button class="nav-toggle" aria-controls="primary-nav" aria-expanded="false" onclick="document.getElementById('primary-nav').classList.toggle('is-open'); this.setAttribute('aria-expanded', document.getElementById('primary-nav').classList.contains('is-open'));"><span class="bar"></span><span class="bar"></span><span class="bar"></span></button>
 
     <nav id="primary-nav" class="nav" aria-label="Navegação principal">
       <a href="/index.html">Início</a>
@@ -122,23 +99,15 @@
 
   <main class="container post">
     <h1>Costela na brasa suculenta</h1>
-    <!-- CTA: Ativar notificações (topo da receita/post) -->
-<div class="promo-cta" role="region" aria-label="Ativar notificações">
-  <p class="promo-cta__txt">
-    Receba <strong>novas receitas e ofertas</strong> 1–2x/semana.
-  </p>
-  <button class="btn" type="button"
-    onclick="(window.ppNudge ? window.ppNudge() : (window.ppAsk && window.ppAsk()))">
-    Ativar notificações 🔔
-  </button>
-</div>
+
+    <!-- CTA topo -->
+    <div class="promo-cta" role="region" aria-label="Ativar notificações">
+      <p class="promo-cta__txt">Receba <strong>novas receitas e ofertas</strong> 1–2x/semana.</p>
+      <button class="btn" type="button" onclick="(window.ppNudge ? window.ppNudge() : (window.ppAsk && window.ppAsk()))">Ativar notificações 🔔</button>
+    </div>
 
     <figure>
-      <!-- Tenta PNG; se falhar, JS troca para alternativas -->
-      <img id="hero-costela"
-           src="/assets/images/costela-1600.png?v=1"
-           alt="Costela assando lentamente na churrasqueira, com crosta dourada"
-           loading="eager" width="900" height="500">
+      <img id="hero-costela" src="/assets/images/costela-1600.png?v=1" alt="Costela assando lentamente na churrasqueira, com crosta dourada" loading="eager" width="900" height="500">
       <figcaption>Costela preparada lentamente: maciez, sabor profundo e crosta marcante.</figcaption>
     </figure>
 
@@ -221,20 +190,11 @@
     <p>A costela na brasa é um verdadeiro ritual de paciência e respeito à tradição. Com fogo controlado, tempo generoso e técnicas bem aplicadas, ela se transforma em uma carne que une textura macia, sabor marcante e aroma inesquecível. Mais que uma receita, é um convite à convivência em volta da churrasqueira e à celebração da boa mesa.</p>
 
     <h2>FAQ – Perguntas frequentes</h2>
-    <p><strong>1) Deixo os ossos para baixo ou para cima?</strong><br>
-    Prefira iniciar <strong>ossos para baixo</strong> em calor indireto, o que protege a carne do calor direto. Na etapa final, avalie virar para crosta mais marcada.</p>
-
-    <p><strong>2) Embrulho com alumínio ou papel manteiga?</strong><br>
-    O alumínio acelera e retém mais vapor; o papel manteiga respira mais e preserva melhor a crosta. Escolha conforme sua prioridade.</p>
-
-    <p><strong>3) Preciso virar a costela durante o processo?</strong><br>
-    Vire poucas vezes. O ideal é mantê-la estável e girar apenas para uniformizar, evitando picos de temperatura.</p>
-
-    <p><strong>4) Posso usar fumaça líquida?</strong><br>
-    Pode, em versões de forno, com parcimônia e marcas de qualidade. Não substitui a queima de lenha/carvão bem conduzida.</p>
-
-    <p><strong>5) Quanto tempo descansar antes de cortar?</strong><br>
-    De <strong>20 a 30 minutos</strong>, coberta. Esse período redistribui sucos e melhora a maciez.</p>
+    <p><strong>1) Deixo os ossos para baixo ou para cima?</strong><br>Prefira iniciar <strong>ossos para baixo</strong> em calor indireto, o que protege a carne do calor direto. Na etapa final, avalie virar para crosta mais marcada.</p>
+    <p><strong>2) Embrulho com alumínio ou papel manteiga?</strong><br>O alumínio acelera e retém mais vapor; o papel manteiga respira mais e preserva melhor a crosta. Escolha conforme sua prioridade.</p>
+    <p><strong>3) Preciso virar a costela durante o processo?</strong><br>Vire poucas vezes. O ideal é mantê-la estável e girar apenas para uniformizar, evitando picos de temperatura.</p>
+    <p><strong>4) Posso usar fumaça líquida?</strong><br>Pode, em versões de forno, com parcimônia e marcas de qualidade. Não substitui a queima de lenha/carvão bem conduzida.</p>
+    <p><strong>5) Quanto tempo descansar antes de cortar?</strong><br>De <strong>20 a 30 minutos</strong>, coberta. Esse período redistribui sucos e melhora a maciez.</p>
 
     <section class="ads">
       <ins class="adsbygoogle" style="display:block"
@@ -244,23 +204,33 @@
            data-full-width-responsive="true"></ins>
     </section>
 
-    <!-- 🔥 SUGESTÕES RANDOMIZADAS: 3 cards a cada 7s -->
+    <!-- Leia também (fixo e contextual) -->
+    <section class="related card" aria-label="Leia também">
+      <h3 style="margin:12px 12px 6px">Leia também</h3>
+      <ul class="related__list" style="margin:0 12px 12px 24px;line-height:1.7">
+        <li><a href="/posts/brisket-texano-lento.html">Brisket texano: método lento para maciez absoluta</a></li>
+        <li><a href="/posts/cupim-brasa.html">Cupim na brasa: ponto ideal e suculência sem erro</a></li>
+        <li><a href="/posts/fraldinha-marinada-rapida.html">Fraldinha marinada rápida: sabor e praticidade</a></li>
+      </ul>
+    </section>
+
+    <!-- Rotacionador de sugestões -->
     <section id="related-rotator" class="related">
       <h2>Talvez você também curta</h2>
       <div class="related-grid" aria-live="polite" aria-busy="false"></div>
     </section>
 
-<script src="/assets/comments.js" defer></script>
+    <script src="/assets/comments.js" defer></script>
 
-<section class="comments" id="comments">
-  <h2>Comentários</h2>
-  <form id="comment-form" class="form" autocomplete="off">
-    <input type="text" name="name" placeholder="Seu nome" required />
-    <textarea name="body" rows="4" placeholder="Escreva seu comentário" required></textarea>
-    <button type="submit" class="btn">Enviar comentário</button>
-  </form>
-  <ul id="comment-list" class="comment-list"></ul>
-</section>
+    <section class="comments" id="comments">
+      <h2>Comentários</h2>
+      <form id="comment-form" class="form" autocomplete="off">
+        <input type="text" name="name" placeholder="Seu nome" required />
+        <textarea name="body" rows="4" placeholder="Escreva seu comentário" required></textarea>
+        <button type="submit" class="btn">Enviar comentário</button>
+      </form>
+      <ul id="comment-list" class="comment-list"></ul>
+    </section>
 
   </main>
 
@@ -268,26 +238,13 @@
   <div class="container footerbar">
     <p class="copyright">© 2025 Delícias da Casa — Conteúdo original.</p>
 
-    <!-- SÓ ÍCONES -->
     <nav class="social social-icons-only" aria-label="Redes sociais">
-      <a href="https://www.instagram.com/bruno_b_hidalgo/?next=%2F" target="_blank" rel="noopener" aria-label="Instagram">
-        <img src="/assets/icons/instagram.svg" alt="" aria-hidden="true">
-      </a>
-      <a href="https://www.youtube.com/@ImpactaVisualStudio" target="_blank" rel="noopener" aria-label="YouTube">
-        <img src="/assets/icons/youtube.svg" alt="" aria-hidden="true">
-      </a>
-      <a href="https://www.tiktok.com/@impactavisualstudio" target="_blank" rel="noopener" aria-label="TikTok">
-        <img src="/assets/icons/tiktok.svg" alt="" aria-hidden="true">
-      </a>
-      <a href="https://x.com/deliciasdecarne" target="_blank" rel="noopener" aria-label="X (Twitter)">
-        <img src="/assets/icons/twitter.svg" alt="" aria-hidden="true">
-      </a>
-      <a href="https://www.facebook.com/bruno.hidalgo.143042" target="_blank" rel="noopener" aria-label="Facebook">
-        <img src="/assets/icons/facebook.svg" alt="" aria-hidden="true">
-      </a>
-      <a href="https://wa.me/5511949236034?text=Gostei%20do%20site%20Del%C3%ADcias%20da%20Casa" target="_blank" rel="noopener" aria-label="WhatsApp">
-        <img src="/assets/icons/whatsapp.svg" alt="" aria-hidden="true">
-      </a>
+      <a href="https://www.instagram.com/bruno_b_hidalgo/?next=%2F" target="_blank" rel="noopener" aria-label="Instagram"><img src="/assets/icons/instagram.svg" alt="" aria-hidden="true"></a>
+      <a href="https://www.youtube.com/@ImpactaVisualStudio" target="_blank" rel="noopener" aria-label="YouTube"><img src="/assets/icons/youtube.svg" alt="" aria-hidden="true"></a>
+      <a href="https://www.tiktok.com/@impactavisualstudio" target="_blank" rel="noopener" aria-label="TikTok"><img src="/assets/icons/tiktok.svg" alt="" aria-hidden="true"></a>
+      <a href="https://x.com/deliciasdecarne" target="_blank" rel="noopener" aria-label="X (Twitter)"><img src="/assets/icons/twitter.svg" alt="" aria-hidden="true"></a>
+      <a href="https://www.facebook.com/bruno.hidalgo.143042" target="_blank" rel="noopener" aria-label="Facebook"><img src="/assets/icons/facebook.svg" alt="" aria-hidden="true"></a>
+      <a href="https://wa.me/5511949236034?text=Gostei%20do%20site%20Del%C3%ADcias%20da%20Casa" target="_blank" rel="noopener" aria-label="WhatsApp"><img src="/assets/icons/whatsapp.svg" alt="" aria-hidden="true"></a>
     </nav>
 
     <nav class="footer-nav" aria-label="Links do rodapé">
@@ -300,104 +257,75 @@
 
 <!-- scripts finais -->
 <script src="/assets/nav.js" defer></script>
-
-  <!-- Script do site (inclui o rotator dos 3 artigos) -->
 <script defer src="/assets/script.js?v=7"></script>
 
-  <!-- 🔁 Fallback automático da hero: tenta nomes alternativos se houver 404 -->
-  <script>
-  (function () {
-    const img = document.getElementById('hero-costela');
-    if (!img) return;
+<!-- Fallback da hero -->
+<script>
+(function () {
+  const img = document.getElementById('hero-costela');
+  if (!img) return;
+  const candidates = [
+    '/assets/images/costela-1600.png',
+    '/assets/images/costela-fogo-chao-hero.jpg',
+    '/assets/images/costela-fogo-chao-hero.png'
+  ];
+  function exists(url, ok, fail){
+    const p = new Image();
+    p.onload = () => ok(url);
+    p.onerror = fail;
+    p.src = url + '?t=' + Date.now();
+  }
+  img.addEventListener('error', function onError(){
+    img.removeEventListener('error', onError);
+    (function tryNext(i){
+      if (i >= candidates.length) return;
+      exists(candidates[i], (okUrl)=>{ img.src = okUrl + '?v=1'; }, ()=>tryNext(i+1));
+    })(0);
+  }, { once:true });
+})();
+</script>
 
-    // Lista de alternativas caso o PNG não exista no deploy
-    const candidates = [
-      '/assets/images/costela-1600.png',
-      '/assets/images/costela-fogo-chao-hero.jpg',
-      '/assets/images/costela-fogo-chao-hero.png'
-    ];
-
-    function exists(url, cbOk, cbFail) {
-      const probe = new Image();
-      // cache-buster evita 404 "guardado"
-      probe.onload = () => cbOk(url);
-      probe.onerror = cbFail;
-      probe.src = url + '?t=' + Date.now();
-    }
-
-    // Se a atual falhar, testa as alternativas em ordem
-    img.addEventListener('error', function onError() {
-      img.removeEventListener('error', onError);
-      (function tryNext(i){
-        if (i >= candidates.length) return; // desistiu
-        exists(candidates[i],
-          (okUrl) => { img.src = okUrl + '?v=1'; },
-          () => tryNext(i+1)
-        );
-      })(0);
-    }, { once: true });
-  })();
-  </script>
-<!-- carrega o catálogo -->
+<!-- catálogo p/ rotator -->
 <script defer src="/assets/posts.js?v=10"></script>
-
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  // onde renderizar
   const grid = document.querySelector('#related-rotator .related-grid');
   if (!grid) return;
 
   const DEFAULT_IMG = '/assets/images/hero-picanha-1600.png';
-
-  // slug atual (ex.: /posts/dry-aged-o-que-e.html → dry-aged-o-que-e)
   const path = location.pathname;
   const currentSlug = path.startsWith('/posts/') ? path.replace('/posts/','').replace('.html','') : '';
-
-  // fonte: window.POSTS (vem do /assets/posts.js)
-  // mapeia slug a partir do URL do post
-  const all = (window.POSTS || []).map(p => ({
-    ...p,
-    slug: p.url.replace('/posts/','').replace('.html','')
-  }));
-
-  // exclui o artigo atual e só fica com os que têm image
+  const all = (window.POSTS || []).map(p => ({...p, slug: p.url.replace('/posts/','').replace('.html','')}));
   const pool = all.filter(p => p.slug !== currentSlug && p.image);
 
-  // util: 3 aleatórios únicos
-  function pick3(list) {
+  function pick3(list){
     const copy = list.slice();
-    for (let i = copy.length - 1; i > 0; i--) {
+    for (let i = copy.length - 1; i > 0; i--){
       const j = Math.floor(Math.random() * (i + 1));
       [copy[i], copy[j]] = [copy[j], copy[i]];
     }
-    return copy.slice(0, 3);
+    return copy.slice(0,3);
   }
-
-  function render(items) {
-    grid.setAttribute('aria-busy', 'true');
+  function render(items){
+    grid.setAttribute('aria-busy','true');
     grid.innerHTML = items.map(p => `
       <article class="card">
         <a href="${p.url}" title="${p.title}">
-          <img src="${p.image}"
-               alt="${p.title}"
-               loading="lazy"
+          <img src="${p.image}" alt="${p.title}" loading="lazy"
                onerror="this.onerror=null; this.src='${DEFAULT_IMG}'"
                style="width:100%;height:160px;object-fit:cover;border-radius:12px;margin-bottom:10px">
           <h3>${p.title}</h3>
           <p>${p.excerpt || ''}</p>
         </a>
       </article>
-    `).join('');
-    grid.setAttribute('aria-busy', 'false');
+    ').join('');
+    grid.setAttribute('aria-busy','false');
   }
-
-  // primeira leva
   render(pick3(pool));
-
-  // troca a cada 7s
   setInterval(() => render(pick3(pool)), 7000);
 });
 </script>
+
 <script src="/assets/propush.js" async></script>
 </body>
 </html>
